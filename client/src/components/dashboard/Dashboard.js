@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import Alert from '@material-ui/lab/Alert';
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -14,6 +15,7 @@ class Dashboard extends Component {
 
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
+        {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
         <div className="row">
           <div className="landing-copy col s12 center-align">
             <h4>
