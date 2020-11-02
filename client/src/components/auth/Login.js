@@ -98,6 +98,7 @@ class Login extends Component {
                   })}
                 />
                 <label htmlFor="password">Password</label>
+                <Link to="/reset">Forgot password?</Link>
                 <span className="red-text">
                   {errors.password}
                   {errors.passwordincorrect}

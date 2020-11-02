@@ -8,6 +8,7 @@ const passport = require("passport");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const validateResetInput = require("../../validation/reset");
 
 // Load User model
 const User = require("../../models/User");
@@ -104,6 +105,14 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+// @route POST api/users/reset
+// @desc Reset password for user
+// @access Public
+router.post("/reset", (req, res) => {
+    // Input validation
+    const { errors, isValid } = validateResetInput(req.body);
 });
 
 module.exports = router;

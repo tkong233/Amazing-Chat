@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import { Link } from "react-router-dom";
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -23,6 +24,8 @@ class Dashboard extends Component {
                 <span style={{ fontFamily: "monospace" }}>CIS557 Project</span> 👏
               </p>
             </h4>
+
+            {/* Logout Button */}
             <button
               style={{
                 width: "150px",
@@ -35,6 +38,7 @@ class Dashboard extends Component {
             >
               Logout
             </button>
+            
           </div>
         </div>
       </div>
