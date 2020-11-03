@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
+import { SecurityQuestions } from "./SecurityQuestions";
 import classnames from "classnames";
 
 class Register extends Component {
@@ -13,6 +14,8 @@ class Register extends Component {
       email: "",
       password: "",
       password2: "",
+      question: "",
+      answer: "",
       errors: {}
     };
   }
@@ -43,7 +46,9 @@ class Register extends Component {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      question: this.state.question,
+      answer: this.state.answer
     };
 
     this.props.registerUser(newUser, this.props.history);
@@ -68,6 +73,8 @@ class Register extends Component {
                 Already have an account? <Link to="/login">Log in</Link>
               </p>
             </div>
+
+            {/* Name */}
             <form noValidate onSubmit={this.onSubmit}>
               <div className="input-field col s12">
                 <input
@@ -83,6 +90,8 @@ class Register extends Component {
                 <label htmlFor="name">Name</label>
                 <span className="red-text">{errors.name}</span>
               </div>
+
+              {/* Email */}
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
@@ -97,6 +106,8 @@ class Register extends Component {
                 <label htmlFor="email">Email</label>
                 <span className="red-text">{errors.email}</span>
               </div>
+
+              {/* Password */}
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
@@ -111,6 +122,8 @@ class Register extends Component {
                 <label htmlFor="password">Password</label>
                 <span className="red-text">{errors.password}</span>
               </div>
+
+              {/* Confirm Password */}
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
@@ -125,6 +138,37 @@ class Register extends Component {
                 <label htmlFor="password2">Confirm Password</label>
                 <span className="red-text">{errors.password2}</span>
               </div>
+
+              {/* Security Question */}
+              <div className="input-field col s12">
+                    <select
+                    onChange={this.onChange}
+                    value={this.state.question}
+                    error={errors.question}
+                    id="question"
+                    >
+                        <option value="" disabled selected>Choose your security question</option>
+                        {SecurityQuestions.map(q => <option value={q}>{q}</option>)}
+                    </select>
+                </div>
+
+                {/* Answer */}
+                <div className="input-field col s12">
+                    <input
+                    onChange={this.onChange}
+                    value={this.state.answer}
+                    error={errors.answer}
+                    id="answer"
+                    type="text"
+                    className={classnames("", {
+                        invalid: errors.answer
+                    })}
+                    />
+                    <label htmlFor="password">Answer</label>
+                    <span className="red-text">{errors.answer}</span>
+                </div>
+
+              {/* Sign Up Button */}
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
                   style={{

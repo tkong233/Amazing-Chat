@@ -19,7 +19,6 @@ class Reset extends React.Component {
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
-        console.log(e.target.id + " " + e.target.value);
     };
 
     onSubmit = e => {

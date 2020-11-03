@@ -9,6 +9,8 @@ module.exports = function validateRegisterInput(data) {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+  data.question = !isEmpty(data.question) ? data.question : "";
+  data.answer = !isEmpty(data.answer) ? data.answer : "";
 
   // Name checks
   if (Validator.isEmpty(data.name)) {
@@ -37,6 +39,14 @@ module.exports = function validateRegisterInput(data) {
 
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
+  }
+
+  if (Validator.isEmpty(data.question)) {
+    errors.question = "Security question is required";
+  }
+
+  if (Validator.isEmpty(data.answer)) {
+    errors.answer = "Answer to security question is required";
   }
 
   return {
