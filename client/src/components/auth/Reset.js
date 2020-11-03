@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import classnames from "classnames";
+import { connect } from "react-redux";
+import { resetPassword } from '../../actions/authActions';
 import { SecurityQuestions } from "./SecurityQuestions";
-
 
 class Reset extends React.Component {
     constructor() {
@@ -32,9 +33,17 @@ class Reset extends React.Component {
           password2: this.state.password2
         };
         
-        console.log(userData);
+        this.props.resetPassword(userData, this.props.history);
         // this.props.loginUser(userData);
     };
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+          this.setState({
+            errors: nextProps.errors
+          });
+        }
+      }
 
     render() {
         const { errors } = this.state;
@@ -66,6 +75,7 @@ class Reset extends React.Component {
                         invalid: errors.email
                     })}
                     />
+                    {console.log(errors)}
                     <label htmlFor="email">Email</label>
                     <span className="red-text">{errors.email}</span>
                 </div>
@@ -81,6 +91,7 @@ class Reset extends React.Component {
                         <option value="" disabled selected>Choose your security question</option>
                         {SecurityQuestions.map(q => <option value={q}>{q}</option>)}
                     </select>
+                    <span className="red-text">{errors.question}</span>
                 </div>
 
                 {/* Answer */}
@@ -154,4 +165,12 @@ class Reset extends React.Component {
     }
 }
 
-export default Reset;
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+
+export default connect(
+    mapStateToProps,
+    { resetPassword }
+)(withRouter(Reset));

@@ -29,6 +29,7 @@ module.exports = function validateRegisterInput(data) {
     errors.password = "Password field is required";
   }
 
+  // Password confirmation checks
   if (Validator.isEmpty(data.password2)) {
     errors.password2 = "Confirm password field is required";
   }
@@ -41,10 +42,12 @@ module.exports = function validateRegisterInput(data) {
     errors.password2 = "Passwords must match";
   }
 
+  // security question checks
   if (Validator.isEmpty(data.question)) {
     errors.question = "Security question is required";
   }
 
+  // security question answer checks
   if (Validator.isEmpty(data.answer)) {
     errors.answer = "Answer to security question is required";
   }
