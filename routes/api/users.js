@@ -36,7 +36,8 @@ router.post("/register", (req, res) => {
         email: req.body.email,
         password: req.body.password,
         question: req.body.question,
-        answer: req.body.answer
+        answer: req.body.answer,
+        failed_login_attempts: 0
       });
 
       // Hash password before saving in database
@@ -59,7 +60,6 @@ router.post("/register", (req, res) => {
 // @access Public
 router.post("/login", (req, res) => {
     // Form validation
-  
     const { errors, isValid } = validateLoginInput(req.body);
   
     // Check validation
@@ -76,35 +76,50 @@ router.post("/login", (req, res) => {
       if (!user) {
         return res.status(404).json({ emailnotfound: "Email not found" });
       }
+
+      // Check if locked out
+      // 1000 = 1s
+      if (user.failed_login_attempts >= 3 && (Date.now() - user.failed_login_time) < 300000) {
+          return res.status(400).json({email: "Your account has been locked due to excessive consecutive failed logins. Please try again 5 mins later."})
+      }
   
       // Check password
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
-          // User matched
-          // Create JWT Payload
-          const payload = {
-            id: user.id,
-            name: user.name
-          };
-  
-          // Sign token
-          jwt.sign(
-            payload,
-            keys.secretOrKey,
-            {
-              expiresIn: 1800 // 30 min in seconds
-            },
-            (err, token) => {
-              res.json({
-                success: true,
-                token: "Bearer " + token
-              });
-            }
+            // if login successful, update failed_login_attempts to zero
+            user.failed_login_attempts = 0;
+            user.save()
+                .then(u => console.log("updated login_failed_attempts to zero"))
+                .catch(err => console.log(err));
+
+            // User matched
+            // Create JWT Payload
+            const payload = {
+                id: user.id,
+                name: user.name
+            };
+    
+            // Sign token
+            jwt.sign(
+                payload,
+                keys.secretOrKey,
+                {
+                    expiresIn: 1800 // 30 min in seconds
+                },
+                (err, token) => {
+                    res.json({
+                        success: true,
+                        token: "Bearer " + token
+                    });
+                }
           );
-        } else {
-          return res
-            .status(400)
-            .json({ passwordincorrect: "Password incorrect" });
+        } else { // password incorrect
+            const failed_login_attempts = user.failed_login_attempts + 1;
+            user.failed_login_attempts = failed_login_attempts;
+            user.failed_login_time = Date.now();
+            user.save().then().catch(err => console.log(err));
+
+            return res.status(400).json({passwordincorrect: "Password incorrect"});
         }
       });
     });

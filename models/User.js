@@ -23,6 +23,14 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  failed_login_attempts: {
+    type: Number,
+    required: false
+  },
+  failed_login_time: {
+      type: Date,
+      required: false
+  },
   date: {
     type: Date,
     default: Date.now

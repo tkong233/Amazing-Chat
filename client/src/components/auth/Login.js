@@ -98,12 +98,16 @@ class Login extends Component {
                   })}
                 />
                 <label htmlFor="password">Password</label>
-                <Link to="/reset">Forgot password?</Link>
                 <span className="red-text">
                   {errors.password}
                   {errors.passwordincorrect}
                 </span>
               </div>
+              
+              <div className="col s12">
+                <Link to="/reset">Forgot password?</Link>
+              </div>
+              
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
                   style={{
