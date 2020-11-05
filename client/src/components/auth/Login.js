@@ -55,7 +55,7 @@ class Login extends Component {
   };
 
   render() {
-    const { errors, location } = this.state;
+    const { errors } = this.state;
 
     return (
       <div className="container">
@@ -140,7 +140,7 @@ Login.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   auth: state.auth,
   errors: state.errors,
-  ownProps: ownProps
+  location: ownProps.location
 });
 
 export default connect(mapStateToProps, { loginUser })(Login);
