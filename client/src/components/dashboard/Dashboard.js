@@ -12,7 +12,7 @@ class Dashboard extends Component {
 
   render() {
     const { user } = this.props.auth;
-
+    // M.toast({html: 'Logged in successfully!'});
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
