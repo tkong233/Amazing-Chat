@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import { SecurityQuestions } from "./SecurityQuestions";
-// import ImageUploader from "react-images-upload";
 import classnames from "classnames";
 
 class Register extends Component {
@@ -39,12 +38,6 @@ class Register extends Component {
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
   };
-
-  // onDrop = (picture) => {
-  //   this.setState({
-  //     profile_picture: picture[0]
-  //   });
-  // }
 
   onSubmit = (e) => {
     e.preventDefault();

@@ -1,6 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+
 import {
   Avatar,
   Box,
@@ -10,77 +11,73 @@ import {
   CardContent,
   Divider,
   Typography,
-  makeStyles
-} from '@material-ui/core';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7'
-};
+  makeStyles,
+} from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
     height: 100,
-    width: 100
-  }
+    width: 100,
+  },
 }));
 
-const Profile = ({ className, ...rest }) => {
+const Profile = (props) => {
   const classes = useStyles();
+  const [image, setImage] = useState('');
+  
+  const { name, id, profile_picture } = props.auth.user;
+  useEffect(() => {
+    setImage(profile_picture);
+  });
+  
+  const onChange = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await axios.post(`/api/users/upload_profile_image/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const { filePath } = res.data;
+    console.log(filePath);
+    setImage(filePath);
+  };
+  
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card>
       <CardContent>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
-          <Avatar
-            className={classes.avatar}
-            src={user.avatar}
-          />
-          <br/>
-          <Typography
-            color="textPrimary"
-            gutterBottom
-            variant="h3"
-          >
-            {user.name}
+        <Box alignItems="center" display="flex" flexDirection="column">
+          <Avatar className={ classes.avatar } src={ image } alt=''/>
+          <br />
+          <Typography color="textPrimary" gutterBottom variant="h3">
+            {name}
           </Typography>
-          {/* <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            {`Registration Date: ${moment().format('hh:mm A')} ${user.timezone}`}
-          </Typography> */}
         </Box>
       </CardContent>
       <Divider />
+      {/* Update Profile picture */}
       <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Upload picture
-        </Button>
+        <Box display="flex" justifyContent="space-around" paddingLeft={10}>
+          <Button variant="contained" component="label">
+            Update your profile picture!
+            <input
+              type="file"
+              name="file"
+              style={{ display: "none" }}
+              onChange={onChange}
+            />
+          </Button>
+        </Box>
       </CardActions>
     </Card>
   );
 };
 
-Profile.propTypes = {
-  className: PropTypes.string
-};
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
 
-export default Profile;
+export default connect(mapStateToProps)(Profile);

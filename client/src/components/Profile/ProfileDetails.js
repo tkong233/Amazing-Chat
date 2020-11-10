@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   Box,
   Button,
@@ -23,15 +23,13 @@ const useStyles = makeStyles((theme) => ({
     theme.palette.background.paper,}
 }));
 
-const ProfileDetails = ({ className, ...rest }) => {
+const ProfileDetails = ( props ) => {
   const classes = useStyles();
-
+  const { date, email } = props.auth.user;
   return (
     <form
       autoComplete="off"
       noValidate
-      className={clsx(classes.root, className)}
-      {...rest}
     >
       <Card>
         <CardHeader
@@ -45,13 +43,13 @@ const ProfileDetails = ({ className, ...rest }) => {
           <ListItemIcon>
             <MailOutlineIcon />
           </ListItemIcon>
-          <ListItemText primary={`Email: `} />
+          <ListItemText primary={`Email: ${email}`} />
         </ListItem>
         <ListItem >
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
-          <ListItemText primary={`Registration date: `} />
+          <ListItemText primary={`Registration date: ${date.substring(0, 10)}`} />
         </ListItem>
       </div></ CardContent>
         <Divider />
@@ -60,12 +58,15 @@ const ProfileDetails = ({ className, ...rest }) => {
           justifyContent="space-between"
           p={2}
         >
+          <Link to='/reset'>
           <Button
             color="primary"
             variant="contained"
           >
             Change Password
           </Button>
+          </Link>
+
           <Button
             color="warning"
             variant="contained"
@@ -78,8 +79,10 @@ const ProfileDetails = ({ className, ...rest }) => {
   );
 };
 
-ProfileDetails.propTypes = {
-  className: PropTypes.string
-};
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
-export default ProfileDetails;
+export default connect(
+  mapStateToProps,
+)(ProfileDetails);
