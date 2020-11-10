@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
 const Validator = require("validator");
+const mongodb = require('mongodb');
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -167,5 +168,38 @@ router.post("/reset", (req, res) => {
     }
     });
   });
+
+// @route DELETE api/users/profile/:id
+// @desc Deactivate account
+// @access Public?
+router.delete("/profile/:id", (req, res)=>{
+  const params = req.params.id;
+  try{
+    User.deleteOne({_id: new mongodb.ObjectId(params)}).then(() =>{
+      return res.json({success:true})
+    })
+  }catch(err){
+    console.log(err);
+  }
+  
+})
+
+// @route GET api/users/profile/:id
+// @desc Get user info
+// @access Public?
+router.get("/profile/:id", (req, res)=>{
+  const params = req.params.id;
+  User.findOne({_id: new mongodb.ObjectId(params)}).then(user =>{
+    if (!user){
+      return res.status(404).json({usernotfound: "Can't find user profile"});
+    }
+    return res.json({
+      name: user.name,
+      emai: user.email,
+      profile_picture: user.profile_picture,
+      date: user.date
+    });
+  });
+});
 
 module.exports = router;

@@ -34,6 +34,10 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  profile_picture:{
+    type: String,
+    default: ""
   }
 });
 
