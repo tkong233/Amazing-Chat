@@ -2,7 +2,7 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, UPDATE_PICTURE } from "./types";
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -79,4 +79,17 @@ export const resetPassword = (userData, history) => dispatch => {
         payload: err.response.data
       })
     );
+}
+
+export const updatePicture = (formData, email) => dispatch=> {
+  axios.post(`/api/users/upload_profile_image/${email}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }).then(res => {
+    dispatch({
+      type: UPDATE_PICTURE,
+      payload: res.data.user
+    })
+  });
 }
