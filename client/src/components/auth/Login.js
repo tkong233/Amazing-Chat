@@ -24,7 +24,6 @@ class Login extends Component {
         pathname: "/dashboard"
       });
     }
-    console.log(this.props);
   }
 
   componentWillReceiveProps(nextProps) {

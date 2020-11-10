@@ -12,8 +12,12 @@ import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Reset from "./components/auth/Reset";
+import Profile from "./components/Profile";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
+
+import GlobalStyles from './components/global/GlobalStyles';
+import { ThemeProvider } from '@material-ui/core';
 
 import "./App.css";
 
@@ -39,6 +43,8 @@ if (localStorage.jwtToken) {
 class App extends Component {
   render() {
     return (
+      <ThemeProvider>
+      <GlobalStyles />
       <Provider store={store}>
         <Router>
           <div className="App">
@@ -49,10 +55,12 @@ class App extends Component {
             <Route exact path="/reset" component={Reset} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/profile" component={Profile} />
             </Switch>
           </div>
         </Router>
       </Provider>
+      </ThemeProvider>
     );
   }
 }

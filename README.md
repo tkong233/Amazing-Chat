@@ -10,3 +10,7 @@ npm run dev
 
 // Server runs on http://localhost:5000 and client on http://localhost:3000
 ```
+
+
+## Deployed to
+https://polar-beyond-38900.herokuapp.com
