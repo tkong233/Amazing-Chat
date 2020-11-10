@@ -38,7 +38,7 @@ module.exports = function validateRegisterInput(data) {
     errors.password = "Password must be at least 6 characters and at most 30 characters";
   }
 
-  if (!Validator.matches(data.password, '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/', 'i')){
+  if (!Validator.matches(data.password, /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/i)){
     errors.password = "Password must contain at least one uppercase, at least one lower case, and at least one special character"
   }
 
