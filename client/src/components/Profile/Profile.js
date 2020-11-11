@@ -28,7 +28,6 @@ const Profile = (props) => {
   
   const { name, email, profile_picture } = props.user;
   useEffect(() => {
-
     setImage(profile_picture);
   });
   

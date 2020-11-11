@@ -20,9 +20,7 @@ const User = require("../../models/User");
 // @access Public
 router.post("/register", (req, res) => {
   // Form validation
-
   const { errors, isValid } = validateRegisterInput(req.body);
-
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -225,16 +223,16 @@ router.post("/upload_profile_image/:email", (req, res) => {
 // @route DELETE api/users/profile/:id
 // @desc Deactivate account
 // @access Public?
-router.delete("/profile/:id", (req, res)=>{
-  const params = req.params.id;
+router.delete("/profile/:email", (req, res)=>{
+  const email = req.params.email;
   try{
-    User.deleteOne({_id: new mongodb.ObjectId(params)}).then(() =>{
+    User.deleteOne({ email: email}).then(() =>{
       return res.json({success:true})
     })
   }catch(err){
     console.log(err);
   }
-  
+
 })
 
 // @route GET api/users/profile/:id

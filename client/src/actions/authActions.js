@@ -2,7 +2,7 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, UPDATE_PICTURE } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, UPDATE_PICTURE, DELETE_ACCOUNT } from "./types";
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -92,4 +92,14 @@ export const updatePicture = (formData, email) => dispatch=> {
       payload: res.data.user
     })
   });
+}
+
+export const deleteAccount = (email) => dispatch =>{
+  axios
+  .delete(`/api/users/profile/${email}`)
+  .then(res => dispatch({
+    type: DELETE_ACCOUNT, 
+  }))
+  .catch(err => console.log(err))
+  
 }

@@ -49,6 +49,7 @@ class Register extends Component {
       question: this.state.question,
       answer: this.state.answer,
     };
+    console.log(this.props.history);
     this.props.registerUser(newUser, this.props.history);
   };
 
