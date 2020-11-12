@@ -23,7 +23,7 @@ describe('Test /register endpoint', () =>{
         .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
         .expect(200);
     });
-    test('Account already exists 2', ()=>{
+    test('Account already exists', ()=>{
         return request(app).post('/api/users/register')
         .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
         .expect(400)
@@ -34,6 +34,14 @@ describe('Test /register endpoint', () =>{
 });
 
 describe('Test /login endpoint', () =>{
+    test('request body not valid', ()=>{
+        return request(app).post('/api/users/login')
+        .send('email=test@test.com')
+        .expect(400)
+        .then(response => {
+            expect(JSON.stringify(response.text)).toMatch("\"{\\\"password\\\":\\\"Password field is required\\\"}\"");
+            });
+    });
     test('Email not exist', ()=>{
         return request(app).post('/api/users/login')
         .send('email=abcdefg@test.com&password=Test1234567.')
@@ -50,5 +58,20 @@ describe('Test /reset endpoint', () =>{
         .send('email=abcdefg@test.com&password=Test1234567.')
         .expect(400);
     });
+    test('email not registered', ()=>{
+        return request(app).post('/api/users/reset')
+        .send('email=abcdefg@test.com&password=Test1234567.&password2=Test1234567.&question=Color?&answer=Blue')
+        .expect(400);
+    });
+    test('security question not match', ()=>{
+        return request(app).post('/api/users/reset')
+        .send('email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Animal?&answer=Blue')
+        .expect(400);
+    });
+    test('security question answer not match', ()=>{
+        return request(app).post('/api/users/reset')
+        .send('email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Black')
+        .expect(400);
+    })
 });
 
