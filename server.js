@@ -7,7 +7,9 @@ const users = require("./routes/api/users");
 const fileUpload = require('express-fileupload');
 
 const app = express();
-// const config = require('config'); //we load the db location from the JSON files
+
+const cors = require('cors');
+app.use(cors());
 
 app.use(fileUpload());
 
@@ -22,13 +24,12 @@ app.use(bodyParser.json());
 const db = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
-mongoose
-  .connect(
-    db,
+mongoose.connect(db,
     { useNewUrlParser: true }
-  )
+)
   .then(() => console.log("MongoDB successfully connected"))
   .catch(err => console.log(err));
+
 
 // Passport middleware
 app.use(passport.initialize());
