@@ -7,6 +7,7 @@ const users = require("./routes/api/users");
 const fileUpload = require('express-fileupload');
 
 const app = express();
+// const config = require('config'); //we load the db location from the JSON files
 
 app.use(fileUpload());
 
@@ -18,7 +19,6 @@ app.use(
 );
 app.use(bodyParser.json());
 
-// DB Config
 const db = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
@@ -39,6 +39,11 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 
+// Root endpoint
+app.get('/', (_req, res) => {
+  res.json({ message: 'Welcome to our chat app' });
+});
+
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
@@ -54,3 +59,6 @@ if (process.env.NODE_ENV === 'production') {
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+
+
+module.exports = app; // for testing
