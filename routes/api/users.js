@@ -20,9 +20,7 @@ const User = require("../../models/User");
 // @access Public
 router.post("/register", (req, res) => {
   // Form validation
-
   const { errors, isValid } = validateRegisterInput(req.body);
-
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -192,11 +190,13 @@ router.post("/reset", (req, res) => {
   });
 });
 
-router.post("/upload_profile_image/:id", (req, res) => {
+
+
+router.post("/upload_profile_image/:email", (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
-  const id = req.params.id;
+  const email = req.params.email;
 
   const file = req.files.file;
   file.mv(`${__dirname}/../../client/public/uploads/${file.name}`, (err) => {
@@ -205,7 +205,7 @@ router.post("/upload_profile_image/:id", (req, res) => {
       return res.status(500).send(err);
     }
 
-    User.findOne({_id: new mongodb.ObjectId(id)}).then(user =>{
+    User.findOne({ email: email }).then(user =>{
       if (!user){
         return res.status(404).json({usernotfound: "Can't find user profile"});
       }
@@ -214,24 +214,25 @@ router.post("/upload_profile_image/:id", (req, res) => {
           .save()
           .then(() => console.log("updated user profile picture path"))
           .catch((err) => console.log(err));
+      res.json({ user: user });
     });
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+    
   });
 });
 
 // @route DELETE api/users/profile/:id
 // @desc Deactivate account
 // @access Public?
-router.delete("/profile/:id", (req, res)=>{
-  const params = req.params.id;
+router.delete("/profile/:email", (req, res)=>{
+  const email = req.params.email;
   try{
-    User.deleteOne({_id: new mongodb.ObjectId(params)}).then(() =>{
+    User.deleteOne({ email: email}).then(() =>{
       return res.json({success:true})
     })
   }catch(err){
     console.log(err);
   }
-  
+
 })
 
 // @route GET api/users/profile/:id

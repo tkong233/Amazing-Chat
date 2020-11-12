@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
+import { updatePicture } from "../../actions/authActions";
 
 import {
   Avatar,
@@ -26,26 +26,19 @@ const Profile = (props) => {
   const classes = useStyles();
   const [image, setImage] = useState('');
   
-  const { name, id, profile_picture } = props.auth.user;
+  const { name, email, profile_picture } = props.user;
   useEffect(() => {
     setImage(profile_picture);
   });
   
   const onChange = async (e) => {
+    e.preventDefault();
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("file", file);
-    const res = await axios.post(`/api/users/upload_profile_image/${id}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    const { filePath } = res.data;
-    console.log(filePath);
-    setImage(filePath);
+    await props.updatePicture(formData, email);
   };
   
-
   return (
     <Card>
       <CardContent>
@@ -77,7 +70,7 @@ const Profile = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, { updatePicture })(Profile);

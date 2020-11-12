@@ -4,8 +4,9 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 
 import { setCurrentUser, logoutUser } from "./actions/authActions";
+import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from "react-redux";
-import store from "./store";
+import {store, persistor} from "./store";
 
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
@@ -46,6 +47,7 @@ class App extends Component {
       <ThemeProvider>
       <GlobalStyles />
       <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <Router>
           <div className="App">
             <Navbar />
@@ -53,12 +55,14 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/reset" component={Reset} />
+            {/* <Route exact path="/profile" component={Profile} /> */}
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/profile" component={Profile} />
             </Switch>
           </div>
         </Router>
+        </PersistGate>
       </Provider>
       </ThemeProvider>
     );

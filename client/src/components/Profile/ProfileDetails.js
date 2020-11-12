@@ -11,12 +11,16 @@ import {
   makeStyles
 } from '@material-ui/core';
 
+import { useHistory } from "react-router";
+
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import EventIcon from '@material-ui/icons/Event';
+import { deleteAccount, logoutUser } from "../../actions/authActions";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {backgroundColor: 
@@ -25,7 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileDetails = ( props ) => {
   const classes = useStyles();
+  const history = useHistory();
   const { date, email } = props.auth.user;
+  const onDelete = (e) => {
+    e.preventDefault();
+    props.deleteAccount(email);
+    props.logoutUser();
+    history.push("/login");
+  }
   return (
     <form
       autoComplete="off"
@@ -70,6 +81,7 @@ const ProfileDetails = ( props ) => {
           <Button
             color="warning"
             variant="contained"
+            onClick={onDelete}
           >
             Deactivate the account
           </Button>
@@ -85,4 +97,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
+  { deleteAccount, logoutUser }
 )(ProfileDetails);
