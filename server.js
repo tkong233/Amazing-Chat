@@ -41,7 +41,7 @@ require("./config/passport")(passport);
 app.use("/api/users", users);
 
 // Root endpoint
-app.get('/', (_req, res) => {
+app.get('/message', (_req, res) => {
   res.json({ message: 'Welcome to our chat app' });
 });
 
