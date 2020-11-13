@@ -3,9 +3,16 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require('path');
+const cors = require('cors');
+
 const users = require("./routes/api/users");
+const chat = require('./routes/chat');
 
 const app = express();
+app.use(cors());
+
+// create http server to initialize socketio
+const server = require('http').createServer(app);
 
 // Bodyparser middleware
 app.use(
@@ -14,6 +21,13 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
 
 // DB Config
 const db = require("./config/keys").mongoURI;
@@ -36,6 +50,35 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 
+// socket.io
+const socketio = require('socket.io');
+const io = socketio(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["*"],
+      credentials: true
+    }
+});
+
+io.on('connect', (socket) => {
+  console.log('we have a new connection!');
+
+  socket.on('join', ({name, room}) => {
+    console.log('join: ' + name, room);
+    socket.join(room);
+  });
+
+  socket.on('sendMessage', ({message, room, username}) => {
+    console.log('received message: ' + message + ' to room: ' + room);
+    io.to(room).emit('receiveMessage', {text: message, user: username});
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user had left!');
+  });
+});
+
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
@@ -47,7 +90,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+server.listen(port, () => console.log(`Server up and running on port ${port} !`));
+
+module.exports = server;

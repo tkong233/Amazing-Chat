@@ -14,6 +14,7 @@ import Login from "./components/auth/Login";
 import Reset from "./components/auth/Reset";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
+import Chat from "./components/chat/Chat";
 
 import "./App.css";
 
@@ -36,6 +37,7 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
+
 class App extends Component {
   render() {
     return (
@@ -47,6 +49,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/reset" component={Reset} />
+            <Route exact path="/chat" component={Chat}/>
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>
