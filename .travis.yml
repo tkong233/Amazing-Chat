@@ -13,4 +13,4 @@ install:
 script:
   - jest users.test.js --coverage --forceExit
   - cd client
-  - npm test --coverage --exit
+  - npm test

@@ -16,8 +16,6 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
     "concurrently": "^4.0.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
@@ -26,9 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "jest": "^26.6.3",
     "materialize-css": "^1.0.0-rc.2",
-    "mocha": "^8.2.1",
     "mongoose": "^5.3.11",
-    "nyc": "^15.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "react-alert": "^7.0.2",
