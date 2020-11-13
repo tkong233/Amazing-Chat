@@ -31,7 +31,7 @@ const persistor = persistStore(store);
 export {
   store,
   persistor,
-
+  middleware
 };
 
 

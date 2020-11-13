@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Register Component Renders Should render without errors 1`] = `ShallowWrapper {}`;
+
+exports[`Register Component Renders Snapshot testing 1`] = `ShallowWrapper {}`;
