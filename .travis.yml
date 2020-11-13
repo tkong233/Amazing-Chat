@@ -1,4 +1,6 @@
 language: node_js
+node_js:
+  - 12.18.3
 install:
   - npm install && npm run client-install
   - nvm install node
