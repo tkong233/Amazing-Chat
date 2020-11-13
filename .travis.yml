@@ -11,6 +11,6 @@ install:
   - npm install jest --global
   - npm i jest-fetch-mock
 script:
-  - jest
+  - jest users.test.js --coverage --forceExit
   - cd client
-  - npm test
+  - npm test --coverage --exit
