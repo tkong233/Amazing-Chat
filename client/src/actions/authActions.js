@@ -2,13 +2,15 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, UPDATE_PICTURE, DELETE_ACCOUNT } from "./types";
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/api/users/register", userData)
-    .then(res => history.push("/login"))
+    .then(res => history.push({    
+        pathname: "/login",
+        state: true}))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -77,4 +79,27 @@ export const resetPassword = (userData, history) => dispatch => {
         payload: err.response.data
       })
     );
+}
+
+export const updatePicture = (formData, email) => dispatch=> {
+  axios.post(`/api/users/upload_profile_image/${email}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }).then(res => {
+    dispatch({
+      type: UPDATE_PICTURE,
+      payload: res.data.user
+    })
+  });
+}
+
+export const deleteAccount = (email) => dispatch =>{
+  axios
+  .delete(`/api/users/profile/${email}`)
+  .then(res => dispatch({
+    type: DELETE_ACCOUNT, 
+  }))
+  .catch(err => console.log(err))
+  
 }

@@ -19,16 +19,27 @@
     "concurrently": "^4.0.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "express-fileupload": "^1.2.0",
     "is-empty": "^1.2.0",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "jest": "^26.6.3",
+    "materialize-css": "^1.0.0-rc.2",
     "mongoose": "^5.3.11",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+<<<<<<< HEAD
     "socket.io": "^3.0.1",
     "socket.io-client": "^3.0.1",
+=======
+    "react-alert": "^7.0.2",
+    "supertest": "^6.0.1",
+>>>>>>> 50598fc656590d8f626d921700b0bfdaa851d52d
     "validator": "^10.9.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

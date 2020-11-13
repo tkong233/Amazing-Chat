@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import { Button } from '@material-ui/core';
+
 class Landing extends Component {
   render() {
     return (
@@ -36,7 +38,7 @@ class Landing extends Component {
                   borderRadius: "3px",
                   letterSpacing: "1.5px"
                 }}
-                className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                className="btn btn-large waves-effect waves-light hoverable indigo darken-3"
               >
                 Log In
               </Link>

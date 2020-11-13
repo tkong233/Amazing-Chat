@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "12"
+before_install:
+  - npm i -g npm@6.14.6
+install:
+  - npm install && npm run client-install
+  - nvm install node
+  - node -v
+  - npm i -g yarn
+  - npm install jest --global
+  - npm i jest-fetch-mock
+script:
+  - jest users.test.js --coverage --forceExit
+  - cd client
+  - npm test

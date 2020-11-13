@@ -16,7 +16,7 @@ class Register extends Component {
       password2: "",
       question: "",
       answer: "",
-      errors: {}
+      errors: {},
     };
   }
 
@@ -30,27 +30,26 @@ class Register extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({
-        errors: nextProps.errors
+        errors: nextProps.errors,
       });
     }
   }
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
-
     const newUser = {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2,
       question: this.state.question,
-      answer: this.state.answer
+      answer: this.state.answer,
     };
-
+    console.log(this.props.history);
     this.props.registerUser(newUser, this.props.history);
   };
 
@@ -84,7 +83,7 @@ class Register extends Component {
                   id="name"
                   type="text"
                   className={classnames("", {
-                    invalid: errors.name
+                    invalid: errors.name,
                   })}
                 />
                 <label htmlFor="name">Name</label>
@@ -100,7 +99,7 @@ class Register extends Component {
                   id="email"
                   type="email"
                   className={classnames("", {
-                    invalid: errors.email
+                    invalid: errors.email,
                   })}
                 />
                 <label htmlFor="email">Email</label>
@@ -116,7 +115,7 @@ class Register extends Component {
                   id="password"
                   type="password"
                   className={classnames("", {
-                    invalid: errors.password
+                    invalid: errors.password,
                   })}
                 />
                 <label htmlFor="password">Password</label>
@@ -132,7 +131,7 @@ class Register extends Component {
                   id="password2"
                   type="password"
                   className={classnames("", {
-                    invalid: errors.password2
+                    invalid: errors.password2,
                   })}
                 />
                 <label htmlFor="password2">Confirm Password</label>
@@ -141,32 +140,48 @@ class Register extends Component {
 
               {/* Security Question */}
               <div className="input-field col s12">
-                    <select
-                    onChange={this.onChange}
-                    value={this.state.question}
-                    error={errors.question}
-                    id="question"
-                    >
-                        <option value="" disabled selected>Choose your security question</option>
-                        {SecurityQuestions.map(q => <option value={q}>{q}</option>)}
-                    </select>
-                </div>
+                <select
+                  onChange={this.onChange}
+                  value={this.state.question}
+                  error={errors.question}
+                  id="question"
+                >
+                  <option value="" disabled selected>
+                    Choose your security question
+                  </option>
+                  {SecurityQuestions.map((q) => (
+                    <option value={q}>{q}</option>
+                  ))}
+                </select>
+              </div>
 
-                {/* Answer */}
-                <div className="input-field col s12">
-                    <input
-                    onChange={this.onChange}
-                    value={this.state.answer}
-                    error={errors.answer}
-                    id="answer"
-                    type="text"
-                    className={classnames("", {
-                        invalid: errors.answer
-                    })}
-                    />
-                    <label htmlFor="password">Answer</label>
-                    <span className="red-text">{errors.answer}</span>
-                </div>
+              {/* Answer */}
+              <div className="input-field col s12">
+                <input
+                  onChange={this.onChange}
+                  value={this.state.answer}
+                  error={errors.answer}
+                  id="answer"
+                  type="text"
+                  className={classnames("", {
+                    invalid: errors.answer,
+                  })}
+                />
+                <label htmlFor="password">Answer</label>
+                <span className="red-text">{errors.answer}</span>
+              </div>
+              
+              {/* Profile picture */}
+              {/* <div className="col s12">
+                <ImageUploader
+                  withIcon={true}
+                  withPreview={true}
+                  buttonText="Choose your profile picture"
+                  onChange={this.onDrop}
+                  imgExtension={[".jpg", ".png", ".gif"]}
+                  maxFileSize={5242880}
+                />
+              </div> */}
 
               {/* Sign Up Button */}
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
@@ -175,7 +190,7 @@ class Register extends Component {
                     width: "150px",
                     borderRadius: "3px",
                     letterSpacing: "1.5px",
-                    marginTop: "1rem"
+                    marginTop: "1rem",
                   }}
                   type="submit"
                   className="btn btn-large waves-effect waves-light hoverable blue accent-3"
@@ -194,15 +209,12 @@ class Register extends Component {
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
 });
 
-export default connect(
-  mapStateToProps,
-  { registerUser }
-)(withRouter(Register));
+export default connect(mapStateToProps, { registerUser })(withRouter(Register));

@@ -7,12 +7,18 @@ const cors = require('cors');
 
 const users = require("./routes/api/users");
 const chat = require('./routes/chat');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 app.use(cors());
 
 // create http server to initialize socketio
 const server = require('http').createServer(app);
+
+const cors = require('cors');
+app.use(cors());
+
+app.use(fileUpload());
 
 // Bodyparser middleware
 app.use(
@@ -33,13 +39,12 @@ app.use((req, res, next) => {
 const db = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
-mongoose
-  .connect(
-    db,
+mongoose.connect(db,
     { useNewUrlParser: true }
-  )
+)
   .then(() => console.log("MongoDB successfully connected"))
   .catch(err => console.log(err));
+
 
 // Passport middleware
 app.use(passport.initialize());
@@ -77,6 +82,11 @@ io.on('connect', (socket) => {
   socket.on('disconnect', () => {
     console.log('user had left!');
   });
+});
+
+// Root endpoint
+app.get('/message', (_req, res) => {
+  res.json({ message: 'Welcome to our chat app' });
 });
 
 // Serve static assets if in production
