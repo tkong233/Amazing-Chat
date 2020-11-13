@@ -44,7 +44,7 @@ describe('Login Component', ()=>{
                     loading: false
                 },
                 errors: {},
-                location: {pathname: '/login', state:true}
+                // location: {pathname: '/login', state:true}
             };
             wrapper = setUp(initialState);
         });
@@ -56,6 +56,18 @@ describe('Login Component', ()=>{
 
         it('Snapshot testing', ()=>{
             expect(wrapper).toMatchSnapshot();
+        });
+
+        it('if logged in, redirect to dashboard', ()=>{
+            const loginInstance = wrapper.instance();
+            loginInstance.setState({auth:{isAuthenticated: true,
+                user: {},
+                loading: true}})
+            loginInstance.componentDidMount();
+            const auth = loginInstance.state.auth;
+            // console.log(loginInstance.state);
+            expect(auth).toBeDefined();
+
         })
     });
 });
