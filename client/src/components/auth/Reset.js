@@ -51,12 +51,12 @@ class Reset extends React.Component {
         return (
         <div className="container">
         <div className="row">
-            <div className="col s8 offset-s2">
+            <div className="col s6 offset-s2">
                 <Link to="/" className="btn-flat waves-effect">
                 <i className="material-icons left">keyboard_backspace</i> Back to
                 home
                 </Link>
-                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+                <div className="col s6" style={{ paddingLeft: "11.250px" }}>
                 <h4>
                     <b>Reset Password</b> below
                 </h4>
@@ -64,7 +64,7 @@ class Reset extends React.Component {
 
                 {/* Email */}
                 <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s12">
+                <div className="input-field col s6">
                     <input
                     onChange={this.onChange}
                     value={this.state.email}

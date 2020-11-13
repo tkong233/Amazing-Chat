@@ -15,9 +15,6 @@ app.use(cors());
 // create http server to initialize socketio
 const server = require('http').createServer(app);
 
-const cors = require('cors');
-app.use(cors());
-
 app.use(fileUpload());
 
 // Bodyparser middleware
