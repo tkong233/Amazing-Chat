@@ -18,7 +18,6 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 
 import GlobalStyles from './components/global/GlobalStyles';
-import { ThemeProvider } from '@material-ui/core';
 
 import "./App.css";
 
@@ -44,7 +43,7 @@ if (localStorage.jwtToken) {
 class App extends Component {
   render() {
     return (
-      <ThemeProvider>
+      <div>
       <GlobalStyles />
       <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -64,7 +63,7 @@ class App extends Component {
         </Router>
         </PersistGate>
       </Provider>
-      </ThemeProvider>
+      </div>
     );
   }
 }
