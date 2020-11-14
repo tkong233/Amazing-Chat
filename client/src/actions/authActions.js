@@ -11,11 +11,12 @@ export const registerUser = (userData, history) => dispatch => {
     .then(res => history.push({    
         pathname: "/login",
         state: true}))
-    .catch(err =>
+    .catch(err => {
+      // console.log(err.response.data);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
+      })}
     );
 };
 

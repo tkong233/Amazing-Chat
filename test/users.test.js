@@ -18,11 +18,11 @@ describe('Test /register endpoint', () =>{
             expect(JSON.stringify(response.text)).toMatch("\"{\\\"answer\\\":\\\"Answer to security question is required\\\"}\"");
             });
     });
-    test('Successfully register', ()=>{
-        return request(app).post('/api/users/register')
-        .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
-        .expect(200);
-    });
+    // test('Successfully register', ()=>{
+    //     return request(app).post('/api/users/register')
+    //     .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
+    //     .expect(200);
+    // });
     test('Account already exists', ()=>{
         return request(app).post('/api/users/register')
         .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
@@ -74,4 +74,11 @@ describe('Test /reset endpoint', () =>{
         .expect(400);
     })
 });
+
+// describe('Test DELETE api/users/profile/:id', ()=>{
+//     test('user deleted', ()=>{
+//         return request(app).delete('/api/users/profile/:id')
+//         .expect(200);
+//     })
+// })
 

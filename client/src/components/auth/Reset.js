@@ -49,7 +49,7 @@ class Reset extends React.Component {
         const { errors } = this.state;
 
         return (
-        <div className="container">
+        <div className="container" data-test="resetComponent">
         <div className="row">
             <div className="col s6 offset-s2">
                 <Link to="/" className="btn-flat waves-effect">
@@ -173,4 +173,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { resetPassword }
-)(withRouter(Reset));
+)(Reset);
