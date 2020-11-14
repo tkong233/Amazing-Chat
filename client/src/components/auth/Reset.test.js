@@ -21,17 +21,6 @@ const setUp = (initialState={}) =>{
 }
 
 describe('Reset Component', ()=>{
-    // describe('Checking PropTypes', ()=>{
-    //     it('Should not throw a warning', ()=>{
-    //         const expectedProps = {
-    //             loginUser: ()=>{},
-    //             auth: {},
-    //             errors: {}
-    //         }
-    //         const propsErr = checkPropTypes(Login.propTypes, expectedProps, 'props', Login.name);
-    //         expect(propsErr).toBeUndefined();
-    //     })
-    // });
     describe('Renders', ()=>{
         let wrapper;
         beforeEach(()=>{
@@ -53,6 +42,27 @@ describe('Reset Component', ()=>{
 
         it('Snapshot testing', ()=>{
             expect(wrapper).toMatchSnapshot();
-        })
+        });
+
+        it ('Update error props', ()=>{
+            const classInstance = wrapper.instance();
+            const nextProps = {
+                auth: {},
+                errors: {password: "password not match"}
+            }
+            classInstance.componentWillReceiveProps(nextProps);
+            expect(classInstance.state.errors).toStrictEqual({password: "password not match"});
+        });
+
+        it('OnChange and Submit event', ()=>{
+            const value = 'abcde@g.com';
+            wrapper.find('input').at(0).simulate('change', {
+                target: {value}
+            });
+            wrapper.find('button').simulate('submit',{
+                preventDefault: () => {}
+            });
+            expect(wrapper.state('email')).toStrictEqual('');
+        });
     });
 });

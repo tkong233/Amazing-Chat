@@ -14,9 +14,16 @@ Enzyme.configure({
 });
 
 const setUp = (initialState={}) =>{
+    // const props = {
+    //     location: {state: true},
+    //     history: {push: jest.fn()}
+    // };
+    const location = {state: true};
+    const history = {push: jest.fn()}
     const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    const wrapper = shallow(<Login store={store} />).dive();
+    // const wrapper = shallow(<Login store={store} {...props} />).dive();
+    const wrapper = shallow(<Login store={store} location={location} history={history} />).dive();
     // console.log(wrapper.debug());
     return wrapper;
 }
@@ -39,12 +46,11 @@ describe('Login Component', ()=>{
         beforeEach(()=>{
             const initialState = {
                 auth: {
-                    isAuthenticated: false,
+                    isAuthenticated: true,
                     user: {},
                     loading: false
                 },
                 errors: {},
-                // location: {pathname: '/login', state:true}
             };
             wrapper = setUp(initialState);
         });
@@ -58,16 +64,27 @@ describe('Login Component', ()=>{
             expect(wrapper).toMatchSnapshot();
         });
 
-        it('if logged in, redirect to dashboard', ()=>{
-            const loginInstance = wrapper.instance();
-            loginInstance.setState({auth:{isAuthenticated: true,
-                user: {},
-                loading: true}})
-            loginInstance.componentDidMount();
-            const auth = loginInstance.state.auth;
-            // console.log(loginInstance.state);
-            expect(auth).toBeDefined();
-
+        it('redirect', ()=>{
+            const classInstance = wrapper.instance();
+            classInstance.setState({auth: {
+                isAuthenticated: true,
+                user: {name: 'abc'},
+                loading: false
+              }})
+            classInstance.componentDidMount();
+            expect(classInstance.state.auth.isAuthenticated).toBe(true);
         })
+
+        it('OnChange and Submit event', ()=>{
+            const value = 'abcde@g.com';
+            wrapper.find('input').at(0).simulate('change', {
+                target: {value}
+            });
+            wrapper.find('form').simulate('submit',{
+                preventDefault: () => {}
+            });
+            expect(wrapper.state('email')).toStrictEqual('');
+        });
+
     });
 });

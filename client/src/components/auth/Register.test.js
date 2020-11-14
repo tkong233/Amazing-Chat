@@ -55,6 +55,39 @@ describe('Register Component', ()=>{
 
         it('Snapshot testing', ()=>{
             expect(wrapper).toMatchSnapshot();
-        })
+        });
+
+        it('Redirect to dashboard if already authenticated', ()=>{
+            const classInstance = wrapper.instance();
+            classInstance.setState({auth: {
+                isAuthenticated: true,
+                user: {name: 'abc'},
+                loading: false
+              }})
+            classInstance.componentDidMount();
+            expect(classInstance.state.auth.isAuthenticated).toBe(true);
+
+        });
+
+        it ('Update error props', ()=>{
+            const classInstance = wrapper.instance();
+            const nextProps = {
+                auth: {},
+                errors: {password: "password not match"}
+            }
+            classInstance.componentWillReceiveProps(nextProps);
+            expect(classInstance.state.errors).toStrictEqual({password: "password not match"});
+        });
+
+        it('OnChange and Submit event', ()=>{
+            const value = 'abcde';
+            wrapper.find('input').at(0).simulate('change', {
+                target: {value}
+            });
+            wrapper.find('button').simulate('submit',{
+                preventDefault: () => {}
+            });
+            expect(wrapper.state('email')).toStrictEqual('');
+        });
     });
 });
