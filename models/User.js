@@ -28,8 +28,8 @@ const UserSchema = new Schema({
     required: false
   },
   failed_login_time: {
-      type: Date,
-      required: false
+    type: Date,
+    required: false
   },
   date: {
     type: Date,

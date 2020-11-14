@@ -16,9 +16,9 @@ import Reset from "./components/auth/Reset";
 import Profile from "./components/Profile";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
+import Chat from "./components/chat/Chat";
 
 import GlobalStyles from './components/global/GlobalStyles';
-// import { ThemeProvider } from '@material-ui/core';
 
 import "./App.css";
 
@@ -41,6 +41,7 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
+
 class App extends Component {
   render() {
     return (
@@ -55,6 +56,7 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/reset" component={Reset} />
+            <Route exact path="/chat" component={Chat}/>
             {/* <Route exact path="/profile" component={Profile} /> */}
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />

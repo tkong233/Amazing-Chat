@@ -3,7 +3,7 @@ const request = require('supertest');
 
 describe('Test root endpoint', () => {
     test('root endpoint response type and content', async () => {
-        return request(app).get('/').expect(200).then(response => {
+        return request(app).get('/message').expect(200).then(response => {
             expect(JSON.stringify(response.text)).toMatch(/Welcome to our chat app/);
         });
     });
