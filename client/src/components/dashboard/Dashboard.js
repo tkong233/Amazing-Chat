@@ -21,7 +21,7 @@ class Dashboard extends Component {
               <b>Hey there,</b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
                 You are logged into {" "}
-                <span style={{ fontFamily: "monospace" }}>CIS557 Project</span> 👏
+                <span style={{ fontWeight: "bold" }}>Amazing Chat</span> 👏
               </p>
             </h4>
 
@@ -34,7 +34,7 @@ class Dashboard extends Component {
                 marginTop: "1rem"
               }}
               onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+              className="btn waves-effect waves-light hoverable blue-grey darken-2"
             >
               Logout
             </button>
