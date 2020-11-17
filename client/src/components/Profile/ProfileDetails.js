@@ -71,7 +71,7 @@ const ProfileDetails = ( props ) => {
         >
           <Link to='/reset'>
           <Button
-            color="primary"
+            style={{color: 'white', backgroundColor: '#455a64'}}
             variant="contained"
           >
             Change Password
