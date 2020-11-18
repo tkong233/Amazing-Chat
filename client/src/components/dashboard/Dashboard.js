@@ -13,7 +13,7 @@ class Dashboard extends Component {
   render() {
     const { user } = this.props.auth;
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
+      <div style={{ height: "75vh" }} className="container valign-wrapper" data-test = "DashboardComponent"> 
         {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
         <div className="row">
           <div className="landing-copy col s12 center-align">

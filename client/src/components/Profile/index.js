@@ -24,6 +24,7 @@ const Account = () => {
     <Page
       className={classes.root}
       title="Account"
+      data-test = "indexComponent"
     >
       <Container maxWidth="md" id="aaa" style={{marginTop: '10rem'}}>
         <Grid
