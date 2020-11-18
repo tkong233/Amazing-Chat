@@ -64,7 +64,7 @@ class Reset extends React.Component {
 
                 {/* Email */}
                 <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s6">
+                <div className="input-field col s12">
                     <input
                     onChange={this.onChange}
                     value={this.state.email}
