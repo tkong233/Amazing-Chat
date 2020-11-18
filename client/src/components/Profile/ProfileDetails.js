@@ -42,7 +42,7 @@ const ProfileDetails = ( props ) => {
       autoComplete="off"
       noValidate
     >
-      <Card>
+      <Card data-test = "ProfileDetailsComponent">
         <CardHeader
           subheader="View your profile here"
           title="Profile"
