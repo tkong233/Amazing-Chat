@@ -85,7 +85,8 @@ describe('Test /reset endpoint', () =>{
 
 describe('Test upload picture',()=>{
     test('Successfully upload profile picture', async ()=>{
-        const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
+        // const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
+        const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`
         const email = 'test2@test2.com';
         return request(app).post(`/api/users/upload_profile_image/${email}/`)
         // .set('Authorization', `Bearer ${process.env.testUserJWT}`)
