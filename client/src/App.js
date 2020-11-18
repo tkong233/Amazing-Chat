@@ -17,6 +17,7 @@ import Profile from "./components/Profile";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import Chat from "./components/chat/Chat";
+import ViewStatus from "./components/user_status/ViewStatus";
 
 import GlobalStyles from './components/global/GlobalStyles';
 
@@ -56,11 +57,13 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/reset" component={Reset} />
-            <Route exact path="/chat" component={Chat}/>
+            {/* <Route exact path="/chat" component={Chat}/> */}
             {/* <Route exact path="/profile" component={Profile} /> */}
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/chat" component={Chat} />
               <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/status" component={ViewStatus} />
             </Switch>
           </div>
         </Router>

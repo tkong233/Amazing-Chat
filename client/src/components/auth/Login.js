@@ -57,7 +57,7 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="container">
+      <div className="container" data-test="loginComponent">
         { this.props.location.state && <Alert severity="success">You have been successfully registered!</Alert>}
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="col s8 offset-s2">
@@ -65,7 +65,7 @@ class Login extends Component {
               <i className="material-icons left">keyboard_backspace</i> Back to
               home
             </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+            <div className="col s12 blue-grey-text text-darken-2" style={{ paddingLeft: "11.250px" }}>
               <h4>
                 <b>Login</b> below
               </h4>
@@ -122,7 +122,7 @@ class Login extends Component {
                     marginTop: "1rem",
                   }}
                   type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                  className="btn waves-effect waves-light hoverable blue-grey darken-1"
                 >
                   Login
                 </button>
@@ -141,10 +141,11 @@ Login.propTypes = {
   errors: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
+// const mapStateToProps = (state, ownProps) => ({
   auth: state.auth,
   errors: state.errors,
-  location: ownProps.location
+  // location: ownProps.location
 });
 
 export default connect(mapStateToProps, { loginUser })(Login);

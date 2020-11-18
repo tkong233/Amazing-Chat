@@ -86,7 +86,7 @@ class Chat extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <div>
+      <div style={{marginTop: '50px'}}>
         {/* for testing only */}
         {this.state.joined ? null :
           <Join
