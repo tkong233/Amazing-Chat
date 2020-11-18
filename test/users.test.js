@@ -9,6 +9,14 @@ describe('Test root endpoint', () => {
     });
 });
 
+describe('Test DELETE api/users/profile/:email', ()=>{
+    test('user deleted', ()=>{
+        const email = 'test2@test2.com';
+        return request(app).delete(`/api/users/profile/${email}/`)
+        .expect(200);
+    });
+}); 
+
 describe('Test /register endpoint', () =>{
     test('Fail to register missing request body', ()=>{
         return request(app).post('/api/users/register')
@@ -18,11 +26,11 @@ describe('Test /register endpoint', () =>{
             expect(JSON.stringify(response.text)).toMatch("\"{\\\"answer\\\":\\\"Answer to security question is required\\\"}\"");
             });
     });
-    // test('Successfully register', ()=>{
-    //     return request(app).post('/api/users/register')
-    //     .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
-    //     .expect(200);
-    // });
+    test('Successfully register', ()=>{
+        return request(app).post('/api/users/register')
+        .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
+        .expect(200);
+    });
     test('Account already exists', ()=>{
         return request(app).post('/api/users/register')
         .send('name=testusr2&email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Yellow')
@@ -72,13 +80,34 @@ describe('Test /reset endpoint', () =>{
         return request(app).post('/api/users/reset')
         .send('email=test2@test2.com&password=Test1234567!&password2=Test1234567!&question=Color?&answer=Black')
         .expect(400);
-    })
+    });
 });
 
-// describe('Test DELETE api/users/profile/:id', ()=>{
-//     test('user deleted', ()=>{
-//         return request(app).delete('/api/users/profile/:id')
-//         .expect(200);
-//     })
-// })
+describe('Test upload picture',()=>{
+    test('Successfully upload profile picture', async ()=>{
+        const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
+        const email = 'test2@test2.com';
+        return request(app).post(`/api/users/upload_profile_image/${email}/`)
+        // .set('Authorization', `Bearer ${process.env.testUserJWT}`)
+        .attach('file', testImage)
+        .expect(200)
+    });
+
+    test('cannot find user profile when uploading', async ()=>{
+        const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
+        const email = 'tgafkb2@test2.com';
+        return request(app).post(`/api/users/upload_profile_image/${email}/`)
+        .attach('file', testImage)
+        .expect(404)
+    });
+
+    test('fail to upload', async()=>{
+        const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
+        const email = 'test2@test2.com';
+        return request(app).post(`/api/users/upload_profile_image/${email}/`)
+        // .set('Authorization', `Bearer ${process.env.testUserJWT}`)
+        .attach('name', testImage)
+        .expect(500)
+    })
+})
 
