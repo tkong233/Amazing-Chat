@@ -79,23 +79,19 @@ class Reset extends React.Component {
                 <label htmlFor="email">Email</label>
                 <span className="red-text">{errors.email}</span>
               </div>
-
+                
               {/* Security Question */}
               <div className="input-field col s12">
-                <select
+                  <select
                   onChange={this.onChange}
                   value={this.state.question}
                   error={errors.question}
                   id="question"
-                >
-                  <option value="" disabled selected>
-                    Choose your security question
-                  </option>
-                  {SecurityQuestions.map((q) => (
-                    <option value={q}>{q}</option>
-                  ))}
-                </select>
-                <span className="red-text">{errors.question}</span>
+                  >
+                      <option value="" disabled selected>Choose your security question</option>
+                      {SecurityQuestions.map(q => <option value={q}>{q}</option>)}
+                  </select>
+                  <span className="red-text">{errors.question}</span>
               </div>
 
               {/* Answer */}

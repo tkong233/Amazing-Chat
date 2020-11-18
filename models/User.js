@@ -38,7 +38,12 @@ const UserSchema = new Schema({
   profile_picture: {
     type: String,
     default: ""
-  }
+  },
+  contacts : [{
+    pairId: mongoose.Schema.Types.ObjectId,
+    email: String,
+    lastInteractTime: Date,
+  }]
 });
 
 module.exports = User = mongoose.model("users", UserSchema);
