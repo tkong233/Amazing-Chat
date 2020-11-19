@@ -6,7 +6,8 @@ const path = require('path');
 const cors = require('cors');
 
 const users = require("./routes/api/users");
-const chat = require('./routes/chat');
+const contacts = require("./routes/api/contact");
+// const chat = require('./routes/chat');
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -51,6 +52,7 @@ require("./config/passport")(passport);
 
 // Routes
 app.use("/api/users", users);
+app.use(contacts);
 
 // socket.io
 const socketio = require('socket.io');

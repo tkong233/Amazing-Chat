@@ -64,7 +64,7 @@ class Register extends Component {
               <i className="material-icons left">keyboard_backspace</i> Back to
               home
             </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+            <div className="col s12 blue-grey-text text-darken-2" style={{ paddingLeft: "11.250px" }}>
               <h4>
                 <b>Register</b> below
               </h4>
@@ -193,7 +193,7 @@ class Register extends Component {
                     marginTop: "1rem",
                   }}
                   type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                  className="btn waves-effect waves-light hoverable blue-grey darken-1"
                 >
                   Sign up
                 </button>

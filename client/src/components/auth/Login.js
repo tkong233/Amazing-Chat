@@ -65,7 +65,7 @@ class Login extends Component {
               <i className="material-icons left">keyboard_backspace</i> Back to
               home
             </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+            <div className="col s12 blue-grey-text text-darken-2" style={{ paddingLeft: "11.250px" }}>
               <h4>
                 <b>Login</b> below
               </h4>
@@ -122,7 +122,7 @@ class Login extends Component {
                     marginTop: "1rem",
                   }}
                   type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                  className="btn waves-effect waves-light hoverable blue-grey darken-1"
                 >
                   Login
                 </button>

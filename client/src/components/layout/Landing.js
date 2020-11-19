@@ -25,7 +25,7 @@ class Landing extends Component {
                   borderRadius: "3px",
                   letterSpacing: "1.5px"
                 }}
-                className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                className="btn waves-effect waves-light hoverable blue-grey darken-1"
               >
                 Register
               </Link>
@@ -38,7 +38,7 @@ class Landing extends Component {
                   borderRadius: "3px",
                   letterSpacing: "1.5px"
                 }}
-                className="btn btn-large waves-effect waves-light hoverable indigo darken-3"
+                className="btn waves-effect waves-light hoverable blue-grey darken-1"
               >
                 Log In
               </Link>

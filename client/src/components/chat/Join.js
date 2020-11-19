@@ -40,7 +40,7 @@ class Join extends React.Component {
                 marginTop: "1rem"
             }}
             type="submit"
-            className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+            className="btn waves-effect waves-light hoverable blue-grey darken-2"
             >
             Join
             </button>
