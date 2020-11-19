@@ -11,9 +11,9 @@ const Dashboard = (props) => {
     e.preventDefault();
     props.logoutUser();
   };
-
+  
   return (
-    <div>
+    <div data-test = "DashboardComponent">
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
       <UserInfo/>
       {/* Logout Button */}
