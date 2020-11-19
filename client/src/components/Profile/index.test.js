@@ -1,7 +1,6 @@
 import React from 'react';
 import Index from './index';
 import {shallow} from 'enzyme';
-import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16'; 
 import { applyMiddleware, createStore } from 'redux';

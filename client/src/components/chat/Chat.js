@@ -22,9 +22,9 @@ class Chat extends React.Component {
     }
   }
 
-  componentDidMount() {
+  // componentDidMount() {
 
-  }
+  // }
 
   componentWillUnmount() {
     if (socket) {
@@ -67,7 +67,7 @@ class Chat extends React.Component {
     const ENDPOINT = 'localhost:5000/';
 
     socket = io(ENDPOINT);
-    console.log(socket);
+    // console.log(socket);
 
     socket.emit('join', data);
 
@@ -75,7 +75,7 @@ class Chat extends React.Component {
     // ?name=thisname&room=thisroom
 
     socket.on('receiveMessage', ({text, user}) => {
-      console.log(text, user);
+      // console.log(text, user);
       this.addMessageToList(text, user);
     });
 
@@ -84,9 +84,9 @@ class Chat extends React.Component {
 
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
-      <div>
+      <div data-test="ChatComponent">
         {/* for testing only */}
         {this.state.joined ? null :
           <Join

@@ -12,7 +12,7 @@ class Message extends React.Component {
     const type = 'text';
 
     return (
-      <div>
+      <div data-test = "MessageComponent">
       <MessageBox
           className="message-bubble"
           position={position}

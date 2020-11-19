@@ -4,7 +4,7 @@ class Join extends React.Component {
   render() {
     const { onSubmit, onChange, username, room } = this.props;
     return (
-      <div className="container">
+      <div className="container" data-test = "JoinComponent">
         <div className="row">
         <div className="col s8 offset-s2">
         <form noValidate onSubmit={onSubmit}>
