@@ -105,14 +105,42 @@ router.delete("/contact", (req, res) => {
 // @route GET /suggestion
 // @descript get list of suggested contacts
 // @access Public
-router.get("/suggestion", (req, res) => {
-  User.find({}).then((users) => {
+router.get("/suggestion/:email", (req, res) => {
+  const email = req.params.email;
+  User.find({}).then((allUsers) => {
+    if (!allUsers) {
+      return res.status(404).json({ message: "no suggestion found" });
+    }
     // return all users for testing purpose
-    const suggestions = users.map(({name, email, profile_picture}) => 
-      ({name, email, profile_picture})
+    let suggestions = allUsers.map(({ name, email, profile_picture }) => 
+      ({ name, email, profile_picture })
     );
-    return res.json(suggestions);
+    User.findOne({ email }).then((user) => {
+      if (!user) {
+        return res.status(404).json({ message : "user not found" });
+      }
+
+      const contacts = user.contacts.map(({ email }) => 
+        ({ email })
+      );
+      suggestions = suggestions.filter((c) => {
+        return !containsUser(contacts, c.email) && c.email != email;
+      });
+
+      return res.status(200).json(suggestions);
+    });
   });
 });
+
+containsUser = (contacts, email) => {
+  // console.log(contacts, email);
+  for (var i = 0; i < contacts.length; i++) {
+    // console.log(contacts[i].email === email);
+    if (contacts[i].email === email) {
+      return true;
+    }
+  }
+  return false;
+}
 
 module.exports = router;
