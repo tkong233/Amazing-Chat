@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import UserInfo from './UserInfo';
-
+import { Alert } from '@material-ui/lab';
 
 const Dashboard = (props) => {
 
+  // const [alert, setAlert] = useState(true);
   const onLogoutClick = e => {
     e.preventDefault();
     props.logoutUser();

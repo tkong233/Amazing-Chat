@@ -30,6 +30,11 @@ class Navbar extends Component {
                   </a>
                 </li>
                 <li>
+                  <a href="/post_status" className="grey-text text-darken-2" style={{fontWeight: 'bold'}}>
+                    Post Status
+                  </a>
+                </li>
+                <li>
                   <a href="/status" className="grey-text text-darken-2" style={{fontWeight: 'bold'}}>
                     Check Status
                   </a>
