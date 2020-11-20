@@ -220,9 +220,9 @@ router.post("/upload_profile_image/:email", (req, res) => {
   });
 });
 
-// @route DELETE api/users/profile/:id
+// @route DELETE api/users/profile/:email
 // @desc Deactivate account
-// @access Public?
+// @access Private
 router.delete("/profile/:email", (req, res)=>{
   const email = req.params.email;
   try{
@@ -238,19 +238,19 @@ router.delete("/profile/:email", (req, res)=>{
 // @route GET api/users/profile/:id
 // @desc Get user info
 // @access Public?
-router.get("/profile/:id", (req, res)=>{
-  const params = req.params.id;
-  User.findOne({_id: new mongodb.ObjectId(params)}).then(user =>{
-    if (!user){
-      return res.status(404).json({usernotfound: "Can't find user profile"});
-    }
-    return res.json({
-      name: user.name,
-      emai: user.email,
-      profile_picture: user.profile_picture,
-      date: user.date
-    });
-  });
-});
+// router.get("/profile/:id", (req, res)=>{
+//   const params = req.params.id;
+//   User.findOne({_id: new mongodb.ObjectId(params)}).then(user =>{
+//     if (!user){
+//       return res.status(404).json({usernotfound: "Can't find user profile"});
+//     }
+//     return res.json({
+//       name: user.name,
+//       emai: user.email,
+//       profile_picture: user.profile_picture,
+//       date: user.date
+//     });
+//   });
+// });
 
 module.exports = router;

@@ -7,7 +7,7 @@ import UserInfoCard from './UserInfoCard';
 
 const Dashboard = (props) => {
   return (
-    <div>
+    <div data-test = "DashboardComponent">
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
       <UserInfoCard/>
       {/* Logout Button */}

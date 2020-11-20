@@ -40,7 +40,7 @@ const Profile = (props) => {
   };
   
   return (
-    <Card>
+    <Card data-test="profileComponent">
       <CardContent>
         <Box alignItems="center" display="flex" flexDirection="column">
           <Avatar className={ classes.avatar } src={ image } alt=''/>
