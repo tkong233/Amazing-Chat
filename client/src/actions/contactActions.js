@@ -18,6 +18,7 @@ export const getSuggestion = (email) => dispatch => {
 }
 
 export const addContact = (email1, email2) => dispatch => {
+  console.log("add contacts: " + email1 + email2);
   axios
     .post('/contact', { email1, email2 })
     .then(res => {

@@ -40,6 +40,7 @@ router.get("/contacts/:email", (req, res) => {
 // @access Public
 router.post("/contact", (req, res) => {
   const { email1, email2 } = req.body;
+  console.log(email1, email2);
 
   // add user2 to user1's contact
   User.findOne({ email : email1 }).then((user1) => {

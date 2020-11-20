@@ -1,21 +1,23 @@
 import React, { Component, useEffect } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import UserInfoCard from './UserInfoCard';
+import SuggestionList from './SuggestionList';
+import ContactList from './ContactList';
 import { getSuggestion, addContact, deleteContact, getContacts } from '../../actions/contactActions';
 
 
 const Dashboard = (props) => {
   useEffect(() => {
-    props.getSuggestion("tkong@wesleyan.edu");
-    props.getContacts("yoyo@123.com");
-    console.log(props.contact);
+    props.getSuggestion(props.user.email);
+    props.getContacts(props.user.email);
   }, [])
   return (
     <div data-test = "DashboardComponent">
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
       {/* <UserInfoCard/> */}
+      <SuggestionList/>
+      <ContactList/>
     </div>
   );
 }
