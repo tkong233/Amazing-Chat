@@ -35,15 +35,18 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  profile_picture: {
-    type: String,
-    default: ""
-  },
   contacts : [{
     pairId: mongoose.Schema.Types.ObjectId,
     email: String,
     lastInteractTime: Date,
-  }]
+  }],
+  status : [{
+    statusId: mongoose.Schema.Types.ObjectId,
+    image: String,
+    text: String,
+    time: Date,
+  }],
+  seen : [ mongoose.Schema.Types.ObjectId ]
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

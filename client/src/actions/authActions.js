@@ -92,10 +92,10 @@ export const updatePicture = (formData, email) => dispatch=> {
       type: UPDATE_PICTURE,
       payload: res.data.user
     })
-  });
+  }).catch(err => console.log(err));
 }
 
-export const deleteAccount = (email) => dispatch =>{
+export const deleteAccount = (email) => dispatch => {
   axios
   .delete(`/api/users/profile/${email}`)
   .then(res => dispatch({
@@ -103,4 +103,15 @@ export const deleteAccount = (email) => dispatch =>{
   }))
   .catch(err => console.log(err))
   
+}
+
+export const doPostStatus = (formData, email, history) => dispatch => {
+  axios.post(`/api/users/status/${email}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }).then(res => history.push({    
+    pathname: "/dashboard",
+    state: true}))
+  .catch(err => console.log(err))
 }

@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import UserInfo from './UserInfo';
-
+import { Alert } from '@material-ui/lab';
 
 const Dashboard = (props) => {
 
+  // const [alert, setAlert] = useState(true);
   const onLogoutClick = e => {
     e.preventDefault();
     props.logoutUser();
@@ -14,6 +15,7 @@ const Dashboard = (props) => {
 
   return (
     <div>
+      {/* { props.location.state && alert && <Alert severity="success" onClose={() => {setAlert(false)}}>You have successfully posted your status!</Alert>} */}
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
       <UserInfo/>
       {/* Logout Button */}
