@@ -82,7 +82,7 @@ export const resetPassword = (userData, history) => dispatch => {
     );
 }
 
-export const updatePicture = (formData, email) => dispatch=> {
+export const updatePicture = (formData, email) => dispatch => {
   axios.post(`/api/users/upload_profile_image/${email}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
