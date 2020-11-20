@@ -12,10 +12,9 @@ const Dashboard = (props) => {
     e.preventDefault();
     props.logoutUser();
   };
-
+  
   return (
-    <div>
-      {/* { props.location.state && alert && <Alert severity="success" onClose={() => {setAlert(false)}}>You have successfully posted your status!</Alert>} */}
+    <div data-test = "DashboardComponent">
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
       <UserInfo/>
       {/* Logout Button */}

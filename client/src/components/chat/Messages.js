@@ -10,7 +10,7 @@ class Messages extends React.Component {
     return (
       // TODO: check wether the message is sent by the user
       // render as sended or received
-      <div className="container">
+      <div className="container" data-test="MessagesComponent">
       <div>
       <ScrollToBottom>
         {messages.map((m) => 
