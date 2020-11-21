@@ -18,11 +18,9 @@ export const getSuggestion = (email) => dispatch => {
 }
 
 export const addContact = (email1, email2) => dispatch => {
-  console.log("add contacts: " + email1 + email2);
   axios
     .post('/contact', { email1, email2 })
     .then(res => {
-      console.log(res.data);
       dispatch({
         type: ADD_CONTACT,
         payload: res.data
@@ -35,9 +33,8 @@ export const addContact = (email1, email2) => dispatch => {
   
 export const deleteContact = (email1, email2) => dispatch => {
   axios
-  .delete('/contact', { email1, email2 })
+  .delete('/contact', { data: { email1, email2 } })
   .then(res => {
-    console.log(res.data);
     dispatch({
       type: DELETE_CONTACT,
       payload: res.data

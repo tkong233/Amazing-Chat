@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ContactCard from './ContactCard';
-import { addContact } from '../../actions/contactActions';
+import { addContact, getSuggestion } from '../../actions/contactActions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '5px'
   }
 }));
+
+const addContactFromSuggestion = (props, email1, email2) => {
+  props.addContact(email1, email2);
+  props.getSuggestion(email1);
+}
 
 const SuggestionList = (props) => {
   const classes = useStyles();
@@ -55,7 +60,7 @@ const SuggestionList = (props) => {
         <ListItemSecondaryAction>
           <Button
             variant="outlined"
-            onClick={() => props.addContact(props.user.email, s.email)}
+            onClick= { () => addContactFromSuggestion(props, props.user.email, s.email) }
           >
             Add
           </Button>
@@ -73,5 +78,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addContact }
+  { addContact, getSuggestion }
 )(SuggestionList)

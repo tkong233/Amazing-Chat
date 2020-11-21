@@ -12,9 +12,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import ContactCard from './ContactCard';
-import { addContact } from '../../actions/contactActions';
+import { addContact, deleteContact } from '../../actions/contactActions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,10 +35,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const transformDateFormat = (date) => {
+  date = date.split('T');
+  return date[1].substring(0, 5) + ', ' + date[0]
+}
+
 const ContactList = (props) => {
   const classes = useStyles();
-  let { contacts } = props.contact;
-  console.log(contacts);
+  const { contacts } = props.contact;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   return (
     <List className={classes.root} alignItems="flex-start">
@@ -46,15 +59,30 @@ const ContactList = (props) => {
     </ListItem>
     <Divider/>
       {contacts.map(s => (
-        <ListItem>
+        <div>
+        <ListItem onClick={handleClick}>
           <ListItemAvatar>
-            <Avatar alt={props.name} src={props.profile_picture}/>
+            <Avatar alt={props.username} src={props.user.profile_picture}/>
           </ListItemAvatar>
           <ListItemText
           primary={s.name}
-          secondary={s.lastInteractTime}
+          secondary={transformDateFormat(s.lastInteractTime)}
         />
+        {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button className={classes.nested} onClick={() => props.deleteContact(props.user.email, s.email)} >
+            {/* props.deleteContact(props.user.email, s.email) */}
+          {/* onClick={() => props.deleteContact(props.user.email, s.email)} */}
+          <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Delete" />
+          </ListItem>
+        </List>
+      </Collapse>
+        </div>
         ))}
     </List>
   )
@@ -68,5 +96,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addContact }
+  { addContact, deleteContact }
 )(ContactList)
