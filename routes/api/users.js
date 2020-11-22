@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
 const Validator = require("validator");
-const mongodb = require('mongodb');
+const mongodb = require("mongodb");
+const mongoose = require("mongoose");
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -83,12 +84,10 @@ router.post("/login", (req, res) => {
       user.failed_login_attempts >= 3 &&
       Date.now() - user.failed_login_time < 300000
     ) {
-      return res
-        .status(400)
-        .json({
-          email:
-            "Your account has been locked due to excessive consecutive failed logins. Please try again 5 mins later.",
-        });
+      return res.status(400).json({
+        email:
+          "Your account has been locked due to excessive consecutive failed logins. Please try again 5 mins later.",
+      });
     }
 
     // Check password
@@ -108,7 +107,7 @@ router.post("/login", (req, res) => {
           name: user.name,
           email: user.email,
           date: user.date,
-          profile_picture: user.profile_picture
+          profile_picture: user.profile_picture,
         };
 
         // Sign token
@@ -190,8 +189,6 @@ router.post("/reset", (req, res) => {
   });
 });
 
-
-
 router.post("/upload_profile_image/:email", (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
@@ -205,35 +202,111 @@ router.post("/upload_profile_image/:email", (req, res) => {
       return res.status(500).send(err);
     }
 
-    User.findOne({ email: email }).then(user =>{
-      if (!user){
-        return res.status(404).json({usernotfound: "Can't find user profile"});
+    User.findOne({ email: email }).then((user) => {
+      if (!user) {
+        return res
+          .status(404)
+          .json({ usernotfound: "Can't find user profile" });
       }
       user.profile_picture = `/uploads/${file.name}`;
       user
-          .save()
-          .then(() => console.log("updated user profile picture path"))
-          .catch((err) => console.log(err));
+        .save()
+        .then(() => console.log("updated user profile picture path"))
+        .catch((err) => console.log(err));
       res.json({ user: user });
     });
-    
   });
 });
 
 // @route DELETE api/users/profile/:email
 // @desc Deactivate account
 // @access Private
-router.delete("/profile/:email", (req, res)=>{
+router.delete("/profile/:email", (req, res) => {
   const email = req.params.email;
-  try{
-    User.deleteOne({ email: email}).then(() =>{
-      return res.json({success:true})
-    })
-  }catch(err){
+  try {
+    User.deleteOne({ email: email }).then(() => {
+      return res.json({ success: true });
+    });
+  } catch (err) {
     console.log(err);
   }
+});
 
-})
+// @route POST api/users/status
+// @desc Post status
+// @access Private
+router.post("/status/:email", (req, res) => {
+  const email = req.params.email;
+  // if an image is uploaded
+  if (req.files) {
+    const file = req.files.file;
+    file.mv(
+      `${__dirname}/../../client/public/uploads/status/${file.name}`,
+      (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send(err);
+        }
+        User.findOne({ email }).then((user) => {
+          if (!user) {
+            return res
+              .status(404)
+              .json({ usernotfound: "Can't find user profile" });
+          }
+          const statusId = new mongoose.Types.ObjectId();
+          const image = `/uploads/status/${file.name}`
+          const time = Date.now();
+          // if text is uploaded
+          if (req.body) {
+            const text = req.body.text;
+            const newStatus = {
+              statusId,
+              image,
+              text,
+              time
+            }
+            user.status.push(newStatus);
+            user.save().then(_ => {
+              return res.status(200).json({ message: "status added successfully" });
+            }).catch((err) => console.log(err));
+          } else {
+            const newStatus = {
+              statusId,
+              image,
+              time
+            }
+            user.status.push(newStatus);
+            user.save().then(_ => {
+              return res.status(200).json({ message: "status added successfully" });
+            }).catch((err) => console.log(err));
+          }
+        });
+      }
+    );
+  } 
+  // no image is uploaded
+  else {
+    User.findOne({ email }).then((user) => {
+      if (!user) {
+        return res
+          .status(404)
+          .json({ usernotfound: "Can't find user profile" });
+      }
+      const statusId = new mongoose.Types.ObjectId();
+      const time = Date.now();
+        const text = req.body.text;
+        const newStatus = {
+          statusId,
+          text,
+          time
+        }
+        user.status.push(newStatus);
+        user.save().then(_ => {
+          return res.status(200).json({ message: "status added successfully" });
+        }).catch((err) => console.log(err));
+    });
+  }
+});
 
 // @route GET api/users/profile/:id
 // @desc Get user info

@@ -1,10 +1,9 @@
 import React, { Component, useEffect } from "react";
 import { connect } from "react-redux";
 
-import UserInfoCard from './UserInfoCard';
 import SuggestionList from './SuggestionList';
 import ContactList from './ContactList';
-import { getSuggestion, addContact, deleteContact, getContacts } from '../../actions/contactActions';
+import { getSuggestion, getContacts } from '../../actions/contactActions';
 
 
 const Dashboard = (props) => {
@@ -29,5 +28,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSuggestion, getContacts, getSuggestion, deleteContact }
+  { getSuggestion, getContacts }
 )(Dashboard);

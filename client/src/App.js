@@ -18,6 +18,7 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import Chat from "./components/chat/Chat";
 import ViewStatus from "./components/user_status/ViewStatus";
+import PostStatus from "./components/user_status/PostStatus";
 
 import GlobalStyles from './components/global/GlobalStyles';
 
@@ -63,6 +64,7 @@ class App extends Component {
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/chat" component={Chat} />
               <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/post_status" component={PostStatus} />
               <PrivateRoute exact path="/status" component={ViewStatus} />
             </Switch>
           </div>
