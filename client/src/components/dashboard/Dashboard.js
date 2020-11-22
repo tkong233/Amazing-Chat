@@ -1,43 +1,32 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { Component, useEffect } from "react";
 import { connect } from "react-redux";
-import { logoutUser } from "../../actions/authActions";
-import UserInfo from './UserInfo';
-import { Alert } from '@material-ui/lab';
+
+import SuggestionList from './SuggestionList';
+import ContactList from './ContactList';
+import { getSuggestion, getContacts } from '../../actions/contactActions';
+
 
 const Dashboard = (props) => {
-
-  // const [alert, setAlert] = useState(true);
-  const onLogoutClick = e => {
-    e.preventDefault();
-    props.logoutUser();
-  };
-  
+  useEffect(() => {
+    props.getSuggestion(props.user.email);
+    props.getContacts(props.user.email);
+  }, [])
   return (
     <div data-test = "DashboardComponent">
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
-      <UserInfo/>
-      {/* Logout Button */}
-      <button
-        onClick={ onLogoutClick }
-      >
-        Logout
-      </button>
+      <SuggestionList/>
+      <ContactList/>
     </div>
   );
 }
 
-
-Dashboard.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
-  auth: state.auth,
+  user: state.auth.user,
+  contact: state.contact,
 });
+
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { getSuggestion, getContacts }
 )(Dashboard);
