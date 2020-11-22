@@ -15,7 +15,6 @@ const Dashboard = (props) => {
   return (
     <div data-test = "DashboardComponent">
       {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
-      {/* <UserInfoCard/> */}
       <SuggestionList/>
       <ContactList/>
     </div>
