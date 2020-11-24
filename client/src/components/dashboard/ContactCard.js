@@ -30,8 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const transformDateFormat = (date) => {
-  date = date.split('T');
-  return date[1].substring(0, 5) + ', ' + date[0]
+  if (date) {
+    date = date.split('T');
+    return date[1].substring(0, 5) + ', ' + date[0]
+  }
+  return "";
 }
 
 
@@ -43,6 +46,7 @@ const ContactCard = (props) => {
   };
 
   const { contact, user } = props;
+  console.log(contact);
   return (
     <div>
         <ListItem >
@@ -52,7 +56,7 @@ const ContactCard = (props) => {
           <ListItemText
           primary={contact.name}
           secondary={transformDateFormat(contact.lastInteractTime)}
-        />
+          />
         {open ? <ExpandLess onClick={toggleCollapse}/> : <ExpandMore onClick={toggleCollapse}/>}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
