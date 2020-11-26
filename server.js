@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const users = require("./routes/api/users");
 const contacts = require("./routes/api/contact");
+const status = require("./routes/api/status");
 // const chat = require('./routes/chat');
 const fileUpload = require('express-fileupload');
 
@@ -53,6 +54,7 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 app.use(contacts);
+app.use(status);
 
 // socket.io
 const socketio = require('socket.io');
