@@ -9,6 +9,7 @@ export const GET_SUGGESTION = "GET_SUGGESTION";
 export const GET_CONTACTS = "GET_CONTACTS";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const DELETE_CONTACT = "DELETE_CONTACT";
+export const GET_ALL_USERS = "GET_ALL_USERS";
 
 // status
 export const GET_STATUS = "GET_STATUS";

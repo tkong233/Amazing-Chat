@@ -160,6 +160,16 @@ router.get("/suggestion/:email", (req, res) => {
   });
 });
 
+// @route GET /allusers
+// @descript get all registered users
+// access Public
+router.get('/allusers', (req, res) => {
+  User.find({}).then(users => {
+    users = users.map(({ name, email, profile_picture }) => ({ name, email, profile_picture }));
+    return res.status(200).json(users);
+  }).catch(err => console.log(err));
+});
+
 // @params contact - an array of emails for contacts
 // @params email - a email
 // @return whether the user with the specified email exist in the contact list

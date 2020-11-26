@@ -37,7 +37,6 @@ const transformDateFormat = (date) => {
   return "";
 }
 
-
 const ContactCard = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -45,33 +44,27 @@ const ContactCard = (props) => {
     setOpen(!open);
   };
 
-  const { contact, user } = props;
-  console.log(contact);
+  const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
+
   return (
     <div>
         <ListItem >
           <ListItemAvatar>
-            <Avatar alt={user.username} src={user.profile_picture}/>
+            <Avatar alt={name} src={profilePicture}/>
           </ListItemAvatar>
           <ListItemText
-          primary={contact.name}
-          secondary={transformDateFormat(contact.lastInteractTime)}
+          primary={name}
+          secondary={transformDateFormat(lastInteractTime)}
           />
         {open ? <ExpandLess onClick={toggleCollapse}/> : <ExpandMore onClick={toggleCollapse}/>}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {/* <ListItem button className={classes.nested} onClick={() => "TODO: implement profile popup card"} >
-          <ListItemIcon>
-              <NotesIcon />
-            </ListItemIcon>
-            <ListItemText primary="View Profile" />
-          </ListItem> */}
           <ListItem
             button
             className={classes.nested}
             onClick={() => {
-              props.deleteContact(user.email, contact.email);
+              props.deleteContact(userEmail, contactEmail);
               toggleCollapse();
             }} >
           <ListItemIcon>

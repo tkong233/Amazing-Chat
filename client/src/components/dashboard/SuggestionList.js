@@ -12,12 +12,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { addContact, getSuggestion } from '../../actions/contactActions';
-
+import SuggestionCard from './SuggestionCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '25ch',
+    maxWidth: '27ch',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -47,24 +47,15 @@ const SuggestionList = (props) => {
       <ListItemText primary="Suggestions" />
     </ListItem>
     <Divider/>
-      {suggestion.map(s => (
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar alt={props.name} src={props.profile_picture}/>
-          </ListItemAvatar>
-          <ListItemText
-          primary={s.name}
-        />
-        <ListItemSecondaryAction>
-          <Button
-            variant="outlined"
-            onClick= { () => addContactFromSuggestion(props, props.user.email, s.email) }
-          >
-            Add
-          </Button>
-        </ListItemSecondaryAction>
-        </ListItem>
-        ))}
+      {suggestion.map(s => 
+      // props: name, profilePicture, userEmail, suggestionEmail
+        <SuggestionCard
+          name={s.name}
+          profilePicture={s.profile_picture}
+          userEmail={props.user.email}
+          suggestionEmail={s.email}
+        />)
+      }
     </List>
   )
 }
@@ -78,3 +69,22 @@ export default connect(
   mapStateToProps,
   { addContact, getSuggestion }
 )(SuggestionList)
+
+// (
+//   <ListItem>
+//     <ListItemAvatar>
+//       <Avatar alt={props.name} src={props.profile_picture}/>
+//     </ListItemAvatar>
+//     <ListItemText
+//     primary={s.name}
+//   />
+//   <ListItemSecondaryAction>
+//     <Button
+//       variant="outlined"
+//       onClick= { () => addContactFromSuggestion(props, props.user.email, s.email) }
+//     >
+//       Add
+//     </Button>
+//   </ListItemSecondaryAction>
+//   </ListItem>
+//   )

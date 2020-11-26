@@ -16,7 +16,7 @@ import { addContact, deleteContact } from '../../actions/contactActions';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '25ch',
+    maxWidth: '27ch',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -32,6 +32,8 @@ const ContactList = (props) => {
   let { contacts } = props.contact;
   contacts = contacts.sort((a, b) => (a.lastInteractTime < b.lastInteractTime) ? 1 : (a.lastInteractTime > b.lastInteractTime) ? -1 : 0);
 
+  console.log(contacts, props.user);
+
   return (
     <List className={classes.root} alignItems="flex-start">
     <ListItem>
@@ -41,7 +43,16 @@ const ContactList = (props) => {
       <ListItemText primary="Contacts" />
     </ListItem>
     <Divider/>
-    {contacts.map(contact => <ContactCard user={props.user} contact={contact}/>)}
+    {contacts.map(contact =>
+      // props: name, profilePicture, lastInteractTime, userEmail, contactEmail
+      <ContactCard
+        name={contact.name}
+        profilePicture={contact.profile_picture}
+        lastInteractTime={contact.lastInteractTime}
+        userEmail={props.user.email}
+        contactEmail={contact.email}
+      />)
+    }
     </List>
   )
 }
