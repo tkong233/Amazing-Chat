@@ -9,3 +9,6 @@ export const GET_SUGGESTION = "GET_SUGGESTION";
 export const GET_CONTACTS = "GET_CONTACTS";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const DELETE_CONTACT = "DELETE_CONTACT";
+
+// status
+export const GET_STATUS = "GET_STATUS";

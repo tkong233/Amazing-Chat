@@ -11,6 +11,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  profile_picture: {	
+    type: String,	
+    default: ""	
+  },
   password: {
     type: String,
     required: true
@@ -46,7 +50,7 @@ const UserSchema = new Schema({
     text: String,
     time: Date,
   }],
-  seen : [ mongoose.Schema.Types.ObjectId ]
+  seen : [ String ]
 });
 
 module.exports = User = mongoose.model("users", UserSchema);
