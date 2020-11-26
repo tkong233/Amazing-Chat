@@ -50,25 +50,45 @@ const convertToDiv = (data) => {
   data.forEach((status) => {
     list.push({
       content: () => {
-        return (
-          <div
-            style={{
-              ...contentStyle,
-              backgroundImage: `url(${status.statusData.image})`,
-            }}
-          >
-            <div style={{ display: "flex" }}>
-              <Avatar style={{}} src={status.profile_picture} alt="" />
-              <h6 style={{ marginLeft: "10px" }}>{status.name}</h6>
+        if (status.statusData.image) {
+          return (
+            <div
+              style={{
+                ...contentStyle,
+                backgroundImage: `url(${status.statusData.image})`,
+              }}
+            >
+              <div style={{ display: "flex" }}>
+                <Avatar style={{}} src={status.profile_picture} alt="" />
+                <h6 style={{ marginLeft: "10px" }}>{status.name}</h6>
+              </div>
+  
+              <div style={{ position: "absolute", bottom: 50 }}>
+                <h4>
+                {status.statusData.text}
+                </h4>
+              </div>
             </div>
-
-            <div style={{ position: "absolute", bottom: 50 }}>
-              <h4>
-              {status.statusData.text}
-              </h4>
+          );
+        } else {
+          return (
+            <div
+              style={{ ...contentStyle }}
+            >
+              <div style={{ display: "flex" }}>
+                <Avatar style={{}} src={status.profile_picture} alt="" />
+                <h6 style={{ marginLeft: "10px" }}>{status.name}</h6>
+              </div>
+  
+              <div style={{ position: "absolute", bottom: 50 }}>
+                <h4>
+                {status.statusData.text}
+                </h4>
+              </div>
             </div>
-          </div>
-        );
+          );
+        }
+        
       },
       id: status.statusData.statusId,
     });
