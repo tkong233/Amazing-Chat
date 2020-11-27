@@ -6,6 +6,7 @@ import Join from './Join';
 import './Chat.css';
 
 let socket;
+const ENDPOINT = 'localhost:5000/';
 
 class Chat extends React.Component {
   constructor(props) {
@@ -21,10 +22,6 @@ class Chat extends React.Component {
       joined: false,
     }
   }
-
-  // componentDidMount() {
-
-  // }
 
   componentWillUnmount() {
     if (socket) {
@@ -64,18 +61,9 @@ class Chat extends React.Component {
       name : username,
       room,
     };
-    const ENDPOINT = 'localhost:5000/';
-
     socket = io(ENDPOINT);
-    // console.log(socket);
-
     socket.emit('join', data);
-
-    // console.log(this.props.location.search);
-    // ?name=thisname&room=thisroom
-
     socket.on('receiveMessage', ({text, user}) => {
-      // console.log(text, user);
       this.addMessageToList(text, user);
     });
 
@@ -84,9 +72,8 @@ class Chat extends React.Component {
 
 
   render() {
-    // console.log(this.state);
     return (
-      <div style={{marginTop: '50px'}} data-test="ChatComponent">
+      <div className='chat-container' data-test="ChatComponent">
         {/* for testing only */}
         {this.state.joined ? null :
           <Join
@@ -94,8 +81,8 @@ class Chat extends React.Component {
             onChange={this.onChange}
             username={this.state.username}
             room={this.state.room}
-          />}
-        
+        />}
+
         <Messages
           user={this.state.username}
           messages={this.state.messages}
@@ -114,11 +101,5 @@ class Chat extends React.Component {
     );
   }
 }
-
-// const Chat = () => {
-//   return (
-//     <h1>Chat</h1>
-//   )
-// }
 
 export default Chat;
