@@ -17,7 +17,6 @@ import SuggestionCard from './SuggestionCard';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '27ch',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {

@@ -12,11 +12,9 @@ import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import ContactCard from './ContactCard';
 import { addContact, deleteContact } from '../../actions/contactActions';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '27ch',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -31,8 +29,6 @@ const ContactList = (props) => {
   const classes = useStyles();
   let { contacts } = props.contact;
   contacts = contacts.sort((a, b) => (a.lastInteractTime < b.lastInteractTime) ? 1 : (a.lastInteractTime > b.lastInteractTime) ? -1 : 0);
-
-  console.log(contacts, props.user);
 
   return (
     <List className={classes.root} alignItems="flex-start">

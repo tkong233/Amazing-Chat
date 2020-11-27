@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import List from '@material-ui/core/List';
@@ -39,7 +39,7 @@ const transformDateFormat = (date) => {
 
 const ContactCard = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const toggleCollapse = () => {
     setOpen(!open);
   };
