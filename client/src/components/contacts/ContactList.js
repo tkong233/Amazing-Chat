@@ -40,13 +40,14 @@ const ContactList = (props) => {
     </ListItem>
     <Divider/>
     {contacts.map(contact =>
-      // props: name, profilePicture, lastInteractTime, userEmail, contactEmail
+      // props: name, profilePicture, lastInteractTime, userEmail, contactEmail, pairId
       <ContactCard
         name={contact.name}
         profilePicture={contact.profile_picture}
         lastInteractTime={contact.lastInteractTime}
         userEmail={props.user.email}
         contactEmail={contact.email}
+        pairId={contact.pairId}
       />)
     }
     </List>

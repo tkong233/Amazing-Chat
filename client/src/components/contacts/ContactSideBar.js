@@ -5,8 +5,11 @@ import SuggestionList from './SuggestionList';
 import ContactList from './ContactList';
 import SearchBar from './SearchBar';
 import { getSuggestion, getContacts, getAllUsers } from '../../actions/contactActions';
+import { connectSocket } from '../../actions/chatActions';
 
 import './Contact.css';
+
+const ENDPOINT = 'localhost:5000/';
 
 const ContactSideBar = (props) => {
   useEffect(() => {
@@ -33,6 +36,11 @@ const mapStateToProps = state => ({
 
 
 export default connect(
-  mapStateToProps,
-  { getSuggestion, getContacts, getAllUsers }
+  mapStateToProps, 
+  {
+    getSuggestion,
+    getContacts,
+    getAllUsers,
+    connectSocket,
+  }
 )(ContactSideBar);

@@ -72,24 +72,20 @@ const io = socketio(server, {
 io.on('connect', (socket) => {
   console.log('we have a new connection!');
 
-  socket.on('join', ({name, room}) => {
-    console.log('join: ' + name, room);
-    socket.join(room);
+  socket.on('join', ({name, pairId}) => {
+    console.log('join: ' + name, pairId);
+    socket.join(pairId);
   });
 
-  socket.on('sendMessage', ({message, room, username}) => {
-    console.log('received message: ' + message + ' to room: ' + room);
-    io.to(room).emit('receiveMessage', {text: message, user: username});
+  // pairId, from, to, message, datetime
+  socket.on('sendMessage', ({pairId, from, to, message, datetime}) => {
+    console.log('received message: ' + message + ' to room: ' + pairId);
+    io.to(pairId).emit('receiveMessage', { pairId, from, to, message, datetime });
   });
 
   socket.on('disconnect', () => {
     console.log('user had left!');
   });
-});
-
-// Root endpoint
-app.get('/message', (_req, res) => {
-  res.json({ message: 'Welcome to our chat app' });
 });
 
 // Serve static assets if in production

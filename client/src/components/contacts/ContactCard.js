@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
+import io from 'socket.io-client';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -13,7 +14,10 @@ import Collapse from '@material-ui/core/Collapse';
 import DeleteIcon from '@material-ui/icons/Delete';
 import NotesIcon from '@material-ui/icons/Notes';
 import { deleteContact } from '../../actions/contactActions';
+import { connectSocket, joinRoom, loadPastMessages, receiveNewMessages } from '../../actions/chatActions';
 
+let socket;
+const ENDPOINT = 'localhost:5000/';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,17 +42,25 @@ const transformDateFormat = (date) => {
 }
 
 const ContactCard = (props) => {
+  const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
+
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const toggleCollapse = () => {
     setOpen(!open);
   };
 
-  const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
+  const launchChat = () => {
+    socket = io(ENDPOINT);
+    props.connectSocket(socket);
+    props.joinRoom(props.user.name, props.pairId, userEmail, contactEmail, socket);
+    props.loadPastMessages(props.pairId);
+    props.receiveNewMessages(socket);
+  }
 
   return (
     <div>
-        <ListItem >
+        <ListItem onClick={launchChat}>
           <ListItemAvatar>
             <Avatar alt={name} src={profilePicture}/>
           </ListItemAvatar>
@@ -79,10 +91,17 @@ const ContactCard = (props) => {
 }
 
 const mapStateToProps = state => ({
-
+  user: state.auth.user,
+  socket: state.chat.socket,
 });
 
 export default connect(
   mapStateToProps, 
-  { deleteContact }
+  {
+    deleteContact,
+    connectSocket,
+    joinRoom,
+    loadPastMessages,
+    receiveNewMessages,
+  }
 )(ContactCard);

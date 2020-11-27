@@ -30,7 +30,7 @@ router.post('/message', (req, res) => {
 
   // save message
   newMessage.save()
-  .then(() => {
+  .then((savedMessage) => {
 
     // update sender's last interact time
     User.findOne({ email: from }).then(sender => {
@@ -51,7 +51,7 @@ router.post('/message', (req, res) => {
           receiverContact[0].lastInteractTime = Date.now();
 
           receiver.save().then(() => {
-            return res.status(200).json({ message: "successfully saved message & updated last interact time" });
+            return res.status(200).json({ savedMessage });
           })
         })
       })
