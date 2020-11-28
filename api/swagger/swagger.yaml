@@ -1,0 +1,363 @@
+swagger: "2.0"
+info:
+  title: Amazing Chat API
+  description: This is the API documentation for our cis557 project -- Amazing Chat
+  version: 1.0.0
+# host: api.swagger.io
+host: localhost:5000
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/users/register:
+    post:
+      tags:
+        - "User"
+      summary: Register a new user.
+      description: Submits form data from registration page to register user, and then redirects to login page.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: name, email, password, password2, question, answer
+          description: user info needed to register account
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - email
+              - password
+              - password2
+              - question
+              - answer
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+              password2:
+                type: string
+                format: password
+              question:
+                type: string
+              answer:
+                type: string
+      responses:
+        200:
+          description: successfully register
+          schema:
+            type: object
+            properties:
+              _id:
+                type: string
+              name:
+                type: string
+              password:
+                type: string
+              question:
+                type: string
+              answer:
+                type: string
+              failed_login_attempts:
+                type: integer
+              date:
+                type: string
+                format: date
+              _v:
+                type: integer
+        400:
+          description: validation error / Email already exists
+  /api/users/login:
+    post:
+      tags:
+        - "User"
+      description: Submits form data from login page, authenticates user, and redirects to messaging page.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: email, password
+          description: email and password of the registered user
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: successfully logged in
+        400:
+          description: validation error / account locked out / password incorrect
+        404:
+          description: Email not found
+  /api/users/reset:
+    post:
+      tags:
+        - "User"
+      description: Submits form data from reset password page, validate security question, and reset password
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: email, password, password2, question, answer
+          description: use security question to set new password
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - password2
+              - question
+              - answer
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+              password2:
+                type: string
+                format: password
+              question:
+                type: string
+              answer:
+                type: string
+      responses:
+        200:
+          description: successfully reset password
+        400:
+          description: validation error / email is not registered / security question does not match record / answer to secrity question does not match record
+  /api/users/upload_profile_image/:email:
+    post:
+      tags:
+        - "User"
+      description: Upload a profile image from file
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: user email
+          required: true
+          type: string
+        - in: formdata
+          name: file
+          description: file to upload
+          required: true
+          type: file
+      responses:
+        200:
+          description: successfully upload user profile picture
+        400:
+          description: No file uploaded
+        500:
+          description: file upload error
+        404:
+          description: can't find user profile
+  /api/users/profile/:email:
+    delete:
+      tags:
+        - "User"
+      description: deactivate a user account
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: user email
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully delete user
+  /api/users/status/:email:
+    post:
+      tags:
+        - "User"
+      description: post user status
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: user email
+          required: true
+          type: string
+        - in: formdata
+          name: file
+          description: image to upload
+          required: false
+          type: file
+        - in: body
+          name: text
+          description: user status text
+          required: false
+          type: string
+      responses:
+        200:
+          description: successfully add status
+        500:
+          description: file upload error
+        404:
+          description: can't find user profile
+
+  /contacts/:email:
+    get:
+      tags:
+        - "Contact"
+      description: find a list of contacts of the person who is identified by the email
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: user email
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully found contacts of the user
+        404:
+          description: user not found
+
+  /contact:
+    post:
+      tags:
+        - "Contact"
+      description: create a new contact between two users
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: email1, email2
+          description: email1 of the user who initaite the add, email2 of the user who user is going to add
+          required: true
+          schema:
+            type: object
+            required:
+              - email1
+              - email2
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: successfully added contact
+        400:
+          description: contact already exists
+        404:
+          description: user not found
+    delete:
+      tags:
+        - "Contact"
+      description: delete contact between both users
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: email1, email2
+          description: email1 of the user who initaite the delete, email2 of the user who user is going to delete
+          required: true
+          schema:
+            type: object
+            required:
+              - email1
+              - email2
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: successfully deleted contact
+        404:
+          description: user not found
+  /suggestion/:email:
+    get:
+      tags:
+        - "Contact"
+      description: get list of suggested contacts
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: user email
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully suggested contacts
+        404:
+          description: No suggestion found
+definitions:
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+      question:
+        type: string
+      answer:
+        type: string
+      failed_login_time:
+        type: string
+        format: date-time
+      date:
+        type: string
+        format: date
+      contacts:
+        type: array
+        items:
+          type: object
+          properties:
+            pairId:
+              type: string
+            email:
+              type: string
+            lastInteractionTime:
+              type: string
+              format: date-time
+      status:
+        type: array
+        items:
+          type: object
+          properties:
+            statusId:
+              type: string
+            image:
+              type: string
+            text:
+              type: string
+            time:
+              type: string
+              format: date-time
+      seen:
+        type: array
+        items:
+          type: string
