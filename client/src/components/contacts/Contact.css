@@ -1,0 +1,13 @@
+.contact-side-bar {
+  width: 20%;
+  min-width: 25ch;
+  max-width: 30ch;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.side-bar {
+  flex-basis: 20rem;
+  flex-grow: 1;
+}

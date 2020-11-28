@@ -1,124 +1,62 @@
-import React from 'react';
-import io from 'socket.io-client';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+
+import { sendMessage } from '../../actions/chatActions';
 
 import Messages from './Messages';
-import Join from './Join';
 import './Chat.css';
 
-let socket;
+const Chat = (props) => {
+  const { messages, socket } = props.chat;
+  const { name, email } = props.user;
 
-class Chat extends React.Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      username: '',
-      message: '',
-      messages: [],
-      room: '',
-      
-      // for testing only
-      joined: false,
-    }
-  }
+  const [message, setMessage] = useState('');
 
-  // componentDidMount() {
-
-  // }
-
-  componentWillUnmount() {
-    if (socket) {
-      socket.disconnect();
-    }
-  }
-
-  setMessage = (message) => {
-    this.setState({message});
-  }
-
-  onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-  };
-
-  sendMessage = (event) => {
-    console.log('sending message');
-    event.preventDefault();
-    const {message, room, username} = this.state;
-    if (message && room) {
-      socket.emit('sendMessage', { message, room, username }, this.message);
-      this.setMessage('');
-    }
-  }
-
-  addMessageToList = (message, user) => {
-    let messageList = this.state.messages;
-    messageList.push({text: message, sender: user});
-    this.setState({messages: messageList});
-  }
-
-  onSubmit = e => {
+  const sendMessage = (e) => {
     e.preventDefault();
 
-    const { username, room } = this.state;
-    const data = {
-      name : username,
-      room,
-    };
-    const ENDPOINT = 'localhost:5000/';
-
-    socket = io(ENDPOINT);
-    // console.log(socket);
-
-    socket.emit('join', data);
-
-    // console.log(this.props.location.search);
-    // ?name=thisname&room=thisroom
-
-    socket.on('receiveMessage', ({text, user}) => {
-      // console.log(text, user);
-      this.addMessageToList(text, user);
-    });
-
-    this.setState({joined: true});
-};
-
-
-  render() {
-    // console.log(this.state);
-    return (
-      <div style={{marginTop: '50px'}} data-test="ChatComponent">
-        {/* for testing only */}
-        {this.state.joined ? null :
-          <Join
-            onSubmit={this.onSubmit}
-            onChange={this.onChange}
-            username={this.state.username}
-            room={this.state.room}
-          />}
-        
-        <Messages
-          user={this.state.username}
-          messages={this.state.messages}
-        />
-        <div className="chat-input-bar">
-          <input
-            id="message-input"
-            type='text'
-            value={this.state.message}
-            onChange={(event) => this.setMessage(event.target.value)}
-            onKeyPress={(event) => event.key === 'Enter' ? this.sendMessage(event) : null}
-          />
-          <label htmlFor="message-input">type a message...</label>
-        </div>
-      </div>
-    );
+    const { pairId, socket, sender, receiver } = props.chat;
+    if (socket && message && pairId && receiver) {
+      console.log('sending message: ' + message);
+      const data = {
+        pairId,
+        from: sender,
+        to: receiver,
+        message,
+      };
+      props.sendMessage(data, socket);
+      setMessage('');
+    }
   }
+
+  console.log('socket in state', socket);
+
+  return (socket) ? (
+    <div className='chat-container' data-test="ChatComponent">
+      <Messages/>
+      <div className="chat-input-bar">
+        <input
+          id="message-input"
+          type='text'
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' ? sendMessage(e) : null}
+        />
+        <label htmlFor="message-input">type a message...</label>
+      </div>
+    </div>
+  ) : null;
 }
 
-// const Chat = () => {
-//   return (
-//     <h1>Chat</h1>
-//   )
-// }
 
-export default Chat;
+const mapStateToProps = state => ({
+  user: state.auth.user,
+  chat: state.chat,
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    sendMessage,
+  }
+)(Chat);

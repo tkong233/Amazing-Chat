@@ -1,32 +1,25 @@
-import React, { Component, useEffect } from "react";
-import { connect } from "react-redux";
+import React from "react";
+import Box from '@material-ui/core/Box';
 
-import SuggestionList from './SuggestionList';
-import ContactList from './ContactList';
-import { getSuggestion, getContacts } from '../../actions/contactActions';
+import ContactSideBar from '../contacts/ContactSideBar';
+import Chat from '../chat/Chat';
 
+import './Dashboard.css'
 
 const Dashboard = (props) => {
-  useEffect(() => {
-    props.getSuggestion(props.user.email);
-    props.getContacts(props.user.email);
-  }, [])
   return (
-    <div data-test = "DashboardComponent">
-      {/* <Alert severity="success">This is a success alert — check it out!</Alert> */}
-      <SuggestionList/>
-      <ContactList/>
+    <div className='dashboard' data-test="DashboardComponent">
+      <Box display='flex'>
+        <Box>
+          <ContactSideBar className='side-bar'/>
+        </Box>
+        <Box flexGrow={1}>
+          <Chat className='chat'/>
+        </Box>
+      </Box>
     </div>
   );
 }
 
-const mapStateToProps = state => ({
-  user: state.auth.user,
-  contact: state.contact,
-});
 
-
-export default connect(
-  mapStateToProps,
-  { getSuggestion, getContacts }
-)(Dashboard);
+export default Dashboard;

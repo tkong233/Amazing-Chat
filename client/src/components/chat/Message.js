@@ -5,23 +5,19 @@ import { MessageBox } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
 
 
-class Message extends React.Component {
-  render() {
-    const { text, sender, user } = this.props;
-    const position = (sender === user) ? 'right' : 'left';
-    const type = 'text';
-
-    return (
-      <div data-test = "MessageComponent">
+const Message = (props) => {
+  const { text, sender, user } = props;
+  const position = (sender === user) ? 'right' : 'left';
+  const type = 'text';
+  
+  return (
       <MessageBox
-          className="message-bubble"
-          position={position}
-          type={type}
-          text={text}
-        />
-      </div>
-    );
-  }
+        className="message-bubble"
+        position={position}
+        type={type}
+        text={text}
+      />
+  );
 }
 
 export default Message;

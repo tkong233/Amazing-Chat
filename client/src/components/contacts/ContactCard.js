@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
+import io from 'socket.io-client';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -13,7 +14,10 @@ import Collapse from '@material-ui/core/Collapse';
 import DeleteIcon from '@material-ui/icons/Delete';
 import NotesIcon from '@material-ui/icons/Notes';
 import { deleteContact } from '../../actions/contactActions';
+import { connectSocket, joinRoom, loadPastMessages, receiveNewMessages } from '../../actions/chatActions';
 
+let socket;
+const ENDPOINT = 'localhost:5000/';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,41 +41,42 @@ const transformDateFormat = (date) => {
   return "";
 }
 
-
 const ContactCard = (props) => {
+  const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
+
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const toggleCollapse = () => {
     setOpen(!open);
   };
 
-  const { contact, user } = props;
-  console.log(contact);
+  const launchChat = () => {
+    socket = io(ENDPOINT);
+    props.connectSocket(socket);
+    props.joinRoom(props.user.name, props.pairId, userEmail, contactEmail, socket);
+    props.loadPastMessages(props.pairId);
+    props.receiveNewMessages(socket);
+  }
+
   return (
     <div>
-        <ListItem >
+        <ListItem onClick={launchChat}>
           <ListItemAvatar>
-            <Avatar alt={user.username} src={user.profile_picture}/>
+            <Avatar alt={name} src={profilePicture}/>
           </ListItemAvatar>
           <ListItemText
-          primary={contact.name}
-          secondary={transformDateFormat(contact.lastInteractTime)}
+          primary={name}
+          secondary={transformDateFormat(lastInteractTime)}
           />
         {open ? <ExpandLess onClick={toggleCollapse}/> : <ExpandMore onClick={toggleCollapse}/>}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {/* <ListItem button className={classes.nested} onClick={() => "TODO: implement profile popup card"} >
-          <ListItemIcon>
-              <NotesIcon />
-            </ListItemIcon>
-            <ListItemText primary="View Profile" />
-          </ListItem> */}
           <ListItem
             button
             className={classes.nested}
             onClick={() => {
-              props.deleteContact(user.email, contact.email);
+              props.deleteContact(userEmail, contactEmail);
               toggleCollapse();
             }} >
           <ListItemIcon>
@@ -86,10 +91,17 @@ const ContactCard = (props) => {
 }
 
 const mapStateToProps = state => ({
-
+  user: state.auth.user,
+  socket: state.chat.socket,
 });
 
 export default connect(
   mapStateToProps, 
-  { deleteContact }
+  {
+    deleteContact,
+    connectSocket,
+    joinRoom,
+    loadPastMessages,
+    receiveNewMessages,
+  }
 )(ContactCard);

@@ -12,11 +12,9 @@ import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import ContactCard from './ContactCard';
 import { addContact, deleteContact } from '../../actions/contactActions';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '25ch',
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -41,7 +39,17 @@ const ContactList = (props) => {
       <ListItemText primary="Contacts" />
     </ListItem>
     <Divider/>
-    {contacts.map(contact => <ContactCard user={props.user} contact={contact}/>)}
+    {contacts.map(contact =>
+      // props: name, profilePicture, lastInteractTime, userEmail, contactEmail, pairId
+      <ContactCard
+        name={contact.name}
+        profilePicture={contact.profile_picture}
+        lastInteractTime={contact.lastInteractTime}
+        userEmail={props.user.email}
+        contactEmail={contact.email}
+        pairId={contact.pairId}
+      />)
+    }
     </List>
   )
 }

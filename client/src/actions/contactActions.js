@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { GET_CONTACTS, GET_SUGGESTION, ADD_CONTACT, DELETE_CONTACT } from "./types";
+import { GET_CONTACTS, GET_SUGGESTION, ADD_CONTACT, DELETE_CONTACT, GET_ALL_USERS } from "./types";
 
 // Get suggestion
 export const getSuggestion = (email) => dispatch => {
@@ -57,4 +57,16 @@ export const getContacts = (email) => dispatch => {
     .catch(err => {
       console.log(err);
     })
+}
+
+export const getAllUsers = () => dispatch => {
+  axios
+    .get('/allusers')
+    .then(res => {
+      dispatch({
+        type: GET_ALL_USERS,
+        payload: res.data,
+      })
+    })
+    .catch(err => console.log(err));
 }
