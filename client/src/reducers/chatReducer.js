@@ -52,6 +52,9 @@ export default function(state = initialState, action) {
         }
       } else {
         console.log('message was sent by myself!', state.messages);
+        return {
+          ...state,
+        } 
       }
       // return {
       //   ...state,

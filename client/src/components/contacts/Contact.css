@@ -2,7 +2,9 @@
   width: 20%;
   min-width: 25ch;
   max-width: 30ch;
-  margin: 20px; 
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .side-bar {

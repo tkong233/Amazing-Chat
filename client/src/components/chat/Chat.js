@@ -6,9 +6,6 @@ import { sendMessage } from '../../actions/chatActions';
 import Messages from './Messages';
 import './Chat.css';
 
-let socket;
-const ENDPOINT = 'localhost:5000/';
-
 const Chat = (props) => {
   const { messages, socket } = props.chat;
   const { name, email } = props.user;
@@ -32,13 +29,11 @@ const Chat = (props) => {
     }
   }
 
+  console.log('socket in state', socket);
+
   return (socket) ? (
-    
     <div className='chat-container' data-test="ChatComponent">
-      {/* <Messages
-        user={name}
-        messages={messages}
-      /> */}
+      <Messages/>
       <div className="chat-input-bar">
         <input
           id="message-input"

@@ -82,6 +82,7 @@ const SearchBar = (props) => {
                 lastInteractTime={contact[0].lastInteractTime}
                 userEmail={props.user.email}
                 contactEmail={contact[0].email}
+                pairId={contact[0].pairId}
               />
               :
               <SuggestionCard
