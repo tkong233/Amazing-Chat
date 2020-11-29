@@ -41,7 +41,7 @@ const Messages = (props) => {
     // TODO: check wether the message is sent by the user
     // render as sended or received
     <div className={className} data-test="MessagesComponent">
-    <FixedSizeList height={500} width={'100%'} itemSize={46} itemCount={1}>
+    <FixedSizeList height={650} width={'100%'} itemSize={46} itemCount={1}>
       {renderMessages}
     </FixedSizeList>
     </div>

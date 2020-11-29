@@ -26,8 +26,6 @@ export default function(state = initialState, action) {
     case LOAD_PAST_MESSAGES:
       let newMessages = state.messages;
       newMessages = action.payload;
-      // newMessages.unshift(...action.payload);
-      console.log('load past messages', newMessages);
       return {
         ...state,
         messages: newMessages,
@@ -54,11 +52,8 @@ export default function(state = initialState, action) {
         console.log('message was sent by myself!', state.messages);
         return {
           ...state,
-        } 
+        }
       }
-      // return {
-      //   ...state,
-      // }
     case DISCONNECT_SOCKET:
       return {
         ...state,
