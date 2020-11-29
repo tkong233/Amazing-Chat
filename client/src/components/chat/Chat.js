@@ -29,7 +29,7 @@ const Chat = (props) => {
     }
   }
 
-  console.log('socket in state', socket);
+  console.log('Socket: ', socket);
 
   return (socket) ? (
     <div className='chat-container' data-test="ChatComponent">

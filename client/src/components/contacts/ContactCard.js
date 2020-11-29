@@ -51,7 +51,8 @@ const ContactCard = (props) => {
   };
 
   const launchChat = () => {
-    socket = io(ENDPOINT);
+    socket = io();
+    // socket = io(ENDPOINT);
     props.connectSocket(socket);
     props.joinRoom(props.user.name, props.pairId, userEmail, contactEmail, socket);
     props.loadPastMessages(props.pairId);
