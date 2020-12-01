@@ -43,7 +43,7 @@ const Profile = (props) => {
     <Card data-test="profileComponent">
       <CardContent>
         <Box alignItems="center" display="flex" flexDirection="column">
-          <Avatar className={ classes.avatar } src={ image } alt=''/>
+          <Avatar className={ classes.avatar } src={process.env.PUBLIC_URL + image} alt=''/>
           <br />
           <Typography color="textPrimary" gutterBottom variant="h3">
             {name}
