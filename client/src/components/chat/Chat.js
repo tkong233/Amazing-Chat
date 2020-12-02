@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-
-import { sendMessage } from '../../actions/chatActions';
-
+import Button from '@material-ui/core/Button';
+import { sendMessage, uploadChatFiles } from '../../actions/chatActions';
+import Dropzone from 'react-dropzone';
 import Messages from './Messages';
 import './Chat.css';
 
@@ -23,13 +23,23 @@ const Chat = (props) => {
         from: sender,
         to: receiver,
         message,
+        type: "text"
       };
       props.sendMessage(data, socket);
       setMessage('');
     }
   }
 
-  console.log('Socket: ', socket);
+  const onDrop = async (files) =>{
+    const formData = new FormData();
+    const { pairId, socket, sender, receiver } = props.chat;
+    formData.append("file", files[0]);
+    formData.append("pairId", pairId);
+    formData.append("from", sender);
+    formData.append("to", receiver);
+    formData.append("type", "ImageOrVideoOrAudio");
+    await props.uploadChatFiles(formData, socket);
+  }
 
   return (socket) ? (
     <div className='chat-container' data-test="ChatComponent">
@@ -43,6 +53,22 @@ const Chat = (props) => {
           onKeyPress={(e) => e.key === 'Enter' ? sendMessage(e) : null}
         />
         <label htmlFor="message-input">type a message...</label>
+        <Dropzone onDrop={onDrop}>
+          {({ getRootProps, getInputProps }) => (
+              <section>
+                  <div {...getRootProps()}>
+                      <input {...getInputProps()} />                   
+                      <Button 
+                      variant="contained" 
+                      color='primary' 
+                      component="span"
+                      size="small">
+                        Upload
+                      </Button>
+                  </div>
+              </section>
+          )}
+      </Dropzone>
       </div>
     </div>
   ) : null;
@@ -58,5 +84,6 @@ export default connect(
   mapStateToProps,
   {
     sendMessage,
+    uploadChatFiles
   }
 )(Chat);

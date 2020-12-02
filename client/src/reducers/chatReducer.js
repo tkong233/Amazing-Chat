@@ -6,7 +6,7 @@ const initialState = {
   pairId: null,
   sender: null,
   receiver: null,
-  messages: [], // [{ pairId, from, to, message, datetime }]
+  messages: [], // [{ pairId, from, to, message, datetime, type }]
 }
 
 export default function(state = initialState, action) {

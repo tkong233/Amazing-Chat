@@ -78,9 +78,9 @@ io.on('connect', (socket) => {
   });
 
   // pairId, from, to, message, datetime
-  socket.on('sendMessage', ({pairId, from, to, message, datetime}) => {
+  socket.on('sendMessage', ({pairId, from, to, message, datetime, type}) => {
     console.log('received message: ' + message + ' to room: ' + pairId);
-    io.to(pairId).emit('receiveMessage', { pairId, from, to, message, datetime });
+    io.to(pairId).emit('receiveMessage', { pairId, from, to, message, datetime, type });
   });
 
   socket.on('disconnect', () => {

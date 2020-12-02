@@ -22,6 +22,9 @@ const MessageSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  type:{
+    type: String
+  }
 });
 
 module.exports = Message = mongoose.model("messages", MessageSchema);

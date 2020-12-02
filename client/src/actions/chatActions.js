@@ -52,12 +52,12 @@ export const receiveNewMessages = (socket) => dispatch => {
 }
 
 export const sendMessage = (data, socket) => dispatch => {
-  const { pairId, from, to, message } = data;
+  const { pairId, from, to, message, type } = data;
 
-  axios.post('/message', { pairId, from, to, message })
+  axios.post('/message', { pairId, from, to, message, type })
     .then(res => {
       const { datetime } = res.data.savedMessage;
-      socket.emit('sendMessage', { pairId, from, to, message, datetime }, message);
+      socket.emit('sendMessage', { pairId, from, to, message, datetime, type }, message);
       dispatch({
         type: SEND_MESSAGE,
         payload: res.data.savedMessage,
@@ -66,6 +66,23 @@ export const sendMessage = (data, socket) => dispatch => {
     .catch(err => {
       console.log(err);
     })
+}
+
+export const uploadChatFiles = (formData, socket) => dispatch => {
+  axios.post('/message/uploadfiles', formData, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  })
+  .then(res => {
+    const { pairId, from, to, message, datetime, type } = res.data.savedMessage;
+    socket.emit('sendMessage', { pairId, from, to, message, datetime, type }, message);
+    dispatch({
+      type: SEND_MESSAGE,
+      payload: res.data.savedMessage,
+    })
+  })
+
 }
 
 export const disconnectSocket = (socket) => dispatch => {
