@@ -17,9 +17,9 @@ const Message = (props) => {
       position={position}
       type={"video"}
       data={{
-        // uri: `${props.text}`
+        uri: `${props.text}`
         // uri: `uploads/sample-mp4-file.mp4`
-        uri: 'https://www.w3schools.com/html/mov_bbb.mp4'
+        // uri: 'https://www.w3schools.com/html/mov_bbb.mp4'
       }}
     />
     :

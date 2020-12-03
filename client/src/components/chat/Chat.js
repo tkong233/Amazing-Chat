@@ -30,15 +30,22 @@ const Chat = (props) => {
     }
   }
 
+  const [errorUpload, setErrorUpload] = useState('');
   const onDrop = async (files) =>{
-    const formData = new FormData();
-    const { pairId, socket, sender, receiver } = props.chat;
-    formData.append("file", files[0]);
-    formData.append("pairId", pairId);
-    formData.append("from", sender);
-    formData.append("to", receiver);
-    formData.append("type", "ImageOrVideoOrAudio");
-    await props.uploadChatFiles(formData, socket);
+    setErrorUpload('')
+    const file_size = files[0].size; //byte 
+    if (file_size <= 11000000){
+      const formData = new FormData();
+      const { pairId, socket, sender, receiver } = props.chat;
+      formData.append("file", files[0]);
+      formData.append("pairId", pairId);
+      formData.append("from", sender);
+      formData.append("to", receiver);
+      formData.append("type", "ImageOrVideoOrAudio");
+      await props.uploadChatFiles(formData, socket);
+    }else{
+      setErrorUpload('File too large, maximum size 11M')
+    }
   }
 
   return (socket) ? (
@@ -69,6 +76,7 @@ const Chat = (props) => {
               </section>
           )}
       </Dropzone>
+      <div> {errorUpload} </div>
       </div>
     </div>
   ) : null;
