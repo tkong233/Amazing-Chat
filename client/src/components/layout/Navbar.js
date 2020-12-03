@@ -25,7 +25,7 @@ class Navbar extends Component {
               </a>
               <ul className="right hide-on-med-and-down ">
                 <li>
-                  <a href="/chat" className="grey-text text-darken-2" style={{fontWeight: 'bold'}}>
+                  <a href="/video_chat" className="grey-text text-darken-2" style={{fontWeight: 'bold'}}>
                     Start Chat
                   </a>
                 </li>

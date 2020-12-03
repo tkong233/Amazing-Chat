@@ -6,7 +6,7 @@
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "node server.js",
-    "server": "nodemon server.js",
+    "server": "node-env-run --exec nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
@@ -32,9 +32,13 @@
     "socket.io": "^3.0.1",
     "socket.io-client": "^3.0.1",
     "supertest": "^6.0.1",
+    "twilio": "^3.33.0",
+    "twilio-video": "^2.8.0",
     "validator": "^10.9.0"
   },
   "devDependencies": {
+    "express-pino-logger": "^4.0.0",
+    "node-env-run": "^4.0.2",
     "nodemon": "^2.0.6"
   },
   "jest": {

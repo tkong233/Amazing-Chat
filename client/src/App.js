@@ -16,7 +16,7 @@ import Reset from "./components/auth/Reset";
 import Profile from "./components/Profile";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
-import Chat from "./components/chat/Chat";
+import VideoChat from "./components/videoChat/VideoChat";
 import ViewStatus from "./components/user_status/ViewStatus";
 import PostStatus from "./components/user_status/PostStatus";
 
@@ -62,7 +62,7 @@ class App extends Component {
             {/* <Route exact path="/profile" component={Profile} /> */}
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute exact path="/chat" component={Chat} />
+              <PrivateRoute exact path="/video_chat" component={VideoChat} />
               <PrivateRoute exact path="/profile" component={Profile} />
               <PrivateRoute exact path="/post_status" component={PostStatus} />
               <PrivateRoute exact path="/status" component={ViewStatus} />
