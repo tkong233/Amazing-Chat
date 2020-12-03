@@ -4,14 +4,8 @@ const { chatToken, videoToken, voiceToken } = require('./tokens');
 const config = require('./config');
 
 const sendTokenResponse = (token, res) => {
-  console.log(token.toJwt());
-  res.status(200).json({token: token.toJwt()});
-  // res.set("Content-Type", "application/json");
-  // res.send(
-  //   JSON.stringify({
-  //     token: token.toJwt(),
-  //   })
-  // );
+  res.status(200).json({token: token.toJwt()})
+  .catch(err => res.status(400).json(err));
 };
 // twilio routes
 router.get("/api/greeting", (req, res) => {
