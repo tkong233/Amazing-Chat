@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import Lobby from "./Lobby";
 import Room from "./Room";
 import axios from "axios";
-import './chat.css';
+// import './chat.css';
 
 
 const VideoChat = () => {

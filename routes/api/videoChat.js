@@ -5,7 +5,7 @@ const config = require('./config');
 
 const sendTokenResponse = (token, res) => {
   res.status(200).json({token: token.toJwt()})
-  .catch(err => res.status(400).json(err));
+  // .catch(err => res.status(400).json(err));
 };
 // twilio routes
 router.get("/api/greeting", (req, res) => {
