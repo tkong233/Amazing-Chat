@@ -9,11 +9,16 @@ const users = require("./routes/api/users");
 const contacts = require("./routes/api/contact");
 const status = require("./routes/api/status");
 const chat = require("./routes/api/chat");
+const videoChat = require("./routes/api/videoChat");
 // const chat = require('./routes/chat');
 const fileUpload = require('express-fileupload');
 
+// import for twilio
+const pino = require('express-pino-logger')();
+
 const app = express();
-app.use(cors());
+// app.use(cors());
+// app.use(pino);
 
 // create http server to initialize socketio
 const server = require('http').createServer(app);
@@ -57,6 +62,7 @@ app.use("/api/users", users);
 app.use(contacts);
 app.use(status);
 app.use(chat);
+app.use(videoChat);
 
 // socket.io
 const socketio = require('socket.io');
@@ -87,6 +93,7 @@ io.on('connect', (socket) => {
     console.log('user had left!');
   });
 });
+
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
