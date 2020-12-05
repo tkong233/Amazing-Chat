@@ -30,6 +30,7 @@ const Messages = (props) => {
           text={m.message}
           sender={m.from}
           user={sender}
+          type={m.type}
         />
       )
     )
