@@ -37,7 +37,7 @@ const Chat = (props) => {
     if (file_size <= 11000000){
       const formData = new FormData();
       const { pairId, socket, sender, receiver } = props.chat;
-      formData.append("file", files[0]);
+      formData.append("NonTextfile", files[0]);
       formData.append("pairId", pairId);
       formData.append("from", sender);
       formData.append("to", receiver);
