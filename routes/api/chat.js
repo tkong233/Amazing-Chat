@@ -18,7 +18,8 @@ const S3 = new AWS.S3({
   // secretAccessKey: process.env.AWS_SECRET_KEY,
   // Bucket: process.env.AWS_S3_BUCKET,
   // sessionToken: process.env.AWS_SESSION_TOKEN
-})
+});
+
 // @route GET /messages/:pairId
 // @descript get list of messages for the specified pairId
 // @access Public
@@ -88,7 +89,7 @@ const storage = multerS3({
   }
 });
 const upload = multer({storage: storage}).single('NonTextfile')
-// const upload = multer({dest: 'uploads/'}).single('NonTextfile');
+
 router.post("/message/uploadfiles/", (req, res) => {
   upload(req, res, (error) => {
     if (error){
@@ -97,23 +98,8 @@ router.post("/message/uploadfiles/", (req, res) => {
     if (req.files === null) {
       return res.status(400).json({ msg: "No file uploaded" });
     };
-    // const file = req.files.file;
-    // const time = Date.now();
-    // move file to s3
-    // const params = {
-    //   Bucket: process.env.AWS_S3_BUCKET,
-    //   Key: `${time}_${file.name}`,
-    //   Body: file.data
-    // }
-    // S3.upload(params, (error, data)=> {
-    //   if (error){
-    //     res.status(500).send(error);
-    //   }else{
-    //     res.status
-    //   }
-    // })
     const { pairId, from, to, type } = req.body;
-    console.log(req.file);
+    // console.log(req.file);
     const message = req.file.location;
     const newMessage = new Message({
       pairId,
