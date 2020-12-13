@@ -10,10 +10,10 @@ const Message = require("../../models/Message");
 const User = require("../../models/User");
 
 const S3 = new AWS.S3({
-  accessKeyId: 'ASIA2Q43VL2W3N57GPNH',
-  secretAccessKey: 'VICkytQe9sHOQu4Jbo1+eC9YgLQkjG+OXRUK43+X',
+  accessKeyId: 'ASIA2Q43VL2W2ZW3J3KF',
+  secretAccessKey: 'Mahg4zp9+W26Xzwsj0FPjez91E9qakbdIfxNJty/',
   Bucket: process.env.AWS_S3_BUCKET,
-  sessionToken: 'FwoGZXIvYXdzEOj//////////wEaDGjjiSVsUUJgj90blyLFASw6piIwb1+k465Fxcg2q+jr33Qu4DkE7LhjQMNj/icb39O/MzS0vpNySRYaVxljXJD/RRTVlyr92E6Z6FamTNSTYFHLj+wWfo0Or37LN19QWepzVDyreCfR9XK4Vb5NtL0Vm+SCDl01FQ5Kjph074CZLjmWoWdctfkXaiibp8wYo1cx03xdd5raIXpwKkj7rkLJqRbjq8tV6GP8IEzqsUQkvtj3eBNVKP6Z+XiNc0UYvovE3EM8KCYnqnMID4HgveSG3ExpKNuKx/4FMi0BLMmVpxezHr4HivUbQFwML810kMRtKAXAQWYwEYo5t5YJyhYtSFOoQspB2+Y='
+  sessionToken: 'FwoGZXIvYXdzEDwaDDA9qnzilPrIrSQsQCLFAe3SK3JT7olZMTfjxWtFSAwt7nH0n/PWf61qMYzhBnyv1iHHW/D35Vus+tJsea6yxNkcLHdD3d7DrJha0DfcVq3Ch1x1fMUoHgxUbIcyCi6SHtAVHAtLHrnBJ/iiRfl3rZ1YqH9hxz2weegFakqa8ip5oLXC7lfw3mlKlGAJGaVPf/DTMvbQO3DMTiGxvQQ5Ab+jojSqqM3CzFjqC0q6wxF7abVTtNCtAxUGg40R1laZ4HOM+Y3m6kyL68EyAP3V0Z/btoJRKIK+2f4FMi3sIQZTnFZtkxn334q/tQ9ZZwVFU6Iid6HGkvA5RRfYDGzXJxwEzpW8DM/0fN4='
   // accessKeyId: process.env.AWS_ACCESS_ID,
   // secretAccessKey: process.env.AWS_SECRET_KEY,
   // Bucket: process.env.AWS_S3_BUCKET,
