@@ -8,7 +8,7 @@ const Message = (props) => {
   const position = (sender === user) ? 'right' : 'left';
   const style = (position === 'left') ? {textAlign: 'left'} : {textAlign:"right"}
 
-  if (props.text.substring(0, 8) === "uploads/"){
+  if (props.text.substring(0, 45) === "https://cis557-amazing-chat.s3.amazonaws.com/"|| "uploads/"){
     const file_ext = props.text.substring(props.text.length - 3, props.text.length);
       if ( file_ext === 'mp4' || file_ext === 'webm' || file_ext === 'avi' || file_ext === 'mov'){
         return (

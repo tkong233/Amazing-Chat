@@ -11,7 +11,7 @@ const status = require("./routes/api/status");
 const chat = require("./routes/api/chat");
 const videoChat = require("./routes/api/videoChat");
 // const chat = require('./routes/chat');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 
 // import for twilio
 const pino = require('express-pino-logger')();
@@ -23,7 +23,7 @@ const app = express();
 // create http server to initialize socketio
 const server = require('http').createServer(app);
 
-app.use(fileUpload());
+// app.use(fileUpload());
 
 // Bodyparser middleware
 app.use(
