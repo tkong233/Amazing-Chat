@@ -310,6 +310,174 @@ paths:
           description: successfully suggested contacts
         404:
           description: No suggestion found
+          
+  /allusers:
+    get:
+      tags:
+        - "Contact"
+      description: get a list of all registered users
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successfully get all the users
+
+  /messages/:pairId:
+    get:
+      tags:
+        - "Chat"
+      description: get list of messages for the specified pairId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: pairId
+          description: unique id between pair of users
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully get the messages
+        404:
+          description: error getting messages
+
+  /message:
+    post:
+      tags:
+        - "Chat"
+      description: post a new message, store the message in db and update last interact time accordingly
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: pairId, from, to, message, type
+          description: identifiers of the two users sending the message, message content and messgae type
+          required: true
+          schema:
+            type: object
+            required:
+              - pairId
+              - from
+              - to
+              - message
+              - type
+            properties:
+              pairId:
+                type: string
+              from:
+                type: string
+              to:
+                type: string
+              message:
+                type: string
+              type:
+                type: string
+      responses:
+        200:
+          description: message saved
+        400:
+          description: receiver does not exist or is not a contact with sender/sender does not exist or is not a contact with receiver
+          
+  /message/uploadfiles:
+    post:
+      tags:
+        - "Chat"
+      description: post a new message with file (image, video, audio) upload, store the message in db and update last interact time accordingly
+      produces:
+        - application/json
+      parameters:
+        - in: formdata
+          name: file
+          description: file (image, video, audio) to upload
+          required: true
+          type: file
+        - in: body
+          name: pairId, from, to, message, type
+          description: identifiers of the two users sending the message, message content and messgae type
+          required: true
+          schema:
+            type: object
+            required:
+              - pairId
+              - from
+              - to
+              - message
+              - type
+            properties:
+              pairId:
+                type: string
+              from:
+                type: string
+              to:
+                type: string
+              message:
+                type: string
+              type:
+                type: string
+      responses:
+        200:
+          description: Message saved
+        400:
+          description: No file upload /  receiver does not exist or is not a contact with sender/sender does not exist or is not a contact with receiver
+        500:
+          description: Network error
+
+  /status/:email:
+    get:
+      tags:
+        - "Status"
+      description: get user status who is identified by email
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: user email
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully found and return a list of status of the user
+        404:
+          description: user not found   
+  
+  /status/seen/:email/:id:
+    post:
+      tags:
+        - "Status"
+      description: update the list of user status user has seen
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email, id
+          description: user email and id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully updated user status seen list
+        404:
+          description: user not found
+          
+  /api/greeting:
+    get:
+      tags:
+        - "videoChat"
+      description: greeting a user by name
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: name
+          description: name of the user
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully get name
+          
+          
 definitions:
   User:
     type: object
