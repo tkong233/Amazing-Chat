@@ -84,23 +84,23 @@ describe('Test /reset endpoint', () =>{
 });
 
 describe('Test upload profile picture',()=>{
-    test('Successfully upload profile picture', async ()=>{
-        // const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
-        const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`
-        const email = 'test2@test2.com';
-        return request(app).post(`/api/users/upload_profile_image/${email}/`)
-        // .set('Authorization', `Bearer ${process.env.testUserJWT}`)
-        .attach('file', testImage)
-        .expect(200)
-    });
+    // test('Successfully upload profile picture', async ()=>{
+    //     // const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
+    //     const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`
+    //     const email = 'test2@test2.com';
+    //     return request(app).post(`/api/users/upload_profile_image/${email}/`)
+    //     // .set('Authorization', `Bearer ${process.env.testUserJWT}`)
+    //     .attach('file', testImage)
+    //     .expect(200)
+    // });
 
-    test('cannot find user profile when uploading', async ()=>{
-        const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`;
-        const email = 'tgafkb2@test2.com';
-        return request(app).post(`/api/users/upload_profile_image/${email}/`)
-        .attach('file', testImage)
-        .expect(404)
-    });
+    // test('cannot find user profile when uploading', async ()=>{
+    //     const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`;
+    //     const email = 'tgafkb2@test2.com';
+    //     return request(app).post(`/api/users/upload_profile_image/${email}/`)
+    //     .attach('file', testImage)
+    //     .expect(404)
+    // });
 
     test('fail to upload profile picture', async()=>{
         const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`;
@@ -130,13 +130,13 @@ describe('Test upload profile picture',()=>{
             });
     });
 
-    test('post status picture', async ()=>{
-        // const testImage = `${__dirname}/../../client/public/uploads/status/4.jpg`;
-        const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/status/4.jpg`
-        const email = 'test2@test2.com';
-        return request(app).post(`/api/users/status/${email}/`)
-        .attach('file', testImage)
-        .expect(200)
-    });
+    // test('post status picture', async ()=>{
+    //     // const testImage = `${__dirname}/../../client/public/uploads/status/4.jpg`;
+    //     const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/status/4.jpg`
+    //     const email = 'test2@test2.com';
+    //     return request(app).post(`/api/users/status/${email}/`)
+    //     .attach('file', testImage)
+    //     .expect(200)
+    // });
 })
 
