@@ -1,13 +1,13 @@
 const app = require("../server");
 const request = require('supertest');
 
-describe('Test root endpoint', () => {
-    test('root endpoint response type and content', async () => {
-        return request(app).get('/message').expect(200).then(response => {
-            expect(JSON.stringify(response.text)).toMatch(/Welcome to our chat app/);
-        });
-    });
-});
+// describe('Test root endpoint', () => {
+//     test('root endpoint response type and content', async () => {
+//         return request(app).get('/message').expect(200).then(response => {
+//             expect(JSON.stringify(response.text)).toMatch(/Welcome to our chat app/);
+//         });
+//     });
+// });
 
 describe('Test DELETE api/users/profile/:email', ()=>{
     test('user deleted', ()=>{
@@ -83,7 +83,7 @@ describe('Test /reset endpoint', () =>{
     });
 });
 
-describe('Test upload picture',()=>{
+describe('Test upload profile picture',()=>{
     test('Successfully upload profile picture', async ()=>{
         // const testImage = `${__dirname}/../../client/public/uploads/1.jpg`;
         const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`
@@ -102,13 +102,41 @@ describe('Test upload picture',()=>{
         .expect(404)
     });
 
-    test('fail to upload', async()=>{
+    test('fail to upload profile picture', async()=>{
         const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/1.jpg`;
         const email = 'test2@test2.com';
         return request(app).post(`/api/users/upload_profile_image/${email}/`)
         // .set('Authorization', `Bearer ${process.env.testUserJWT}`)
         .attach('name', testImage)
         .expect(500)
-    })
+    });
+    
+    test('post status user not exist', async()=>{    
+        const email = 'testNonExist@test.com';
+        return request(app).post(`/api/users/status/${email}/`)
+        .expect(404)
+        .then(response => {
+            expect(JSON.stringify(response.text)).toMatch("\"{\\\"usernotfound\\\":\\\"Can't find user profile\\\"}\"");
+            });
+    });
+
+    test('post status only text', async()=>{
+        const email = 'test2@test2.com';
+        return request(app).post(`/api/users/status/${email}/`)
+        .send('text=busy')
+        .expect(200)
+        .then(response => {
+            expect(JSON.stringify(response.text)).toMatch("\"{\\\"message\\\":\\\"status added successfully\\\"}\"");
+            });
+    });
+
+    test('post status picture', async ()=>{
+        // const testImage = `${__dirname}/../../client/public/uploads/status/4.jpg`;
+        const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/status/4.jpg`
+        const email = 'test2@test2.com';
+        return request(app).post(`/api/users/status/${email}/`)
+        .attach('file', testImage)
+        .expect(200)
+    });
 })
 

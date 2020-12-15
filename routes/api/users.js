@@ -164,12 +164,12 @@ router.post("/reset", (req, res) => {
       errors.email = "Email is not registered";
       return res.status(400).json(errors);
     } else if (!Validator.equals(user.question, question)) {
-      console.log("Security question does not match record");
+      // console.log("Security question does not match record");
       return res
         .status(400)
         .json({ question: "Security question does not match record" });
     } else if (!Validator.equals(user.answer, answer)) {
-      console.log("Answer to security question does not match record");
+      // console.log("Answer to security question does not match record");
       return res
         .status(400)
         .json({ answer: "Answer to security question does not match record" });

@@ -38,7 +38,7 @@ const SuggestionList = (props) => {
   suggestion = suggestion.slice(0, 3);
 
   return (
-    <List className={classes.root} alignItems="flex-start">
+    <List className={classes.root} alignItems="flex-start" data-test = "SuggestionListComponent">
     <ListItem>
       <ListItemIcon>
         <PersonAddIcon/>

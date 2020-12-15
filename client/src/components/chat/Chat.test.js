@@ -1,81 +1,64 @@
 import React from 'react';
 import Chat from './Chat';
 import {shallow} from 'enzyme';
+import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16'; 
+import { applyMiddleware, createStore } from 'redux';
+import {middleware} from '../../store';
+import rootReducer from '../../reducers/index'
 
 Enzyme.configure({
     adapter: new EnzymeAdapter(),
 });
 
+const setUp = (initialState={}) =>{
+
+    const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
+    const store = createStoreWithMiddleware(rootReducer, initialState);
+    const wrapper = shallow(<Chat store={store} />).dive();
+    // console.log(wrapper.debug());
+    return wrapper;
+}
 
 describe('Chat Component', ()=>{
+    describe('Checking PropTypes', ()=>{
+        it('Should not throw a warning', ()=>{
+            const expectedProps = {
+                chat: {},
+                user: {},
+            }
+            // eslint-disable-next-line react/forbid-foreign-prop-types
+            const propsErr = checkPropTypes(Chat.propTypes, expectedProps, 'props', Chat.name);
+            expect(propsErr).toBeUndefined();
+        })
+    });
     describe('Renders', ()=>{
         let wrapper;
         beforeEach(()=>{
-            wrapper = shallow(<Chat />);
+            const initialState = {
+                auth:{user: {
+                    name: 'testuser',
+                    email: 'testuser@test.com',
+                    profile_picture: 'testpicture'
+                }},
+                chat:{
+                    messages:[],
+                    socket: ''
+                }
+            };
+            wrapper = setUp(initialState);
         });
-        
-        it('Should render chat', ()=>{
-            const join = wrapper.find(`[data-test='ChatComponent']`);
-            expect(join.length).toBe(1);
-        });
+
+        // it('Should render without errors', ()=>{
+        //     const container = wrapper.find(`[data-test='ChatComponent']`);
+        //     expect(container.length).toBe(1);
+        // });
 
         it('Snapshot testing', ()=>{
             expect(wrapper).toMatchSnapshot();
         });
-    });
 
-    describe('Event Handlers', ()=>{
-        let wrapper;
-        beforeEach(()=>{
-            wrapper = shallow(<Chat />);
-        });
-        it('OnChange event editting message', ()=>{
-            const value = 'good day';
-            wrapper.find('input').at(0).simulate('change', {
-                target: {value}
-            });
-            expect(wrapper.state('message')).toStrictEqual('good day');
-        });
-
-        it('successfully join the room', ()=>{
-            const classInstance = wrapper.instance();
-            const value = 'abc';
-            classInstance.setState({room: '1', username:'testuser'});
-            wrapper.find('Join').simulate('change', {
-                target: {value}
-            });
-            wrapper.find('Join').simulate('submit', {
-                preventDefault: () => {}
-            });
-            expect(wrapper.state('joined')).toBe(true);
-        });
-        
-        it('should send message', ()=>{
-            const classInstance = wrapper.instance();
-            classInstance.setState({room: '1', username:'testuser2', joined: true});
-            const value = 'good day';
-            wrapper.find('input').at(0).simulate('change', {
-                target: {value}
-            });
-            wrapper.find('input').at(0).simulate('keypress', {
-                preventDefault: () => {},
-                key: 'Enter'
-            })
-            expect(wrapper.state('message')).toStrictEqual('');
-        });
-
-        it('should add message to list', ()=>{
-            const classInstance = wrapper.instance();
-            const message = 'good good good';
-            const user = 'testuser3';
-            classInstance.addMessageToList(message, user);
-            expect(classInstance.state.messages).toStrictEqual(
-                [{
-                    text:'good good good', sender: 'testuser3',}]
-                );
-        })
 
     });
 });

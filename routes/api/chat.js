@@ -82,7 +82,7 @@ router.post('/message', (req, res) => {
 // @access private
 const storage = multerS3({
   s3: S3,
-  bucket: process.env.AWS_S3_BUCKET,
+  bucket: 'cis557-amazing-chat',
   acl: 'public-read',
   key: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`)

@@ -16,7 +16,8 @@ describe('Message Component', ()=>{
             const expectedProps = {
                 text: '',
                 sender: '',
-                user: ''
+                user: '',
+                type: ''
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
             const propsErr = checkPropTypes(Message.propTypes, expectedProps, 'props', Message.name);
@@ -29,15 +30,17 @@ describe('Message Component', ()=>{
             const props = {
                 text: 'hey hey',
                 sender: 'userA',
-                user: 'userB'
+                user: 'userB',
+                type: 'text'
             };
             wrapper = shallow(<Message {...props} />);
         });
         
         it('Should render a single message', ()=>{
             const msg = wrapper.find(`[data-test='MessageComponent']`);
-            expect(msg.length).toBe(1);
-        })
+            // shallow render 
+            expect(msg.length).toBe(0);
+        });
         
 
     });

@@ -44,7 +44,7 @@ class PostStatus extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container" data-test = "postStatusComponent">
         <div className="row">
           <form className="col s6">
             <div className="row">
@@ -90,7 +90,7 @@ class PostStatus extends React.Component {
             </div>
             <div className="row">
               <Box display="flex" justifyContent="space-around" p={2}>
-                <Button
+                <Button id="button"
                   style={{ color: "white", backgroundColor: "#455a64" }}
                   variant="contained"
                   onClick={this.onSubmit}

@@ -75,7 +75,7 @@ class Reset extends React.Component {
                     invalid: errors.email,
                   })}
                 />
-                {console.log(errors)}
+                {/* {console.log(errors)} */}
                 <label htmlFor="email">Email</label>
                 <span className="red-text">{errors.email}</span>
               </div>
