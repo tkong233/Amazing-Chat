@@ -1,5 +1,5 @@
 import React from 'react';
-import Messages from './Messages';
+import ContactList from './ContactList';
 import {shallow} from 'enzyme';
 import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
@@ -16,19 +16,20 @@ const setUp = (initialState={}) =>{
 
     const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    const wrapper = shallow(<Messages store={store} />).dive();
+    const wrapper = shallow(<ContactList store={store} />).dive();
     // console.log(wrapper.debug());
     return wrapper;
 }
 
-describe('Messages Component', ()=>{
+describe('ContactList Component', ()=>{
     describe('Checking PropTypes', ()=>{
         it('Should not throw a warning', ()=>{
             const expectedProps = {
-                chat: {},
+                contact: {},
+                user: {},
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
-            const propsErr = checkPropTypes(Messages.propTypes, expectedProps, 'props', Messages.name);
+            const propsErr = checkPropTypes(ContactList.propTypes, expectedProps, 'props', ContactList.name);
             expect(propsErr).toBeUndefined();
         })
     });
@@ -36,17 +37,17 @@ describe('Messages Component', ()=>{
         let wrapper;
         beforeEach(()=>{
             const initialState = {
-                chat:{
-                    messages:[],
-                    sender: 'userA',
-                    receiver: 'userB'
-                }
+                auth:{user: {
+                    name: 'testuser',
+                    email: 'testuser@test.com',
+                    profile_picture: 'testpicture'
+                }}
             };
             wrapper = setUp(initialState);
         });
 
         it('Should render without errors', ()=>{
-            const container = wrapper.find(`[data-test='MessagesComponent']`);
+            const container = wrapper.find(`[data-test='ContactListComponent']`);
             expect(container.length).toBe(1);
         });
 

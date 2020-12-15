@@ -60,7 +60,7 @@ const ContactCard = (props) => {
   }
 
   return (
-    <div>
+    <div data-test = "ContactCardComponent">
         <ListItem onClick={launchChat}>
           <ListItemAvatar>
             <Avatar alt={name} src={profilePicture}/>

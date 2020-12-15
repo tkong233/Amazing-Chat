@@ -56,7 +56,7 @@ const Message = (props) => {
       }
   }else{
     return(
-      <div>
+      <div data-test='MessageComponent'>
         <MessageBox
         className="message-bubble"
         position={position}

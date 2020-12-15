@@ -31,7 +31,7 @@ const ContactList = (props) => {
   contacts = contacts.sort((a, b) => (a.lastInteractTime < b.lastInteractTime) ? 1 : (a.lastInteractTime > b.lastInteractTime) ? -1 : 0);
 
   return (
-    <List className={classes.root} alignItems="flex-start">
+    <List className={classes.root} alignItems="flex-start" data-test = "ContactListComponent">
     <ListItem>
       <ListItemIcon>
         <PermContactCalendarIcon />
