@@ -14,7 +14,7 @@ const videoChat = require("./routes/api/videoChat");
 // const fileUpload = require('express-fileupload');
 
 // import for twilio
-const pino = require('express-pino-logger')();
+// const pino = require('express-pino-logger')();
 
 const app = express();
 // app.use(cors());
