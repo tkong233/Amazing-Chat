@@ -189,6 +189,9 @@ router.post("/reset", (req, res) => {
   });
 });
 
+// @route POST /upload_profile_image/:email
+// @desc upload profile image
+// @access Private
 router.post("/upload_profile_image/:email", (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
@@ -307,23 +310,5 @@ router.post("/status/:email", (req, res) => {
     });
   }
 });
-
-// @route GET api/users/profile/:id
-// @desc Get user info
-// @access Public?
-// router.get("/profile/:id", (req, res)=>{
-//   const params = req.params.id;
-//   User.findOne({_id: new mongodb.ObjectId(params)}).then(user =>{
-//     if (!user){
-//       return res.status(404).json({usernotfound: "Can't find user profile"});
-//     }
-//     return res.json({
-//       name: user.name,
-//       emai: user.email,
-//       profile_picture: user.profile_picture,
-//       date: user.date
-//     });
-//   });
-// });
 
 module.exports = router;

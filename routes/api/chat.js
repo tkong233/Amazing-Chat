@@ -8,17 +8,11 @@ const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const Message = require("../../models/Message");
 const User = require("../../models/User");
+const config = require('./config');
 
-const S3 = new AWS.S3({
-  // accessKeyId: 'ASIA2Q43VL2WQL2M3W66',
-  // secretAccessKey: 'iNoLTuJN4yUn72k0ZAZgMcpVqkGVbJMo1lLOPF6i',
-  // Bucket: process.env.AWS_S3_BUCKET,
-  // sessionToken: 'FwoGZXIvYXdzEJ///////////wEaDFxrO21fxE3wEat7hyLFAW2Q3XOAbPJl2mrkhqe+Na7BAwB2SlI8/1jpPa+GRvNS5OBgk4Ye0GHvODjUXpdbd2WXN3RVWkIZn6aIFoEVi/QTVnW+WpmwARWoFRL4Q7NTqV0P9Q2Q3AwrPDk7aTPuPReFrahqf162ObU0tRS6ecYHOMPwK+hgyeShLNtJpJB+AOJz1tLy74Ugio+1/42kLW4gB+qZr5L6Hdcnnbs6V3km6USx4OQlCyZ5KlgCrlRTXzPshJjhu3Ia3t+5igmrhyswdBi0KKyX7/4FMi1CJx3qsTor5Fzm9+P5mXobRcex6HhsXVlQwsGPKE7qmw7cbYhIIorsZqJ295c='
-
-  accessKeyId: 'AKIATVUUHFK6L5D5FSQZ',
-  secretAccessKey: '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',
-  Bucket: 'cis557',
-});
+const S3 = new AWS.S3(
+  config.s3
+);
 
 // @route GET /messages/:pairId
 // @descript get list of messages for the specified pairId
@@ -82,7 +76,7 @@ router.post('/message', (req, res) => {
 // @access private
 const storage = multerS3({
   s3: S3,
-  bucket: 'cis557-amazing-chat',
+  bucket: config.s3.Bucket,
   acl: 'public-read',
   key: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`)
