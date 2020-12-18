@@ -208,6 +208,7 @@ const storage = multerS3({
   },
 });
 const upload = multer({ storage: storage }).single("NonTextfile");
+
 router.post("/upload_profile_image/:email", (req, res) => {
   const email = req.params.email;
   upload(req, res, (error) => {
@@ -227,34 +228,6 @@ router.post("/upload_profile_image/:email", (req, res) => {
     })
     .catch(err => res.status(400).json(err));
   });
-
-  
-  // if (req.files === null) {
-  //   return res.status(400).json({ msg: "No file uploaded" });
-  // }
-  // const email = req.params.email;
-
-  // const file = req.files.file;
-  // file.mv(`${__dirname}/../../client/public/uploads/${file.name}`, (err) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return res.status(500).send(err);
-  //   }
-
-  //   User.findOne({ email: email }).then((user) => {
-  //     if (!user) {
-  //       return res
-  //         .status(404)
-  //         .json({ usernotfound: "Can't find user profile" });
-  //     }
-  //     user.profile_picture = `/uploads/${file.name}`;
-  //     user
-  //       .save()
-  //       .then(() => console.log("updated user profile picture path"))
-  //       .catch((err) => console.log(err));
-  //     res.json({ user: user });
-  //   });
-  // });
 });
 
 // @route DELETE api/users/profile/:email
@@ -277,87 +250,41 @@ router.delete("/profile/:email", (req, res) => {
 router.post("/status/:email", (req, res) => {
   const email = req.params.email;
   // if an image is uploaded
-  if (req.files) {
-    const file = req.files.file;
-    file.mv(
-      `${__dirname}/../../client/public/uploads/status/${file.name}`,
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send(err);
+    // const file = req.files.file;
+    upload(req, res, (error) => {
+      if (error) {
+        console.log("errors", error);
+      }
+      User.findOne({ email }).then((user) => {
+        if (!user) {
+          return res
+            .status(404)
+            .json({ usernotfound: "Can't find user profile" });
         }
-        User.findOne({ email }).then((user) => {
-          if (!user) {
+        const statusId = new mongoose.Types.ObjectId();
+        const image = req.file.location;
+        const time = Date.now();
+        // if text is uploaded
+        // if (req.body) {
+        const text = req.body.text;
+        const newStatus = {
+            statusId,
+            image,
+            text,
+            time,
+          };
+        user.status.push(newStatus);
+        user
+          .save()
+          .then((_) => {
             return res
-              .status(404)
-              .json({ usernotfound: "Can't find user profile" });
-          }
-          const statusId = new mongoose.Types.ObjectId();
-          const image = `/uploads/status/${file.name}`;
-          const time = Date.now();
-          // if text is uploaded
-          if (req.body) {
-            const text = req.body.text;
-            const newStatus = {
-              statusId,
-              image,
-              text,
-              time,
-            };
-            user.status.push(newStatus);
-            user
-              .save()
-              .then((_) => {
-                return res
-                  .status(200)
-                  .json({ message: "status added successfully" });
-              })
-              .catch((err) => console.log(err));
-          } else {
-            const newStatus = {
-              statusId,
-              image,
-              time,
-            };
-            user.status.push(newStatus);
-            user
-              .save()
-              .then((_) => {
-                return res
-                  .status(200)
-                  .json({ message: "status added successfully" });
-              })
-              .catch((err) => console.log(err));
-          }
-        });
-      }
-    );
-  }
-  // no image is uploaded
-  else {
-    User.findOne({ email }).then((user) => {
-      if (!user) {
-        return res
-          .status(404)
-          .json({ usernotfound: "Can't find user profile" });
-      }
-      const statusId = new mongoose.Types.ObjectId();
-      const time = Date.now();
-      const text = req.body.text;
-      const newStatus = {
-        statusId,
-        text,
-        time,
-      };
-      user.status.push(newStatus);
-      user
-        .save()
-        .then((_) => {
-          return res.status(200).json({ message: "status added successfully" });
+              .status(200)
+              .json({ message: "status added successfully" });
+          })
+          .catch((err) => console.log(err));
         })
-        .catch((err) => console.log(err));
-    });
-  }
+      })
+  // }
 });
 
 module.exports = router;

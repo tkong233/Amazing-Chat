@@ -35,8 +35,12 @@ class PostStatus extends React.Component {
         console.log("no image or text");
         return;
     }
+    if (!this.state.image || !this.state.text) {
+      alert("You have to add both text and image!");
+      return;
+    }
     const formData = new FormData();
-    formData.append("file", this.state.image);
+    formData.append("NonTextfile", this.state.image);
     formData.append("text", this.state.text);
     const { email } = this.props.user;
     this.props.doPostStatus(formData, email, this.props.history);
@@ -44,9 +48,9 @@ class PostStatus extends React.Component {
 
   render() {
     return (
-      <div className="container" data-test = "postStatusComponent">
+      <div className="container" data-test = "postStatusComponent" style={{marginTop: "50px"}}>
         <div className="row">
-          <form className="col s6">
+          <form className="col s12">
             <div className="row">
               <div className="input-field col s12">
                 <input id="last_name" type="text" className="validate" onChange={this.onTextChange}/>

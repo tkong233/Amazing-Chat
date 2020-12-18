@@ -134,7 +134,7 @@ describe('Test upload profile picture',()=>{
     //     // const testImage = `${__dirname}/../../client/public/uploads/status/4.jpg`;
     //     const testImage = `/home/travis/build/cis557/project-video-and-messaging-web-app-tong-lingxue-fangyu/client/public/uploads/status/4.jpg`
     //     const email = 'test2@test2.com';
-    //     return request(app).post(`/api/users/status/${email}/`)
+    //     return request(app).post(`/api/${email}/`)
     //     .attach('file', testImage)
     //     .expect(200)
     // });
