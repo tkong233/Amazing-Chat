@@ -10,10 +10,14 @@ const Message = require("../../models/Message");
 const User = require("../../models/User");
 
 const S3 = new AWS.S3({
-  accessKeyId: 'ASIA2Q43VL2WQL2M3W66',
-  secretAccessKey: 'iNoLTuJN4yUn72k0ZAZgMcpVqkGVbJMo1lLOPF6i',
-  Bucket: process.env.AWS_S3_BUCKET,
-  sessionToken: 'FwoGZXIvYXdzEJ///////////wEaDFxrO21fxE3wEat7hyLFAW2Q3XOAbPJl2mrkhqe+Na7BAwB2SlI8/1jpPa+GRvNS5OBgk4Ye0GHvODjUXpdbd2WXN3RVWkIZn6aIFoEVi/QTVnW+WpmwARWoFRL4Q7NTqV0P9Q2Q3AwrPDk7aTPuPReFrahqf162ObU0tRS6ecYHOMPwK+hgyeShLNtJpJB+AOJz1tLy74Ugio+1/42kLW4gB+qZr5L6Hdcnnbs6V3km6USx4OQlCyZ5KlgCrlRTXzPshJjhu3Ia3t+5igmrhyswdBi0KKyX7/4FMi1CJx3qsTor5Fzm9+P5mXobRcex6HhsXVlQwsGPKE7qmw7cbYhIIorsZqJ295c='
+  // accessKeyId: 'ASIA2Q43VL2WQL2M3W66',
+  // secretAccessKey: 'iNoLTuJN4yUn72k0ZAZgMcpVqkGVbJMo1lLOPF6i',
+  // Bucket: process.env.AWS_S3_BUCKET,
+  // sessionToken: 'FwoGZXIvYXdzEJ///////////wEaDFxrO21fxE3wEat7hyLFAW2Q3XOAbPJl2mrkhqe+Na7BAwB2SlI8/1jpPa+GRvNS5OBgk4Ye0GHvODjUXpdbd2WXN3RVWkIZn6aIFoEVi/QTVnW+WpmwARWoFRL4Q7NTqV0P9Q2Q3AwrPDk7aTPuPReFrahqf162ObU0tRS6ecYHOMPwK+hgyeShLNtJpJB+AOJz1tLy74Ugio+1/42kLW4gB+qZr5L6Hdcnnbs6V3km6USx4OQlCyZ5KlgCrlRTXzPshJjhu3Ia3t+5igmrhyswdBi0KKyX7/4FMi1CJx3qsTor5Fzm9+P5mXobRcex6HhsXVlQwsGPKE7qmw7cbYhIIorsZqJ295c='
+
+  accessKeyId: 'AKIATVUUHFK6L5D5FSQZ',
+  secretAccessKey: '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',
+  Bucket: 'cis557',
 });
 
 // @route GET /messages/:pairId
