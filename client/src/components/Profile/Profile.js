@@ -13,6 +13,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import Dropzone from 'react-dropzone';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -31,11 +32,11 @@ const Profile = (props) => {
     setImage(profile_picture);
   }, [profile_picture]);
   
-  const onChange = async (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
+  const onDrop = async (files) => {
+    const file = files[0];
+    // console.log(file);
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("NonTextfile", file);
     await props.updatePicture(formData, email);
   };
   
@@ -54,7 +55,20 @@ const Profile = (props) => {
       {/* Update Profile picture */}
       <CardActions>
         <Box display="flex" justifyContent="space-around" paddingLeft={10}>
-          <Button variant="contained" component="label">
+        <Dropzone onDrop={onDrop}>
+          {({ getRootProps, getInputProps }) => (
+              <section>
+                  <div {...getRootProps()}>
+                      <input {...getInputProps()} />                   
+                      <Button 
+                      variant="contained" component="label">
+                        Update your profile picture!
+                      </Button>
+                  </div>
+              </section>
+          )}
+      </Dropzone>
+          {/* <Button variant="contained" component="label">
             Update your profile picture!
             <input
               type="file"
@@ -62,7 +76,7 @@ const Profile = (props) => {
               style={{ display: "none" }}
               onChange={onChange}
             />
-          </Button>
+          </Button> */}
         </Box>
       </CardActions>
     </Card>
