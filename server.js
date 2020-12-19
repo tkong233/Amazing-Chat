@@ -72,7 +72,8 @@ const io = socketio(server, {
       methods: ["GET", "POST"],
       allowedHeaders: ["*"],
       credentials: true
-    }
+    },
+    wsEngine: 'ws'
 });
 
 io.on('connect', (socket) => {
