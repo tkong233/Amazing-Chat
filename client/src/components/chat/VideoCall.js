@@ -22,13 +22,17 @@ const VideoCall = (props) => {
         identity: username,
         room: roomName,
       })
-      .then((data) => setToken(data.data.token))
+      .then((data) => {
+        console.log(data.data.token);
+        setToken(data.data.token)
+      })
       .catch((err) => {
         console.log(err);
       });
   });
 
-  const handleLogout = useCallback((event) => {
+  const handleLogout = useCallback((timeElapsed) => {
+    console.log(timeElapsed);
     setToken(null);
     props.hangUpVideoCall(socket, pairId, sender, receiver);
   }, []);

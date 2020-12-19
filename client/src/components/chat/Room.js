@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import Video from "twilio-video";
 import Button from "@material-ui/core/Button";
 import Participant from "./Participant";
+import Timer from "react-compound-timer";
 
 const Room = ({ roomName, token, handleLogout }) => {
   const [room, setRoom] = useState(null);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
+    setStartTime(new Date());
     const participantConnected = (participant) => {
       setParticipants((prevParticipants) => [...prevParticipants, participant]);
     };
@@ -48,10 +52,20 @@ const Room = ({ roomName, token, handleLogout }) => {
     <Participant key={participant.sid} participant={participant} />
   ));
 
+  // const handleClick = () => {
+  //   const endTime = new Date();
+  //   handleLogout(endTime - startTime);
+  // }
+
   return (
     <div className="room">
       {/* <h2>Room: {roomName}</h2> */}
-      <Button style={{marginTop: "50px"}}variant="contained" color="primary" onClick={handleLogout}>
+      <div style={{marginTop: "50px", display: "flex", justifyContent: "space-between"}}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleLogout}
+      >
         Exit Chat Room
       </Button>
       {/* <button onClick={handleLogout}>Exit Chat Room</button> */}
@@ -65,6 +79,14 @@ const Room = ({ roomName, token, handleLogout }) => {
           ''
         )}
       </div> */}
+      <div className="grey-text text-darken-2" style={{marginTop: "10px"}}>
+        <Timer>
+          <Timer.Hours />{` hours `} 
+          <Timer.Minutes />{` minutes `}  
+          <Timer.Seconds />{` seconds `}  
+        </Timer>
+      </div>
+      </div>
       {/* <h3>Remote Participants</h3> */}
       <div className="remote-participants">{remoteParticipants}</div>
     </div>

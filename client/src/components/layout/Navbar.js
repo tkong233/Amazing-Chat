@@ -24,11 +24,11 @@ class Navbar extends Component {
                 Amazing Chat
               </a>
               <ul className="right hide-on-med-and-down ">
-                <li>
+                {/* <li>
                   <a href="/video_chat" className="grey-text text-darken-2" style={{fontWeight: 'bold'}}>
                     Start Chat
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a href="/post_status" className="grey-text text-darken-2" style={{fontWeight: 'bold'}}>
                     Post Status
