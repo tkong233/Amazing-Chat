@@ -13,7 +13,7 @@ import VideoCall from './VideoCall';
 import './Chat.css';
 
 const Chat = (props) => {
-  const { messages, socket } = props.chat;
+  const { messages, socket, pairId, sender, receiver, receiverName } = props.chat;
   const { name, email } = props.user;
 
   const [message, setMessage] = useState('');
@@ -21,7 +21,7 @@ const Chat = (props) => {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    const { pairId, socket, sender, receiver } = props.chat;
+    
     if (socket && message && pairId && receiver) {
       console.log('sending message: ' + message);
       const data = {
@@ -56,7 +56,6 @@ const Chat = (props) => {
 
   const initiateVideoCall = () => {
     // console.log("initiating video call");
-    const { pairId, socket, sender, receiver } = props.chat;
     props.initiateVideoCall(
       pairId,
       sender,
@@ -67,29 +66,27 @@ const Chat = (props) => {
   }
 
   const handleAcceptVideoCall = () => {
-    const { pairId, socket, sender, receiver } = props.chat;
     props.pickUpVideoCall(socket, pairId, sender, receiver);
   }
 
   const handleRejectVideoCall = () => {
-    const { pairId, socket, sender, receiver } = props.chat;
     props.hangUpVideoCall(socket, pairId, sender, receiver);
   }
 
-  const { ringing, calling } = props.chat;
+  const { ringing, calling, waiting } = props.chat;
   console.log(ringing, calling);
   console.log(props.chat);
   if (socket && !calling) {
     return (
       // Video Call Dialog
       <div className='chat-container' data-test="ChatComponent">
+      {/* Receive Call Window */}
       <Dialog
         open={ringing}
-        // onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"You have a video call"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{`${receiverName} invited you to a video call`}</DialogTitle>
         <DialogActions>
           <Button onClick={handleRejectVideoCall} color="primary">
             Reject
@@ -100,6 +97,19 @@ const Chat = (props) => {
         </DialogActions>
       </Dialog>
 
+      {/* Waiting for Response Window */}
+      <Dialog
+        open={waiting}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`Waiting for ${receiverName} to respond...`}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleRejectVideoCall} color="primary">
+            Hang Up
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* Messages */}
         <Messages/>
 

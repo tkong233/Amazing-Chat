@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
   RECEIVE_NEW_MESSAGES, SEND_MESSAGE, DISCONNECT_SOCKET,
-  RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
+  RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL, INITIATE_VIDEO_CALL,
 } from './types';
 
 export const connectSocket = (socket) => dispatch => {
@@ -11,9 +11,9 @@ export const connectSocket = (socket) => dispatch => {
   })
 }
 
-export const joinRoom = (name, pairId, sender, receiver, socket) => dispatch => {
+export const joinRoom = (senderName, receiverName, sender, receiver, pairId, socket) => dispatch => {
   const data = {
-    name,
+    name: senderName,
     pairId
   };
 
@@ -21,7 +21,7 @@ export const joinRoom = (name, pairId, sender, receiver, socket) => dispatch => 
     socket.emit('join', data);
     dispatch({
       type: JOIN_ROOM,
-      payload: { pairId, sender, receiver }
+      payload: { pairId, sender, receiver, senderName, receiverName }
     })
   } else {
     console.log('can not join room because socket is not valid');
@@ -71,6 +71,9 @@ export const sendMessage = (data, socket) => dispatch => {
 export const initiateVideoCall = (pairId, from, to, socket) => dispatch => {
   console.log('action: initiate video call');
   socket.emit('initiateVideoCall', { pairId, from, to });
+  dispatch({
+    type: INITIATE_VIDEO_CALL
+  })
 }
 
 export const receiveVideoCall = (socket, email) => dispatch => {
