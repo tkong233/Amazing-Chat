@@ -80,11 +80,11 @@ const Room = ({ roomName, token, handleLogout }) => {
         )}
       </div> */}
       <div className="grey-text text-darken-2" style={{marginTop: "10px"}}>
-        {/* <Timer>
+        <Timer>
           <Timer.Hours />{` hours `} 
           <Timer.Minutes />{` minutes `}  
           <Timer.Seconds />{` seconds `}  
-        </Timer> */}
+        </Timer>
       </div>
       </div>
       {/* <h3>Remote Participants</h3> */}

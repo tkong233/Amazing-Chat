@@ -31,7 +31,6 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "react-alert": "^7.0.2",
-    "react-compound-timer": "^1.2.0",
     "socket.io": "^3.0.1",
     "socket.io-client": "^3.0.1",
     "supertest": "^6.0.1",

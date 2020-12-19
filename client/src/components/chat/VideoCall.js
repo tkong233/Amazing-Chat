@@ -19,11 +19,11 @@ const VideoCall = (props) => {
     setRoomName(pairId);
     axios
       .post("/video/token", {
-        identity: username,
-        room: roomName,
+        identity: props.user.name,
+        room: pairId,
       })
       .then((data) => {
-        console.log(data.data.token);
+        // console.log(data.data.token);
         setToken(data.data.token)
       })
       .catch((err) => {
@@ -42,9 +42,9 @@ const VideoCall = (props) => {
   return (
     <div style={{ marginLeft: "3%", marginRight: "3%" }}>
       {/* <h3>This is video call view</h3> */}
-      {/* <h3>{token}</h3>
-      <h3>{username}</h3>
-      <h3>{roomName}</h3> */}
+      {/* <h3>{token}</h3> */}
+      {/* <h3>{username}</h3> */}
+      {/* <h3>{roomName}</h3> */}
       {/* <Button
         variant="contained"
         color="secondary"
