@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-import Lobby from "./Lobby";
 import Room from "./Room";
 import axios from "axios";
 
@@ -31,17 +30,18 @@ const VideoCall = (props) => {
 
   const handleLogout = useCallback((event) => {
     setToken(null);
+    props.hangUpVideoCall(socket, pairId, sender, receiver);
   }, []);
 
   // set
 
   return (
     <div style={{ marginLeft: "3%", marginRight: "3%" }}>
-      <h3>This is video call view</h3>
+      {/* <h3>This is video call view</h3> */}
       {/* <h3>{token}</h3>
       <h3>{username}</h3>
       <h3>{roomName}</h3> */}
-      <Button
+      {/* <Button
         variant="contained"
         color="secondary"
         onClick={() => {
@@ -49,7 +49,7 @@ const VideoCall = (props) => {
         }}
       >
         Hang Up
-      </Button>
+      </Button> */}
       {token && (
         <div className="container">
           <Room roomName={roomName} token={token} handleLogout={handleLogout} />
