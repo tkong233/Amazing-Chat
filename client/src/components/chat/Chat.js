@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { sendMessage, uploadChatFiles } from '../../actions/chatActions';
+import VideoCallIcon from '@material-ui/icons/VideoCall';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { sendMessage, uploadChatFiles, initiateVideoCall, pickUpVideoCall, hangUpVideoCall } from '../../actions/chatActions';
 import Dropzone from 'react-dropzone';
 import Messages from './Messages';
+import VideoCall from './VideoCall';
 import './Chat.css';
 
 const Chat = (props) => {
@@ -48,40 +53,94 @@ const Chat = (props) => {
     }
   }
 
-  return (socket) ? (
-    <div className='chat-container' data-test="ChatComponent">
-      <Messages/>
-      <div className="chat-input-bar">
-        <input
-          id="message-input"
-          type='text'
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' ? sendMessage(e) : null}
-        />
-        <label htmlFor="message-input">type a message...</label>
-        <Dropzone onDrop={onDrop}>
-          {({ getRootProps, getInputProps }) => (
-              <section>
-                  <div {...getRootProps()}>
-                      <input {...getInputProps()} />                   
-                      <Button 
-                      variant="contained" 
-                      color='primary' 
-                      component="span"
-                      size="small">
-                        Upload
-                      </Button>
-                  </div>
-              </section>
-          )}
-      </Dropzone>
-      <div> {errorUpload} </div>
-      </div>
-    </div>
-  ) : null;
-}
+  const initiateVideoCall = () => {
+    // console.log("initiating video call");
+    const { pairId, socket, sender, receiver } = props.chat;
+    props.initiateVideoCall(
+      pairId,
+      sender,
+      receiver,
+      socket
+    );
+  }
 
+  const handleAcceptVideoCall = () => {
+    console.log('accept video call');
+    props.pickUpVideoCall();
+  }
+
+  const handleRejectVideoCall = () => {
+    console.log('reject video call');
+    props.hangUpVideoCall();
+  }
+
+  const { ringing, calling } = props.chat;
+  console.log(ringing, calling);
+  console.log(props.chat);
+  if (socket && !calling) {
+    return (
+      // Video Call Dialog
+      <div className='chat-container' data-test="ChatComponent">
+      <Dialog
+        open={ringing}
+        // onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"You have a video call"}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleRejectVideoCall} color="primary">
+            Reject
+          </Button>
+          <Button onClick={handleAcceptVideoCall} color="primary" autoFocus>
+            Accept
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Messages */}
+        <Messages/>
+
+      {/* Chat Input */}
+        <div className="chat-input-bar">
+          <input
+            id="message-input"
+            type='text'
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' ? sendMessage(e) : null}
+          />
+          <label htmlFor="message-input">type a message...</label>
+          <Dropzone onDrop={onDrop}>
+            {({ getRootProps, getInputProps }) => (
+                <section>
+                    <div {...getRootProps()}>
+                        <input {...getInputProps()} />                   
+                        <Button 
+                        variant="contained" 
+                        color='primary' 
+                        component="span"
+                        size="small">
+                          Upload
+                        </Button>
+                    </div>
+                </section>
+            )}
+        </Dropzone>
+        <VideoCallIcon
+          style={{fontSize: 50, marginTop: '3px'}}
+          onClick={initiateVideoCall}
+        />
+        <div> {errorUpload} </div>
+        </div>
+      </div>
+    )
+  } else if (socket && calling) {
+    return <VideoCall/>
+  } else {
+    return null;
+  }
+}
 
 const mapStateToProps = state => ({
   user: state.auth.user,
@@ -92,6 +151,9 @@ export default connect(
   mapStateToProps,
   {
     sendMessage,
-    uploadChatFiles
+    uploadChatFiles,
+    initiateVideoCall,
+    pickUpVideoCall,
+    hangUpVideoCall,
   }
 )(Chat);
