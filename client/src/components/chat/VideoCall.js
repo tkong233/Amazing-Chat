@@ -5,12 +5,13 @@ import Button from '@material-ui/core/Button';
 import { hangUpVideoCall } from '../../actions/chatActions';
 
 const VideoCall = (props) => {
+  const { pairId, socket, sender, receiver } = props.chat;
   return (
     <div style={{ marginLeft: '3%', marginRight: '3%' }}>
       <h3>This is video call view</h3>
       <Button
         variant="contained" color="secondary"
-        onClick={props.hangUpVideoCall}
+        onClick={() => { props.hangUpVideoCall(socket, pairId, sender, receiver) }}
       >
         Hang Up
       </Button>

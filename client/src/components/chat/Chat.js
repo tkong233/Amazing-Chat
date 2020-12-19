@@ -5,7 +5,8 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { sendMessage, uploadChatFiles, initiateVideoCall, pickUpVideoCall, hangUpVideoCall } from '../../actions/chatActions';
+import { sendMessage, uploadChatFiles, initiateVideoCall, pickUpVideoCall,
+  hangUpVideoCall, waitForVideoCallDecision } from '../../actions/chatActions';
 import Dropzone from 'react-dropzone';
 import Messages from './Messages';
 import VideoCall from './VideoCall';
@@ -62,16 +63,17 @@ const Chat = (props) => {
       receiver,
       socket
     );
+    props.waitForVideoCallDecision(socket);
   }
 
   const handleAcceptVideoCall = () => {
-    console.log('accept video call');
-    props.pickUpVideoCall();
+    const { pairId, socket, sender, receiver } = props.chat;
+    props.pickUpVideoCall(socket, pairId, sender, receiver);
   }
 
   const handleRejectVideoCall = () => {
-    console.log('reject video call');
-    props.hangUpVideoCall();
+    const { pairId, socket, sender, receiver } = props.chat;
+    props.hangUpVideoCall(socket, pairId, sender, receiver);
   }
 
   const { ringing, calling } = props.chat;
@@ -155,5 +157,6 @@ export default connect(
     initiateVideoCall,
     pickUpVideoCall,
     hangUpVideoCall,
+    waitForVideoCallDecision,
   }
 )(Chat);

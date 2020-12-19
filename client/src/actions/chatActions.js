@@ -88,17 +88,35 @@ export const receiveVideoCall = (socket, email) => dispatch => {
   })
 }
 
-export const pickUpVideoCall = () => dispatch => {
+export const pickUpVideoCall = (socket, pairId, from, to) => dispatch => {
   console.log('action: pick up video call');
+  socket.emit('videoCallRequestDecision', { pairId, from, to, accept: true });
   dispatch({
     type: PICK_UP_VIDEO_CALL
   })
 }
 
-export const hangUpVideoCall = () => dispatch => {
+export const hangUpVideoCall = (socket, pairId, from, to) => dispatch => {
   console.log('action: hang up video call');
+  socket.emit('videoCallRequestDecision', { pairId, from, to, accept: false });
   dispatch({
     type: HANG_UP_VIDEO_CALL
+  })
+}
+
+export const waitForVideoCallDecision = (socket) => dispatch => {
+  socket.on('videoCallRequestResult', ({ accept }) => {
+    if (accept) {
+      console.log('socket: video call request accepted');
+      dispatch({
+        type: PICK_UP_VIDEO_CALL
+      })
+    } else {
+      console.log('socket: video call request rejected');
+      dispatch({
+        type: HANG_UP_VIDEO_CALL
+      })
+    }
   })
 }
 
