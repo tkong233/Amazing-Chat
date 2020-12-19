@@ -24,6 +24,7 @@ const Messages = (props) => {
   const className = 'messages-container ' + classes.root;
 
   const renderMessages = () => {
+    console.log(messages);
     return (
       messages.map((m) => 
         <Message
@@ -31,6 +32,7 @@ const Messages = (props) => {
           sender={m.from}
           user={sender}
           type={m.type}
+          date={m.datetime}
         />
       )
     )
