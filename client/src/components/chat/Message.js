@@ -31,16 +31,24 @@ const Message = (props) => {
         );
       }else if(file_ext === 'png' || file_ext === 'jpg'){
         return(
-          <div>
-            <MessageBox
-            className="message-bubble"
-            position={position}
-            type={"photo"}
-            data={{
-              uri: `${props.text}`,
-            }}
+          <div style={style}>
+            <img
+            width = "250"
+            height = "250"
+            src={`${props.text}`}
+            alt = "Imgupload"
           />
           </div>
+          // <div>
+          //   <MessageBox
+          //   className="message-bubble"
+          //   position={position}
+          //   type={"photo"}
+          //   data={{
+          //     uri: `${props.text}`,
+          //   }}
+          // />
+          // </div>
         );
       }else{
         return(
