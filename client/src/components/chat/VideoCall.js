@@ -29,7 +29,7 @@ const VideoCall = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  });
+  },[]);
 
   const handleLogout = useCallback((timeElapsed) => {
     console.log(timeElapsed);
