@@ -1,6 +1,8 @@
 import axios from "axios";
 import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
-  RECEIVE_NEW_MESSAGES, SEND_MESSAGE, DISCONNECT_SOCKET } from './types';
+  RECEIVE_NEW_MESSAGES, SEND_MESSAGE, DISCONNECT_SOCKET,
+  RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
+} from './types';
 
 export const connectSocket = (socket) => dispatch => {
   dispatch({
@@ -41,8 +43,6 @@ export const loadPastMessages = (pairId) => dispatch => {
 
 export const receiveNewMessages = (socket) => dispatch => {
   socket.on('receiveMessage', (message) => {
-    // TODO: only add message to state if it's not sent by myself
-    // (if sent by myself, should already been added in sendMessage)
     console.log('receive message', message);
     dispatch({
       type: RECEIVE_NEW_MESSAGES,
@@ -66,6 +66,40 @@ export const sendMessage = (data, socket) => dispatch => {
     .catch(err => {
       console.log(err);
     })
+}
+
+export const initiateVideoCall = (pairId, from, to, socket) => dispatch => {
+  console.log('action: initiate video call');
+  socket.emit('initiateVideoCall', { pairId, from, to });
+}
+
+export const receiveVideoCall = (socket, email) => dispatch => {
+  console.log('action: receive vedio call');
+  socket.on('receiveVideoCall', ({ pairId, from, to }) => {
+    console.log('socket: receive video call', pairId, from, to);
+    if (email === to) {
+      console.log('I am video call receiver');
+      dispatch({
+        type: RECEIVE_VIDEO_CALL
+      })
+    } else {
+      console.log('I am video call sender');
+    }
+  })
+}
+
+export const pickUpVideoCall = () => dispatch => {
+  console.log('action: pick up video call');
+  dispatch({
+    type: PICK_UP_VIDEO_CALL
+  })
+}
+
+export const hangUpVideoCall = () => dispatch => {
+  console.log('action: hang up video call');
+  dispatch({
+    type: HANG_UP_VIDEO_CALL
+  })
 }
 
 export const uploadChatFiles = (formData, socket) => dispatch => {

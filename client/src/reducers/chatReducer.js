@@ -1,5 +1,7 @@
 import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
-   DISCONNECT_SOCKET, SEND_MESSAGE, RECEIVE_NEW_MESSAGES } from '../actions/types';
+   DISCONNECT_SOCKET, SEND_MESSAGE, RECEIVE_NEW_MESSAGES,
+   RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
+  } from '../actions/types';
 
 const initialState = {
   socket: null,
@@ -7,6 +9,8 @@ const initialState = {
   sender: null,
   receiver: null,
   messages: [], // [{ pairId, from, to, message, datetime, type }]
+  ringing: false,
+  calling: false,
 }
 
 export default function(state = initialState, action) {
@@ -53,6 +57,22 @@ export default function(state = initialState, action) {
         return {
           ...state,
         }
+      }
+    case RECEIVE_VIDEO_CALL:
+      return {
+        ...state,
+        ringing: true
+      }
+    case PICK_UP_VIDEO_CALL:
+      return {
+        ...state,
+        ringing: false,
+        calling: true
+      }
+    case HANG_UP_VIDEO_CALL:
+      return {
+        ...state,
+        calling: false
       }
     case DISCONNECT_SOCKET:
       return {

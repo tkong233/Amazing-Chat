@@ -89,6 +89,11 @@ io.on('connect', (socket) => {
     io.to(pairId).emit('receiveMessage', { pairId, from, to, message, datetime, type });
   });
 
+  socket.on('initiateVideoCall', ({ pairId, from, to }) => {
+    console.log('socket io: initiating video call');
+    io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+  });
+
   socket.on('disconnect', () => {
     console.log('user had left!');
   });
