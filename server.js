@@ -94,6 +94,11 @@ io.on('connect', (socket) => {
     io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
   });
 
+  socket.on('videoCallRequestDecision', ({ pairId, from, to, accept }) => {
+    console.log('socket io: video call request result');
+      io.to(pairId).emit('videoCallRequestResult', { accept} );
+  });
+
   socket.on('disconnect', () => {
     console.log('user had left!');
   });
