@@ -93,5 +93,5 @@ describe('Test Get /suggestion', ()=>{
         // .then(response => {
         //     console.log(response.text);
         //     });
-    })
-})
+    });
+});

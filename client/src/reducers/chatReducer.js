@@ -1,5 +1,5 @@
 import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
-   DISCONNECT_SOCKET, SEND_MESSAGE, RECEIVE_NEW_MESSAGES,
+   DISCONNECT_SOCKET, SEND_MESSAGE, DELETE_MESSAGE, RECEIVE_NEW_MESSAGES,
    RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
    INITIATE_VIDEO_CALL, SET_CALLEE_ONLINE, SET_CALLEE_OFFLINE,
    STOP_WAITING_FOR_CALLEE_RESPONSE
@@ -66,6 +66,16 @@ export default function(state = initialState, action) {
         return {
           ...state,
         }
+      }
+    case DELETE_MESSAGE:
+      const { message, datetime} = action.payload;
+      console.log('reducer deleting message: ', message);
+      newMessages = state.messages.filter(m => {
+        return ((m.message != message) || (m.datetime != datetime))
+      })
+      return {
+        ...state,
+        messages: newMessages
       }
     case INITIATE_VIDEO_CALL:
       return {

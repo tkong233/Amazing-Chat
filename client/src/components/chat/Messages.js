@@ -23,7 +23,7 @@ const Messages = (props) => {
   const classes = useStyles();
   const { messages, sender, receiver } = props.chat;
   const className = 'messages-container ' + classes.root;
-
+  // const { text, sender, user, from, to, pairId, datetime, message } = props;
   const renderMessages = () => {
     // console.log(messages);
     return (
@@ -31,9 +31,14 @@ const Messages = (props) => {
         <Message
           text={m.message}
           sender={m.from}
+          receiver={m.to}
           user={sender}
           type={m.type}
-          date={m.datetime}
+          datetime={m.datetime}
+          from={m.from} // sender
+          to={m.to} // receiver
+          message={m.message}
+          pairId={m.pairId}
         />
       )
     )
