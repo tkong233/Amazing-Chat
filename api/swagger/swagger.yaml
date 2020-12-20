@@ -460,22 +460,22 @@ paths:
         404:
           description: user not found
           
-  /api/greeting:
+  /video/token:
     get:
       tags:
         - "videoChat"
-      description: greeting a user by name
+      description: get token from twilio
       produces:
         - application/json
       parameters:
-        - in: query
-          name: name
-          description: name of the user
+        - in: body
+          name: identity,room
+          description: unique room for the two users
           required: true
           type: string
       responses:
         200:
-          description: successfully get name
+          description: successfully get token
           
           
 definitions:
