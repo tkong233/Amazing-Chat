@@ -176,7 +176,7 @@ const Chat = (props) => {
                       component="span"
                       size="small"
                     >
-                      Upload Files
+                      Send Files (Image, Audio, Video)
                     </Button>
                   </div>
                 </section>
