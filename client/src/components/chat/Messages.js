@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { FixedSizeList as List } from 'react-window';
+// import { FixedSizeList as List } from 'react-window'; // un-comment this for infinite-scroll
+import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { setItemStatus } from '../../actions/chatActions';
 
@@ -47,9 +48,39 @@ const Messages = (props) => {
     );
   };
 
+  // for non-infinite-scroll only
+  const renderMessages = () => {
+    // console.log(messages);
+    return (
+      messages.map((m) => 
+        <Message
+          text={m.message}
+          sender={m.from}
+          receiver={m.to}
+          user={sender}
+          type={m.type}
+          datetime={m.datetime}
+          from={m.from} // sender
+          to={m.to} // receiver
+          message={m.message}
+          pairId={m.pairId}
+        />
+      )
+    )
+  }
+
   return (
     <div className="message-holder"> 
-    <div className={className} data-test="MessagesComponent">
+
+    {/* Temp version without infinite scroll */}
+    <div className={className} data-test="MessagesComponent"></div>
+    <FixedSizeList height={500} width={'100%'} itemSize={46} itemCount={1}>
+      {renderMessages}
+    </FixedSizeList>
+
+    {/* Infinite Scroll */}
+
+    {/* <div className={className} data-test="MessagesComponent">
     <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={messages.length}
@@ -69,7 +100,9 @@ const Messages = (props) => {
           </List>
         )}
       </InfiniteLoader>
-    </div>
+    </div> */}
+
+
     </div>
   )
 }

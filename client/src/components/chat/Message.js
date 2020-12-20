@@ -61,7 +61,7 @@ const Message = (props) => {
     const file_ext = props.text.substring(
       props.text.length - 3,
       props.text.length
-    );
+    ).toLowerCase();
     if (
       file_ext === "mp4" ||
       file_ext === "webm" ||
@@ -122,7 +122,7 @@ const Message = (props) => {
       </Popover>
         </div>
       );
-    } else if (file_ext === "png" || file_ext === "jpg") {
+    } else if (file_ext === "png" || file_ext === "jpg" || file_ext === "jpeg") {
       return (
         <div style={style}>
           <img
