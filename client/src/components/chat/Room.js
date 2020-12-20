@@ -52,10 +52,10 @@ const Room = ({ roomName, token, handleLogout }) => {
     <Participant key={participant.sid} participant={participant} />
   ));
 
-  // const handleClick = () => {
-  //   const endTime = new Date();
-  //   handleLogout(endTime - startTime);
-  // }
+  const handleClick = () => {
+    const endTime = new Date();
+    handleLogout(endTime - startTime);
+  }
 
   return (
     <div className="room">
@@ -64,7 +64,7 @@ const Room = ({ roomName, token, handleLogout }) => {
       <Button
         variant="contained"
         color="primary"
-        onClick={handleLogout}
+        onClick={handleClick}
       >
         Exit Chat Room
       </Button>

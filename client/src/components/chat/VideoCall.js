@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Room from "./Room";
 import axios from "axios";
 
-import { hangUpVideoCall } from "../../actions/chatActions";
+import { hangUpVideoCall, sendMessage } from "../../actions/chatActions";
 
 const VideoCall = (props) => {
   const { pairId, socket, sender, receiver } = props.chat;
@@ -24,16 +24,31 @@ const VideoCall = (props) => {
       })
       .then((data) => {
         // console.log(data.data.token);
-        setToken(data.data.token)
+        setToken(data.data.token);
       })
       .catch((err) => {
         console.log(err);
       });
-  },[]);
+  }, []);
 
   const handleLogout = useCallback((timeElapsed) => {
-    console.log(timeElapsed);
     setToken(null);
+    const seconds = Math.floor(timeElapsed / 1000);
+    const minutes = Math.floor((timeElapsed / 1000) / 60);
+    const duration = minutes + " minutes " + seconds + " seconds "
+
+    const message = "Video Call Duration: " + duration;
+    const data1 = {
+      pairId,
+      from: sender,
+      to: receiver,
+      message,
+      type: "text",
+    };
+    // console.log(data1);
+    // console.log(socket);
+    props.sendMessage(data1, socket);
+
     props.hangUpVideoCall(socket, pairId, sender, receiver);
   }, []);
 
@@ -69,5 +84,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  hangUpVideoCall,
+  hangUpVideoCall, sendMessage
 })(VideoCall);
