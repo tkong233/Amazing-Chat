@@ -1,15 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-<<<<<<< HEAD
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { setItemStatus } from '../../actions/chatActions';
-=======
-import { FixedSizeList } from 'react-window';
-import AutoSizer from "react-virtualized-auto-sizer";
-import "./Chat.css";
->>>>>>> 97a09e9c1f54754c813a2ba98d04667dff2f49a4
 
 import Message from './Message';
 import Row from './Row';
