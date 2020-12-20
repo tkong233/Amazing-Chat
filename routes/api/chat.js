@@ -69,6 +69,21 @@ router.post('/message', (req, res) => {
   .catch(err => res.status(400).json(err));
 });
 
+router.delete('/message', (req, res) => {
+  console.log('req body: ', req.body);
+  const { pairId, from, to, message, datetime } = req.body;
+  console.log("deleting message", message, pairId, from, to, datetime);
+  Message.deleteOne({ pairId, from, to, message, datetime })
+    .then(() => {
+      console.log("delete was successful");
+      return res.status(200).json({message: "message delete successfully!"});
+    })
+    .catch(err => {
+      console.log("delete failed");
+      return res.status(400).json(err);
+    });
+})
+
 // @route POST /message/uploadfiles
 // @descript post a new message with file (image, video, audio) upload, 
 // store the file in db and update last interact time accordingly

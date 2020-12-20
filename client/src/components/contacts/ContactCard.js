@@ -52,15 +52,18 @@ const ContactCard = (props) => {
   const launchChat = () => {
     if (!props.chat.socket) {
       socket = io();
+      socket.room = props.pairId;
     } else {
       socket = props.chat.socket;
+      socket.room = props.pairId;
     }
     
     if (props.chat.pairId === props.pairId) {
+      socket.room = props.pairId;
       console.log('already joined room');
       return;
     }
-    
+
     props.connectSocket(socket);
     props.joinRoom(props.user.name, name, userEmail, contactEmail, props.pairId, socket);
     props.loadPastMessages(props.pairId);

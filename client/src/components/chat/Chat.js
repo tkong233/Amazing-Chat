@@ -103,6 +103,7 @@ const Chat = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+      
 
       {/* Waiting for Response Window */}
       <Dialog
