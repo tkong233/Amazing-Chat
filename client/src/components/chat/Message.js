@@ -5,6 +5,8 @@ import "react-chat-elements/dist/main.css";
 
 const Message = (props) => {
   const { text, sender, user, type, date } = props;
+  const dateTimeZone = (new Date(date)).toString();
+
   const position = sender === user ? "right" : "left";
   const style =
     position === "left" ? { textAlign: "left" } : { textAlign: "right" };
@@ -76,7 +78,7 @@ const Message = (props) => {
             position={position}
             type={"text"}
             text={props.text}
-            dateString={date.substring(5,7) + "/" + date.substring(8,10) + " " + date.substring(11, 16)}
+            dateString={dateTimeZone.substring(3,11) + dateTimeZone.substring(15,24) }
           />
         </div>
       );
