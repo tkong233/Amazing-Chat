@@ -31,7 +31,8 @@ describe('Message Component', ()=>{
                 text: 'hey hey',
                 sender: 'userA',
                 user: 'userB',
-                type: 'text'
+                type: 'text',
+                date:'2020-12-02T00:46:43.450Z'
             };
             wrapper = shallow(<Message {...props} />);
         });
