@@ -5,6 +5,7 @@ import {
   LOAD_PAST_MESSAGES,
   RECEIVE_NEW_MESSAGES,
   SEND_MESSAGE,
+  DELETE_MESSAGE,
   DISCONNECT_SOCKET,
   RECEIVE_VIDEO_CALL,
   PICK_UP_VIDEO_CALL,
@@ -93,6 +94,23 @@ export const sendMessage = (data, socket) => (dispatch) => {
       console.log(err);
     });
 };
+
+export const deleteMessage = (data) => dispatch => {
+  const { pairId, from, to, message, datetime } = data;
+  console.log('chat action: delete message', data);
+
+  axios.delete('/message', { data: { pairId, from, to, message, datetime } })
+    .then(res => {
+      dispatch({
+        type: DELETE_MESSAGE,
+        payload: data
+      })
+    })
+  .catch(err => {
+    console.log(err);
+  })
+}
+
 
 export const initiateVideoCall = (pairId, from, to, socket) => (dispatch) => {
   console.log("action: initiate video call");
