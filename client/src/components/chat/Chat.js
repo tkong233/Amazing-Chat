@@ -6,7 +6,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { sendMessage, uploadChatFiles, initiateVideoCall, pickUpVideoCall,
-  hangUpVideoCall, waitForVideoCallDecision } from '../../actions/chatActions';
+  hangUpVideoCall, waitForVideoCallDecision, setCalleeOnline,
+  stopWaiting,
+} from '../../actions/chatActions';
 import Dropzone from 'react-dropzone';
 import Messages from './Messages';
 import VideoCall from './VideoCall';
@@ -73,8 +75,13 @@ const Chat = (props) => {
     props.hangUpVideoCall(socket, pairId, sender, receiver);
   }
 
-  const { ringing, calling, waiting } = props.chat;
-  console.log(ringing, calling);
+  const handleCalleeOffline = () => {
+    props.setCalleeOnline();
+    props.stopWaiting();
+  }
+
+  const { ringing, calling, waiting, calleeOnline } = props.chat;
+  console.log('ringing', ringing, 'calling', calling, 'waiting', waiting, 'calleeOnline', calleeOnline);
   console.log(props.chat);
   if (socket && !calling) {
     return (
@@ -99,7 +106,7 @@ const Chat = (props) => {
 
       {/* Waiting for Response Window */}
       <Dialog
-        open={waiting}
+        open={waiting && calleeOnline}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -110,6 +117,22 @@ const Chat = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* On Callee Offline */}
+      <Dialog
+        open={!calleeOnline}
+        onClose={handleCalleeOffline}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`${receiverName} is not online`}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCalleeOffline} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Messages */}
         <Messages/>
 
@@ -168,5 +191,7 @@ export default connect(
     pickUpVideoCall,
     hangUpVideoCall,
     waitForVideoCallDecision,
+    setCalleeOnline,
+    stopWaiting,
   }
 )(Chat);

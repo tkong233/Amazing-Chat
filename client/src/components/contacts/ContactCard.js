@@ -53,6 +53,7 @@ const ContactCard = (props) => {
     socket = io();
     // socket = io(ENDPOINT);
     props.connectSocket(socket);
+
     props.joinRoom(props.user.name, name, userEmail, contactEmail, props.pairId, socket);
     props.loadPastMessages(props.pairId);
     props.receiveNewMessages(socket);

@@ -64,6 +64,48 @@ app.use(status);
 app.use(chat);
 app.use(videoChat);
 
+let onlineUsers = {}; // pairId => set of emails
+// let onlineUsers = new Set();
+let allSockets = {}; // email => socket
+
+const addOnlineUser  = (email, pairId) => {
+  let users = onlineUsers[pairId];
+  if (users == null) {
+    users = new Set();
+  }
+  users.add(email);
+  onlineUsers[pairId] = users;
+}
+
+const removeOnlineUser = (email, pairId) => {
+  let users = onlineUsers[pairId];
+  if (users == null) {
+    return;
+  }
+  users.delete(email);
+  onlineUsers[pairId] = users;
+}
+
+const isUserOnline = (email, pairId) => {
+  let users = onlineUsers[pairId];
+  if (users == null) {
+    return false;
+  }
+  return users.has(email);
+}
+
+const addSocket = (socket, email) => {
+  allSockets[socket] = email;
+}
+
+const removeSocket = (socket) => {
+  let email = allSockets[socket];
+  Object.values(allSockets).forEach(users => {
+    users.delete(email)
+  })
+  delete allSockets.socket;
+}
+
 // socket.io
 const socketio = require('socket.io');
 const io = socketio(server, {
@@ -79,8 +121,11 @@ const io = socketio(server, {
 io.on('connect', (socket) => {
   console.log('we have a new connection!');
 
-  socket.on('join', ({name, pairId}) => {
+  socket.on('join', ({name, email, pairId}) => {
     console.log('join: ' + name, pairId);
+    addOnlineUser(email, pairId);
+    // addSocket(socket, email);
+    console.log(email + ' online? ', isUserOnline(email, pairId));
     socket.join(pairId);
   });
 
@@ -92,16 +137,23 @@ io.on('connect', (socket) => {
 
   socket.on('initiateVideoCall', ({ pairId, from, to }) => {
     console.log('socket io: initiating video call');
-    io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+    if (!isUserOnline(to, pairId)) {
+      console.log('socket: callee not online');
+      io.to(pairId).emit('videoCallRequestResult', { online: false, accept: false });
+    } else {
+      console.log('socket: callee is online');
+      io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+    }
   });
 
   socket.on('videoCallRequestDecision', ({ pairId, from, to, accept }) => {
     console.log('socket io: video call request result');
-      io.to(pairId).emit('videoCallRequestResult', { accept} );
+      io.to(pairId).emit('videoCallRequestResult', { online: true, accept } );
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (socket) => {
     console.log('user had left!');
+    removeSocket(socket);
   });
 });
 

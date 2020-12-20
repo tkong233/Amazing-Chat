@@ -1,7 +1,9 @@
 import axios from "axios";
 import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
   RECEIVE_NEW_MESSAGES, SEND_MESSAGE, DISCONNECT_SOCKET,
-  RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL, INITIATE_VIDEO_CALL,
+  RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
+  INITIATE_VIDEO_CALL, SET_CALLEE_OFFLINE, SET_CALLEE_ONLINE,
+  STOP_WAITING_FOR_CALLEE_RESPONSE,
 } from './types';
 
 export const connectSocket = (socket) => dispatch => {
@@ -14,6 +16,7 @@ export const connectSocket = (socket) => dispatch => {
 export const joinRoom = (senderName, receiverName, sender, receiver, pairId, socket) => dispatch => {
   const data = {
     name: senderName,
+    email: sender,
     pairId
   };
 
@@ -108,8 +111,13 @@ export const hangUpVideoCall = (socket, pairId, from, to) => dispatch => {
 }
 
 export const waitForVideoCallDecision = (socket) => dispatch => {
-  socket.on('videoCallRequestResult', ({ accept }) => {
-    if (accept) {
+  socket.on('videoCallRequestResult', ({ online, accept }) => {
+    if (!online) {
+      console.log('socket: callee not online');
+      dispatch({
+        type: SET_CALLEE_OFFLINE
+      })
+    } else if (online && accept) {
       console.log('socket: video call request accepted');
       dispatch({
         type: PICK_UP_VIDEO_CALL
@@ -120,6 +128,19 @@ export const waitForVideoCallDecision = (socket) => dispatch => {
         type: HANG_UP_VIDEO_CALL
       })
     }
+  })
+}
+
+export const stopWaiting = () => dispatch => {
+  dispatch({
+    type: STOP_WAITING_FOR_CALLEE_RESPONSE
+  })
+}
+
+export const setCalleeOnline = () => dispatch => {
+  console.log('action: set callee online');
+  dispatch({
+    type: SET_CALLEE_ONLINE
   })
 }
 
@@ -137,11 +158,11 @@ export const uploadChatFiles = (formData, socket) => dispatch => {
       payload: res.data.savedMessage,
     })
   })
-
 }
 
 export const disconnectSocket = (socket) => dispatch => {
   if (socket) {
+    console.log('action: disconnect socket');
     socket.disconnect();
   } else {
     console.log('socket is not valid, can not disconnect');
