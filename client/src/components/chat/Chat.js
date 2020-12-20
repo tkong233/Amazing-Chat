@@ -98,7 +98,7 @@ const Chat = (props) => {
     "calleeOnline",
     calleeOnline
   );
-  console.log(props.chat);
+  // console.log(props.chat);
   if (socket && !calling) {
     return (
       // Video Call Dialog

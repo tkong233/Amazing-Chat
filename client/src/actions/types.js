@@ -4,6 +4,8 @@ export const USER_LOADING = "USER_LOADING";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const UPDATE_PICTURE = "UPDATE_PICTURE";
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
+export const SET_SOCKET = "SET_SOCKET";
+export const UNSET_SOCKET = "UNSET_SOCKET";
 
 // contact
 export const GET_SUGGESTION = "GET_SUGGESTION";

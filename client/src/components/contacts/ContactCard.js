@@ -58,6 +58,7 @@ const ContactCard = (props) => {
       socket.room = props.pairId;
     }
     
+    console.log('socket in state: ', props.chat.socket);
     if (props.chat.pairId === props.pairId) {
       socket.room = props.pairId;
       console.log('already joined room');
