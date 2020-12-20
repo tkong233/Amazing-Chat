@@ -59,7 +59,6 @@ router.post('/message', (req, res) => {
             return res.status(400).json({ message: "sender does not exist or is not a contact with receiver" });
           }
           receiverContact[0].lastInteractTime = Date.now();
-
           receiver.save().then(() => {
             return res.status(200).json({ savedMessage });
           })

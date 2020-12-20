@@ -10,9 +10,12 @@ import {
   PICK_UP_VIDEO_CALL,
   HANG_UP_VIDEO_CALL,
   INITIATE_VIDEO_CALL,
-} from "./types";
+  SET_CALLEE_OFFLINE,
+  SET_CALLEE_ONLINE,
+  STOP_WAITING_FOR_CALLEE_RESPONSE,
+} from './types';
 
-export const connectSocket = (socket) => (dispatch) => {
+export const connectSocket = (socket) => dispatch => {
   dispatch({
     type: CONNECT_SOCKET,
     payload: socket,
@@ -29,7 +32,8 @@ export const joinRoom = (
 ) => (dispatch) => {
   const data = {
     name: senderName,
-    pairId,
+    email: sender,
+    pairId
   };
 
   if (socket) {
@@ -134,10 +138,15 @@ export const hangUpVideoCall = (socket, pairId, from, to) => (
   });
 };
 
-export const waitForVideoCallDecision = (socket) => (dispatch) => {
-  socket.on("videoCallRequestResult", ({ accept }) => {
-    if (accept) {
-      console.log("socket: video call request accepted");
+export const waitForVideoCallDecision = (socket) => dispatch => {
+  socket.on('videoCallRequestResult', ({ online, accept }) => {
+    if (!online) {
+      console.log('socket: callee not online');
+      dispatch({
+        type: SET_CALLEE_OFFLINE
+      })
+    } else if (online && accept) {
+      console.log('socket: video call request accepted');
       dispatch({
         type: PICK_UP_VIDEO_CALL,
       });
@@ -147,8 +156,21 @@ export const waitForVideoCallDecision = (socket) => (dispatch) => {
         type: HANG_UP_VIDEO_CALL,
       });
     }
-  });
-};
+  })
+}
+
+export const stopWaiting = () => dispatch => {
+  dispatch({
+    type: STOP_WAITING_FOR_CALLEE_RESPONSE
+  })
+}
+
+export const setCalleeOnline = () => dispatch => {
+  console.log('action: set callee online');
+  dispatch({
+    type: SET_CALLEE_ONLINE
+  })
+}
 
 export const uploadChatFiles = (formData, socket) => (dispatch) => {
   axios
@@ -180,6 +202,7 @@ export const uploadChatFiles = (formData, socket) => (dispatch) => {
 
 export const disconnectSocket = (socket) => (dispatch) => {
   if (socket) {
+    console.log('action: disconnect socket');
     socket.disconnect();
   } else {
     console.log("socket is not valid, can not disconnect");

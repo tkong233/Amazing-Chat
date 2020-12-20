@@ -50,8 +50,17 @@ const ContactCard = (props) => {
   };
 
   const launchChat = () => {
-    socket = io();
-    // socket = io(ENDPOINT);
+    if (!props.chat.socket) {
+      socket = io();
+    } else {
+      socket = props.chat.socket;
+    }
+    
+    if (props.chat.pairId === props.pairId) {
+      console.log('already joined room');
+      return;
+    }
+    
     props.connectSocket(socket);
     props.joinRoom(props.user.name, name, userEmail, contactEmail, props.pairId, socket);
     props.loadPastMessages(props.pairId);
@@ -93,7 +102,7 @@ const ContactCard = (props) => {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  socket: state.chat.socket,
+  chat: state.chat
 });
 
 export default connect(

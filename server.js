@@ -64,6 +64,23 @@ app.use(status);
 app.use(chat);
 app.use(videoChat);
 
+let roomToNumClients = {}; // pairId => numClientsInRoom
+
+const joinRoom = (pairId) => {
+  let num = roomToNumClients[pairId];
+  if (!num) {
+    num = 1;
+  } else {
+    num = num + 1;
+  }
+  roomToNumClients[pairId] = num;
+}
+
+const leaveRoom = (pairId) => {
+  let num = roomToNumClients[pairId];
+  roomToNumClients[pairId] = num - 1;
+}
+
 // socket.io
 const socketio = require('socket.io');
 const io = socketio(server, {
@@ -79,9 +96,12 @@ const io = socketio(server, {
 io.on('connect', (socket) => {
   console.log('we have a new connection!');
 
-  socket.on('join', ({name, pairId}) => {
+  socket.on('join', ({name, email, pairId}) => {
     console.log('join: ' + name, pairId);
     socket.join(pairId);
+    socket.room = pairId;
+    joinRoom(pairId);
+    console.log('clients in room', roomToNumClients[pairId]);
   });
 
   // pairId, from, to, message, datetime
@@ -92,16 +112,24 @@ io.on('connect', (socket) => {
 
   socket.on('initiateVideoCall', ({ pairId, from, to }) => {
     console.log('socket io: initiating video call');
-    io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+    if (roomToNumClients[pairId] < 2) {
+      console.log('socket: callee not online');
+      io.to(pairId).emit('videoCallRequestResult', { online: false, accept: false });
+    } else {
+      console.log('socket: callee is online');
+      io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+    }
   });
 
   socket.on('videoCallRequestDecision', ({ pairId, from, to, accept }) => {
     console.log('socket io: video call request result');
-      io.to(pairId).emit('videoCallRequestResult', { accept} );
+      io.to(pairId).emit('videoCallRequestResult', { online: true, accept } );
   });
 
   socket.on('disconnect', () => {
-    console.log('user had left!');
+    console.log('user had left!', socket.room);
+    leaveRoom(socket.room);
+    console.log('clients in room', roomToNumClients[socket.room], ' ', socket.room);
   });
 });
 

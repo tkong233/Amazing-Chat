@@ -1,7 +1,8 @@
 import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
    DISCONNECT_SOCKET, SEND_MESSAGE, RECEIVE_NEW_MESSAGES,
    RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
-   INITIATE_VIDEO_CALL,
+   INITIATE_VIDEO_CALL, SET_CALLEE_ONLINE, SET_CALLEE_OFFLINE,
+   STOP_WAITING_FOR_CALLEE_RESPONSE
   } from '../actions/types';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   ringing: false,
   calling: false,
   waiting: false,
+  calleeOnline: true,
 }
 
 export default function(state = initialState, action) {
@@ -93,6 +95,24 @@ export default function(state = initialState, action) {
       return {
         ...state,
         socket: null,
+      }
+    case SET_CALLEE_ONLINE:
+      return {
+        ...state,
+        calleeOnline: true,
+      }
+    case SET_CALLEE_OFFLINE:
+      return {
+        ...state,
+        calleeOnline: false,
+      }
+    case STOP_WAITING_FOR_CALLEE_RESPONSE:
+      return {
+        ...state,
+        waiting: false,
+        ringing: false,
+        calling: false,
+        calleeOnline: true
       }
     default:
       return state;
