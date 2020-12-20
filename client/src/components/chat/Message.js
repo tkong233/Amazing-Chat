@@ -1,10 +1,10 @@
 import React from "react";
-import { connect } from 'react-redux';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { connect } from "react-redux";
+import Popover from "@material-ui/core/Popover";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { deleteMessage } from '../../actions/chatActions';
+import { deleteMessage } from "../../actions/chatActions";
 import "./Message.css";
 import { MessageBox } from "react-chat-elements";
 import "react-chat-elements/dist/main.css";
@@ -17,18 +17,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Message = (props) => {
   // const { text, sender, user, type, date } = props;
-  const { text, sender, user, type, from, to, pairId, datetime, message } = props;
-  const dateTimeZone = (new Date(datetime)).toString();
+  const {
+    text,
+    sender,
+    user,
+    type,
+    from,
+    to,
+    pairId,
+    datetime,
+    message,
+  } = props;
+  const dateTimeZone = new Date(datetime).toString();
   const classes = useStyles();
   const position = sender === user ? "right" : "left";
   const anchorOrigin = {
-    vertical: 'top',
+    vertical: "top",
     horizontal: position,
-  }
+  };
   const style =
     position === "left" ? { textAlign: "left" } : { textAlign: "right" };
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOpenPopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,30 +48,28 @@ const Message = (props) => {
     setAnchorEl(null);
   };
 
-
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   const handleMessageOnClick = (e) => {
     handleOpenPopover(e);
-  }
-  
+  };
+
   const handleDeleteMessage = () => {
-    console.log('handle delete message', message);
+    console.log("handle delete message", message);
     const data = { from, to, message, pairId, datetime };
     props.deleteMessage(data);
     handleClosePopover();
-  }
+  };
 
   if (
     props.text.substring(0, 45) ===
       "https://cis557-amazing-chat.s3.amazonaws.com/" ||
     "uploads/"
   ) {
-    const file_ext = props.text.substring(
-      props.text.length - 3,
-      props.text.length
-    ).toLowerCase();
+    const file_ext = props.text
+      .substring(props.text.length - 3, props.text.length)
+      .toLowerCase();
     if (
       file_ext === "mp4" ||
       file_ext === "webm" ||
@@ -85,23 +93,29 @@ const Message = (props) => {
             onClose={handleClosePopover}
             anchorOrigin={anchorOrigin}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
+              vertical: "top",
+              horizontal: "center",
             }}
           >
             <Typography
               className={classes.typography}
               onClick={handleDeleteMessage}
             >
-            Delete
-        </Typography>
-      </Popover>
+              Delete
+            </Typography>
+          </Popover>
         </div>
       );
     } else if (file_ext === "mp3" || file_ext === "wav" || file_ext === "ogg") {
       return (
         <div style={style}>
-          <audio src={`${props.text}`} alt="audio" type="audio/ogg" controls onClick={handleMessageOnClick} />
+          <audio
+            src={`${props.text}`}
+            alt="audio"
+            type="audio/ogg"
+            controls
+            onClick={handleMessageOnClick}
+          />
           <Popover
             id={id}
             open={open}
@@ -109,20 +123,24 @@ const Message = (props) => {
             onClose={handleClosePopover}
             anchorOrigin={anchorOrigin}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
+              vertical: "top",
+              horizontal: "center",
             }}
           >
             <Typography
               className={classes.typography}
               onClick={handleDeleteMessage}
             >
-            Delete
-        </Typography>
-      </Popover>
+              Delete
+            </Typography>
+          </Popover>
         </div>
       );
-    } else if (file_ext === "png" || file_ext === "jpg" || file_ext === "jpeg") {
+    } else if (
+      file_ext === "png" ||
+      file_ext === "jpg" ||
+      file_ext === "jpeg"
+    ) {
       return (
         <div style={style}>
           <img
@@ -145,17 +163,17 @@ const Message = (props) => {
             onClose={handleClosePopover}
             anchorOrigin={anchorOrigin}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
+              vertical: "top",
+              horizontal: "center",
             }}
           >
-        <Typography
-          className={classes.typography}
-          onClick={handleDeleteMessage}
-        >
-        Delete
-        </Typography>
-      </Popover>
+            <Typography
+              className={classes.typography}
+              onClick={handleDeleteMessage}
+            >
+              Delete
+            </Typography>
+          </Popover>
         </div>
         // <div>
         //   <MessageBox
@@ -176,7 +194,9 @@ const Message = (props) => {
             position={position}
             type={"text"}
             text={props.text}
-            dateString={dateTimeZone.substring(3,11) + dateTimeZone.substring(15,24) }
+            dateString={
+              dateTimeZone.substring(3, 11) + dateTimeZone.substring(15, 24)
+            }
             onClick={handleMessageOnClick}
           />
           <Popover
@@ -186,17 +206,17 @@ const Message = (props) => {
             onClose={handleClosePopover}
             anchorOrigin={anchorOrigin}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
+              vertical: "top",
+              horizontal: "center",
             }}
           >
             <Typography
               className={classes.typography}
               onClick={handleDeleteMessage}
             >
-            Delete
-        </Typography>
-      </Popover>
+              Delete
+            </Typography>
+          </Popover>
         </div>
       );
     }
@@ -217,27 +237,24 @@ const Message = (props) => {
           onClose={handleClosePopover}
           anchorOrigin={anchorOrigin}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+            vertical: "top",
+            horizontal: "center",
           }}
         >
           <Typography
             className={classes.typography}
             onClick={handleDeleteMessage}
           >
-          Delete
-        </Typography>
-      </Popover>
+            Delete
+          </Typography>
+        </Popover>
       </div>
     );
   }
 };
 
-const mapStateToProps = state => ({
-  socket: state.chat.socket
+const mapStateToProps = (state) => ({
+  socket: state.chat.socket,
 });
 
-export default connect(
-  mapStateToProps,
-  { deleteMessage }
-)(Message);
+export default connect(mapStateToProps, { deleteMessage })(Message);
