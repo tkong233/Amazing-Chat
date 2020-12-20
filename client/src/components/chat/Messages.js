@@ -4,6 +4,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import { makeStyles } from '@material-ui/core/styles';
 import { FixedSizeList } from 'react-window';
 import AutoSizer from "react-virtualized-auto-sizer";
+import "./Chat.css";
 
 import Message from './Message';
 import './Messages.css';
@@ -43,10 +44,12 @@ const Messages = (props) => {
   return (
     // TODO: check wether the message is sent by the user
     // render as sended or received
+    <div className="message-holder"> 
     <div className={className} data-test="MessagesComponent">
-    <FixedSizeList height={650} width={'100%'} itemSize={46} itemCount={1}>
+    <FixedSizeList height={500} width={'100%'} itemSize={46} itemCount={1}>
       {renderMessages}
     </FixedSizeList>
+    </div>
     </div>
   )
 }
