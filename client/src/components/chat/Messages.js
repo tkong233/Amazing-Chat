@@ -62,7 +62,7 @@ const Messages = (props) => {
           }
         }
         resolve();
-      }, 800)
+      }, 3000)
     );
   };
 
