@@ -25,7 +25,7 @@ const Chat = (props) => {
 
     
     if (socket && message && pairId && receiver) {
-      console.log('sending message: ' + message);
+      // console.log('sending message: ' + message);
       const data = {
         pairId,
         from: sender,

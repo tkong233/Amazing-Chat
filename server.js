@@ -64,46 +64,21 @@ app.use(status);
 app.use(chat);
 app.use(videoChat);
 
-let onlineUsers = {}; // pairId => set of emails
-// let onlineUsers = new Set();
-let allSockets = {}; // email => socket
+let roomToNumClients = {}; // pairId => numClientsInRoom
 
-const addOnlineUser  = (email, pairId) => {
-  let users = onlineUsers[pairId];
-  if (users == null) {
-    users = new Set();
+const joinRoom = (pairId) => {
+  let num = roomToNumClients[pairId];
+  if (!num) {
+    num = 1;
+  } else {
+    num = num + 1;
   }
-  users.add(email);
-  onlineUsers[pairId] = users;
+  roomToNumClients[pairId] = num;
 }
 
-const removeOnlineUser = (email, pairId) => {
-  let users = onlineUsers[pairId];
-  if (users == null) {
-    return;
-  }
-  users.delete(email);
-  onlineUsers[pairId] = users;
-}
-
-const isUserOnline = (email, pairId) => {
-  let users = onlineUsers[pairId];
-  if (users == null) {
-    return false;
-  }
-  return users.has(email);
-}
-
-const addSocket = (socket, email) => {
-  allSockets[socket] = email;
-}
-
-const removeSocket = (socket) => {
-  let email = allSockets[socket];
-  Object.values(allSockets).forEach(users => {
-    users.delete(email)
-  })
-  delete allSockets.socket;
+const leaveRoom = (pairId) => {
+  let num = roomToNumClients[pairId];
+  roomToNumClients[pairId] = num - 1;
 }
 
 // socket.io
@@ -123,10 +98,10 @@ io.on('connect', (socket) => {
 
   socket.on('join', ({name, email, pairId}) => {
     console.log('join: ' + name, pairId);
-    addOnlineUser(email, pairId);
-    // addSocket(socket, email);
-    console.log(email + ' online? ', isUserOnline(email, pairId));
     socket.join(pairId);
+    socket.room = pairId;
+    joinRoom(pairId);
+    console.log('clients in room', roomToNumClients[pairId]);
   });
 
   // pairId, from, to, message, datetime
@@ -137,7 +112,7 @@ io.on('connect', (socket) => {
 
   socket.on('initiateVideoCall', ({ pairId, from, to }) => {
     console.log('socket io: initiating video call');
-    if (!isUserOnline(to, pairId)) {
+    if (roomToNumClients[pairId] < 2) {
       console.log('socket: callee not online');
       io.to(pairId).emit('videoCallRequestResult', { online: false, accept: false });
     } else {
@@ -151,9 +126,10 @@ io.on('connect', (socket) => {
       io.to(pairId).emit('videoCallRequestResult', { online: true, accept } );
   });
 
-  socket.on('disconnect', (socket) => {
-    console.log('user had left!');
-    removeSocket(socket);
+  socket.on('disconnect', () => {
+    console.log('user had left!', socket.room);
+    leaveRoom(socket.room);
+    console.log('clients in room', roomToNumClients[socket.room], ' ', socket.room);
   });
 });
 
