@@ -63,7 +63,7 @@ const Room = ({ roomName, token, handleLogout }) => {
       <div style={{marginTop: "50px", display: "flex", justifyContent: "space-between"}}>
       <Button
         variant="contained"
-        color="primary"
+        style={{ color: "white", backgroundColor: "#455a64" }}        
         onClick={handleClick}
       >
         Exit Chat Room

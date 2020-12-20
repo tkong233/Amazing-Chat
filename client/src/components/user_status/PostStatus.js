@@ -3,6 +3,7 @@ import "./ViewStatus.css";
 import { Button, Box } from "@material-ui/core";
 import { connect } from "react-redux";
 import { doPostStatus } from "../../actions/authActions";
+import Picture from "./blue.jpg";
 
 class PostStatus extends React.Component {
   constructor() {
@@ -50,7 +51,10 @@ class PostStatus extends React.Component {
     return (
       <div className="container" data-test = "postStatusComponent" style={{marginTop: "50px"}}>
         <div className="row">
-          <form className="col s12">
+          <div className= "col s6">
+            <img src={Picture} alt="" style={{width:"90%"}}></img>
+          </div>
+          <form className="col s6" style={{marginTop: "60px"}}>
             <div className="row">
               <div className="input-field col s12">
                 <input id="last_name" type="text" className="validate" onChange={this.onTextChange}/>
