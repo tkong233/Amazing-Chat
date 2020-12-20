@@ -27,25 +27,6 @@ const Messages = (props) => {
   const { messages, sender, receiver, itemStatusMap } = props.chat;
   const className = 'messages-container ' + classes.root;
   // const { text, sender, user, from, to, pairId, datetime, message } = props;
-  const renderMessages = () => {
-    // console.log(messages);
-    return (
-      messages.map((m) => 
-        <Message
-          text={m.message}
-          sender={m.from}
-          receiver={m.to}
-          user={sender}
-          type={m.type}
-          datetime={m.datetime}
-          from={m.from} // sender
-          to={m.to} // receiver
-          message={m.message}
-          pairId={m.pairId}
-        />
-      )
-    )
-  }
 
   const isItemLoaded = index => itemStatusMap[index];
   const loadMoreItems = (startIndex, stopIndex) => {
@@ -67,8 +48,6 @@ const Messages = (props) => {
   };
 
   return (
-    // TODO: check wether the message is sent by the user
-    // render as sended or received
     <div className="message-holder"> 
     <div className={className} data-test="MessagesComponent">
     <InfiniteLoader
