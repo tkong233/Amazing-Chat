@@ -197,7 +197,7 @@ const Chat = (props) => {
                 <i class="fas fa-video fa-2x"></i>
               </Button>
             </div>
-            <div> {errorUpload} </div>
+            <div style={{marginTop: "10px"}} className= "blue-grey-text text-darken-2"> {errorUpload} </div>
           </div>
         </div>
       </div>
