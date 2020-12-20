@@ -1,12 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ScrollToBottom from 'react-scroll-to-bottom';
 import { makeStyles } from '@material-ui/core/styles';
+<<<<<<< HEAD
+import { FixedSizeList as List } from 'react-window';
+import InfiniteLoader from 'react-window-infinite-loader';
+import { setItemStatus } from '../../actions/chatActions';
+=======
 import { FixedSizeList } from 'react-window';
 import AutoSizer from "react-virtualized-auto-sizer";
 import "./Chat.css";
+>>>>>>> 97a09e9c1f54754c813a2ba98d04667dff2f49a4
 
 import Message from './Message';
+import Row from './Row';
 import './Messages.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,9 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LOADING = 1;
+const LOADED = 2;
+
 const Messages = (props) => {
   const classes = useStyles();
-  const { messages, sender, receiver } = props.chat;
+  const { messages, sender, receiver, itemStatusMap } = props.chat;
   const className = 'messages-container ' + classes.root;
   // const { text, sender, user, from, to, pairId, datetime, message } = props;
   const renderMessages = () => {
@@ -44,16 +53,49 @@ const Messages = (props) => {
     )
   }
 
-
+  const isItemLoaded = index => itemStatusMap[index];
+  const loadMoreItems = (startIndex, stopIndex) => {
+    for (let index = startIndex; index <= stopIndex; index++) {
+      if (index) {
+        props.setItemStatus(index, LOADING);
+      }
+    }
+    return new Promise(resolve =>
+      setTimeout(() => {
+        for (let index = startIndex; index <= stopIndex; index++) {
+          if (index) {
+            props.setItemStatus(index, LOADED)
+          }
+        }
+        resolve();
+      }, 800)
+    );
+  };
 
   return (
     // TODO: check wether the message is sent by the user
     // render as sended or received
     <div className="message-holder"> 
     <div className={className} data-test="MessagesComponent">
-    <FixedSizeList height={500} width={'100%'} itemSize={46} itemCount={1}>
-      {renderMessages}
-    </FixedSizeList>
+    <InfiniteLoader
+        isItemLoaded={isItemLoaded}
+        itemCount={messages.length}
+        loadMoreItems={loadMoreItems}
+      >
+        {({ onItemsRendered, ref }) => (
+          <List
+            className="List"
+            height={650}
+            itemCount={messages.length}
+            itemSize={46}
+            onItemsRendered={onItemsRendered}
+            ref={ref}
+            width={'100%'}
+          >
+            {Row}
+          </List>
+        )}
+      </InfiniteLoader>
     </div>
     </div>
   )
@@ -66,6 +108,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-
+    setItemStatus
   }
 )(Messages);

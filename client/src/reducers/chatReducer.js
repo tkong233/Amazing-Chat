@@ -2,7 +2,7 @@ import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
    DISCONNECT_SOCKET, SEND_MESSAGE, DELETE_MESSAGE, RECEIVE_NEW_MESSAGES,
    RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
    INITIATE_VIDEO_CALL, SET_CALLEE_ONLINE, SET_CALLEE_OFFLINE,
-   STOP_WAITING_FOR_CALLEE_RESPONSE
+   STOP_WAITING_FOR_CALLEE_RESPONSE, SET_ITEM_STATUS,
   } from '../actions/types';
 
 const initialState = {
@@ -13,6 +13,7 @@ const initialState = {
   senderName: null,
   receiverName: null,
   messages: [], // [{ pairId, from, to, message, datetime, type }]
+  itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
   ringing: false,
   calling: false,
   waiting: false,
@@ -43,20 +44,23 @@ export default function(state = initialState, action) {
         ...state,
         messages: newMessages,
       };
+    case SET_ITEM_STATUS:
+      const { index, status } = action.payload;
+      state.itemStatusMap[index] = status;
+      return {
+        ...state,
+      }
     case SEND_MESSAGE:
       newMessages = state.messages;
       newMessages.push(action.payload);
-      console.log('send message', newMessages);
       return {
         ...state,
         messages: newMessages,
       };
     case RECEIVE_NEW_MESSAGES:
-      console.log('receive new message reducer,', action.payload);
       if (action.payload.from !== state.sender) {
         newMessages = state.messages;
         newMessages.push(action.payload);
-        console.log('added new message', newMessages);
         return {
           ...state,
           messages: newMessages,
@@ -69,7 +73,6 @@ export default function(state = initialState, action) {
       }
     case DELETE_MESSAGE:
       const { message, datetime} = action.payload;
-      console.log('reducer deleting message: ', message);
       newMessages = state.messages.filter(m => {
         return ((m.message != message) || (m.datetime != datetime))
       })

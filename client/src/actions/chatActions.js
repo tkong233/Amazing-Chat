@@ -6,6 +6,7 @@ import {
   RECEIVE_NEW_MESSAGES,
   SEND_MESSAGE,
   DELETE_MESSAGE,
+  SET_ITEM_STATUS,
   DISCONNECT_SOCKET,
   RECEIVE_VIDEO_CALL,
   PICK_UP_VIDEO_CALL,
@@ -111,6 +112,12 @@ export const deleteMessage = (data) => dispatch => {
   })
 }
 
+export const setItemStatus = (index, status) => dispatch => {
+  dispatch({
+    type: SET_ITEM_STATUS,
+    payload: { index, status }
+  })
+}
 
 export const initiateVideoCall = (pairId, from, to, socket) => (dispatch) => {
   console.log("action: initiate video call");
