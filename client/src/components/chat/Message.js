@@ -21,6 +21,10 @@ const Message = (props) => {
   const dateTimeZone = (new Date(datetime)).toString();
   const classes = useStyles();
   const position = sender === user ? "right" : "left";
+  const anchorOrigin = {
+    vertical: 'top',
+    horizontal: position,
+  }
   const style =
     position === "left" ? { textAlign: "left" } : { textAlign: "right" };
 
@@ -79,10 +83,7 @@ const Message = (props) => {
             open={open}
             anchorEl={anchorEl}
             onClose={handleClosePopover}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
+            anchorOrigin={anchorOrigin}
             transformOrigin={{
               vertical: 'top',
               horizontal: 'center',
@@ -106,10 +107,7 @@ const Message = (props) => {
             open={open}
             anchorEl={anchorEl}
             onClose={handleClosePopover}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
+            anchorOrigin={anchorOrigin}
             transformOrigin={{
               vertical: 'top',
               horizontal: 'center',
@@ -145,10 +143,7 @@ const Message = (props) => {
             open={open}
             anchorEl={anchorEl}
             onClose={handleClosePopover}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
+            anchorOrigin={anchorOrigin}
             transformOrigin={{
               vertical: 'top',
               horizontal: 'center',
@@ -189,10 +184,7 @@ const Message = (props) => {
             open={open}
             anchorEl={anchorEl}
             onClose={handleClosePopover}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
+            anchorOrigin={anchorOrigin}
             transformOrigin={{
               vertical: 'top',
               horizontal: 'center',
@@ -223,10 +215,7 @@ const Message = (props) => {
           open={open}
           anchorEl={anchorEl}
           onClose={handleClosePopover}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          anchorOrigin={anchorOrigin}
           transformOrigin={{
             vertical: 'top',
             horizontal: 'center',
