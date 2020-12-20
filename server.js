@@ -96,6 +96,15 @@ const io = socketio(server, {
 io.on('connect', (socket) => {
   console.log('we have a new connection!');
 
+  let onlineUsers = new Set();
+  let userToRoom = {};
+
+  socket.on('email', ({ email }) => {
+    console.log('socket received email: ', email);
+    socket.email = email;
+    onlineUsers.add(email);
+  });
+
   socket.on('join', ({name, email, pairId}) => {
     console.log('join: ' + name, pairId);
     socket.join(pairId);
@@ -128,6 +137,7 @@ io.on('connect', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('user had left!', socket.room);
+    onlineUsers.delete(socket.email);
     leaveRoom(socket.room);
     console.log('clients in room', roomToNumClients[socket.room], ' ', socket.room);
   });

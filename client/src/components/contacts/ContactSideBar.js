@@ -5,7 +5,6 @@ import SuggestionList from './SuggestionList';
 import ContactList from './ContactList';
 import SearchBar from './SearchBar';
 import { getSuggestion, getContacts, getAllUsers } from '../../actions/contactActions';
-import { connectSocket } from '../../actions/chatActions';
 
 import './Contact.css';
 
@@ -41,6 +40,5 @@ export default connect(
     getSuggestion,
     getContacts,
     getAllUsers,
-    connectSocket,
   }
 )(ContactSideBar);

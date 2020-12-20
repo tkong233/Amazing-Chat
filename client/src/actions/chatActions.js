@@ -17,13 +17,6 @@ import {
   STOP_WAITING_FOR_CALLEE_RESPONSE,
 } from './types';
 
-export const connectSocket = (socket) => dispatch => {
-  dispatch({
-    type: CONNECT_SOCKET,
-    payload: socket,
-  });
-};
-
 export const joinRoom = (
   senderName,
   receiverName,
