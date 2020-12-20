@@ -24,7 +24,7 @@ const Messages = (props) => {
   const className = 'messages-container ' + classes.root;
 
   const renderMessages = () => {
-    console.log(messages);
+    // console.log(messages);
     return (
       messages.map((m) => 
         <Message

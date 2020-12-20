@@ -23,7 +23,7 @@ const Chat = (props) => {
 
     
     if (socket && message && pairId && receiver) {
-      console.log('sending message: ' + message);
+      // console.log('sending message: ' + message);
       const data = {
         pairId,
         from: sender,
@@ -74,8 +74,8 @@ const Chat = (props) => {
   }
 
   const { ringing, calling, waiting } = props.chat;
-  console.log(ringing, calling);
-  console.log(props.chat);
+  // console.log(ringing, calling);
+  // console.log(props.chat);
   if (socket && !calling) {
     return (
       // Video Call Dialog
