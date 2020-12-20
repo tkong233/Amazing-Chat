@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 const transformDateFormat = (date) => {
   if (date) {
-    date = date.split('T');
-    return date[1].substring(0, 5) + ', ' + date[0]
+    const newDate = (new Date(date)).toString();
+    return newDate.substring(15, 21) + ', ' + newDate.substring(3, 11);
   }
   return "";
 }
