@@ -112,7 +112,7 @@ const Chat = (props) => {
             <Button onClick={handleRejectVideoCall} color="primary">
               Reject
             </Button>
-            <Button onClick={handleAcceptVideoCall} color="primary" autoFocus>
+            <Button onClick={handleAcceptVideoCall} style={{color: "white", backgroundColor: "CornflowerBlue"}} autoFocus>
               Accept
             </Button>
           </DialogActions>
