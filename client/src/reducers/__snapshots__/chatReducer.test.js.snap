@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Auth Reducer should return initial state 1`] = `
+Object {
+  "calleeOnline": true,
+  "calling": false,
+  "itemStatusMap": Object {
+    "undefined": undefined,
+  },
+  "messages": Array [],
+  "pairId": null,
+  "receiver": null,
+  "receiverName": null,
+  "rejected": false,
+  "ringing": false,
+  "sender": null,
+  "senderName": null,
+  "socket": null,
+  "waiting": false,
+}
+`;
