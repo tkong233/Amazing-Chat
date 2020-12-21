@@ -9,6 +9,7 @@ const initialState = {};
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['chat']
 }
 
 const middleware = [thunk];

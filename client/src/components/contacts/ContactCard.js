@@ -39,7 +39,6 @@ const transformDateFormat = (date) => {
 const ContactCard = (props) => {
   const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
   const socket = props.chat.socket;
-  console.log(socket);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const toggleCollapse = () => {
@@ -47,6 +46,7 @@ const ContactCard = (props) => {
   };
 
   const launchChat = () => {
+    console.log('launching chat, socket exist?', socket);
     if (props.chat.pairId === props.pairId) {
       socket.room = props.pairId;
       console.log('already joined room');

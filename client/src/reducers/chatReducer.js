@@ -21,7 +21,9 @@ const initialState = {
 }
 
 export default function(state = initialState, action) {
+  console.log(state, action);
   switch (action.type) {
+
     case SET_SOCKET:
       console.log('set socket on login', action.payload);
       return {
@@ -37,7 +39,7 @@ export default function(state = initialState, action) {
     case CONNECT_SOCKET:
       return {
         ...state,
-        socket: action.payload
+        // socket: action.payload
       };
     case JOIN_ROOM:
       let { pairId, sender, receiver, senderName, receiverName } = action.payload;

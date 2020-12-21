@@ -112,7 +112,7 @@ export const setItemStatus = (index, status) => dispatch => {
   })
 }
 
-export const initiateVideoCall = (pairId, from, to, socket) => (dispatch) => {
+export const initiateVideoCall = (pairId, from, to, socket) => dispatch => {
   console.log("action: initiate video call");
   socket.emit("initiateVideoCall", { pairId, from, to });
   dispatch({
@@ -120,10 +120,10 @@ export const initiateVideoCall = (pairId, from, to, socket) => (dispatch) => {
   });
 };
 
-export const receiveVideoCall = (socket, email) => (dispatch) => {
+export const receiveVideoCall = (socket, email) => dispatch => {
   console.log("action: receive vedio call");
   socket.on("receiveVideoCall", ({ pairId, from, to }) => {
-    console.log("socket: receive video call", pairId, from, to);
+    console.log("socket: receive video call", pairId, 'from', from, 'to', to, 'me', email);
     if (email === to) {
       console.log("I am video call receiver");
       dispatch({

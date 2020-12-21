@@ -34,6 +34,7 @@ if (localStorage.jwtToken) {
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
   store.dispatch(setSocket(decoded.email));
+  console.log('socket set?', store.getState().chat);
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
   if (decoded.exp < currentTime) {

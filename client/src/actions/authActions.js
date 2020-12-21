@@ -47,11 +47,11 @@ export const loginUser = userData => dispatch => {
       dispatch(setCurrentUser(decoded));
       // create socket and store in reducer state
       const socket = io();
-      socket.emit('sendEmail', { email: userData.email })
+      socket.emit('email', { email: userData.email })
       dispatch({
         type: SET_SOCKET,
         payload: socket,
-      })
+      });
     })
     .catch(err =>
       dispatch({
