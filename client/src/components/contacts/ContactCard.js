@@ -85,7 +85,7 @@ const ContactCard = (props) => {
             button
             className={classes.nested}
             onClick={() => {
-              props.deleteContact(userEmail, contactEmail);
+              props.deleteContact(userEmail, contactEmail, pairId);
               toggleCollapse();
             }} >
           <ListItemIcon>
