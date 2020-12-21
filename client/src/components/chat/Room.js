@@ -58,7 +58,7 @@ const Room = ({ roomName, token, handleLogout }) => {
   }
 
   return (
-    <div className="room">
+    <div className="room" data-test="RoomComponent">
       {/* <h2>Room: {roomName}</h2> */}
       <div style={{marginTop: "50px", display: "flex", justifyContent: "space-between"}}>
       <Button

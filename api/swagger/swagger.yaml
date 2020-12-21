@@ -100,6 +100,13 @@ paths:
       responses:
         200:
           description: successfully logged in
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              token:
+                type: string
         400:
           description: validation error / account locked out / password incorrect
         404:
@@ -142,22 +149,35 @@ paths:
       responses:
         200:
           description: successfully reset password
+          schema:
+            type: object
+            properties:
+              email:
+                type: boolean
+              password:
+                type: string
+              question:
+                type: string
+              answer:
+                type: string
         400:
           description: validation error / email is not registered / security question does not match record / answer to secrity question does not match record
-  /api/users/upload_profile_image/:email:
+  /api/users/upload_profile_image/:{email}:
     post:
       tags:
         - "User"
       description: Upload a profile image from file
       produces:
         - application/json
+      consumes:
+        - multipart/form-data
       parameters:
         - in: path
           name: email
           description: user email
           required: true
           type: string
-        - in: formdata
+        - in: formData
           name: file
           description: file to upload
           required: true
@@ -165,13 +185,18 @@ paths:
       responses:
         200:
           description: successfully upload user profile picture
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
         400:
           description: No file uploaded
         500:
           description: file upload error
         404:
           description: can't find user profile
-  /api/users/profile/:email:
+  /api/users/profile/:{email}:
     delete:
       tags:
         - "User"
@@ -187,25 +212,27 @@ paths:
       responses:
         200:
           description: successfully delete user
-  /api/users/status/:email:
+  /api/users/status/:{email}:
     post:
       tags:
         - "User"
       description: post user status
       produces:
         - application/json
+      consumes:
+        - multipart/form-data
       parameters:
         - in: path
           name: email
           description: user email
           required: true
           type: string
-        - in: formdata
+        - in: formData
           name: file
           description: image to upload
           required: false
           type: file
-        - in: body
+        - in: formData
           name: text
           description: user status text
           required: false
@@ -213,12 +240,17 @@ paths:
       responses:
         200:
           description: successfully add status
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
         500:
           description: file upload error
         404:
           description: can't find user profile
 
-  /contacts/:email:
+  /contacts/:{email}:
     get:
       tags:
         - "Contact"
@@ -234,6 +266,20 @@ paths:
       responses:
         200:
           description: successfully found contacts of the user
+          schema:
+            type: array
+            items:
+              properties:
+                pairId:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                profile_picture:
+                  type: string
+                lastInteractTime:
+                  type: string
         404:
           description: user not found
 
@@ -262,6 +308,16 @@ paths:
       responses:
         200:
           description: successfully added contact
+          schema:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                profile_picture:
+                  type: string
+                lastInteractTime:
+                  type: string
         400:
           description: contact already exists
         404:
@@ -290,9 +346,19 @@ paths:
       responses:
         200:
           description: successfully deleted contact
+          schema:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                profile_picture:
+                  type: string
+                lastInteractTime:
+                  type: string
         404:
           description: user not found
-  /suggestion/:email:
+  /suggestion/:{email}:
     get:
       tags:
         - "Contact"
@@ -308,6 +374,16 @@ paths:
       responses:
         200:
           description: successfully suggested contacts
+          schema:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                profile_picture:
+                  type: string
+                email:
+                  type: string
         404:
           description: No suggestion found
           
@@ -321,8 +397,18 @@ paths:
       responses:
         200:
           description: successfully get all the users
+          schema:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                profile_picture:
+                  type: string
+                email:
+                  type: string
 
-  /messages/:pairId:
+  /messages/:{pairId}:
     get:
       tags:
         - "Chat"
@@ -338,6 +424,20 @@ paths:
       responses:
         200:
           description: successfully get the messages
+          schema:
+            type: array
+            items:
+              properties:
+                pairId:
+                  type: string
+                from:
+                  type: string
+                to:
+                  type: string
+                message:
+                  type: string
+                datetime:
+                  type: string
         404:
           description: error getting messages
 
@@ -375,6 +475,11 @@ paths:
       responses:
         200:
           description: message saved
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
         400:
           description: receiver does not exist or is not a contact with sender/sender does not exist or is not a contact with receiver
           
@@ -385,44 +490,71 @@ paths:
       description: post a new message with file (image, video, audio) upload, store the message in db and update last interact time accordingly
       produces:
         - application/json
+      consumes:
+        - multipart/form-data
       parameters:
-        - in: formdata
+        - in: formData
           name: file
           description: file (image, video, audio) to upload
           required: true
           type: file
-        - in: body
-          name: pairId, from, to, message, type
+        - in: formData
+          name: pairId
+          # from, to, message, type
           description: identifiers of the two users sending the message, message content and messgae type
           required: true
-          schema:
-            type: object
-            required:
-              - pairId
-              - from
-              - to
-              - message
-              - type
-            properties:
-              pairId:
-                type: string
-              from:
-                type: string
-              to:
-                type: string
-              message:
-                type: string
-              type:
-                type: string
+          type: string
+        - in: formData
+          name: to 
+          # from, to, message, type
+          description: identifiers of the two users sending the message, message content and messgae type
+          required: true
+          type: string
+        - in: formData
+          name: message 
+          # from, to, message, type
+          description: identifiers of the two users sending the message, message content and messgae type
+          required: true
+          type: string
+        - in: formData
+          name: type 
+          # from, to, message, type
+          description: identifiers of the two users sending the message, message content and messgae type
+          required: true
+          type: string
+          # schema:
+          #   type: object
+          #   required:
+          #     - pairId
+          #     - from
+          #     - to
+          #     - message
+          #     - type
+          #   properties:
+          #     pairId:
+          #       type: string
+          #     from:
+          #       type: string
+          #     to:
+          #       type: string
+          #     message:
+          #       type: string
+          #     type:
+          #       type: string
       responses:
         200:
           description: Message saved
+          schema:
+            type: object
+            properties:
+              savedMessage:
+                type: object
         400:
           description: No file upload /  receiver does not exist or is not a contact with sender/sender does not exist or is not a contact with receiver
         500:
           description: Network error
 
-  /status/:email:
+  /status/:{email}:
     get:
       tags:
         - "Status"
@@ -441,7 +573,7 @@ paths:
         404:
           description: user not found   
   
-  /status/seen/:email/:id:
+  /status/seen/:{email}/:{id}:
     post:
       tags:
         - "Status"
@@ -450,7 +582,12 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: email, id
+          name: email
+          description: user email and id
+          required: true
+          type: string
+        - in: path
+          name: id
           description: user email and id
           required: true
           type: string
@@ -472,10 +609,24 @@ paths:
           name: identity,room
           description: unique room for the two users
           required: true
-          type: string
+          schema:
+            type: object
+            required:
+              - identity
+              - room
+            properties:
+              email:
+                type: string
+              password:
+                type: string
       responses:
         200:
           description: successfully get token
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
           
           
 definitions:

@@ -1,5 +1,5 @@
 import React from 'react';
-import Chat from './Chat';
+import ViewStatus from './ViewStatus';
 import {shallow} from 'enzyme';
 import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
@@ -16,20 +16,19 @@ const setUp = (initialState={}) =>{
 
     const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    const wrapper = shallow(<Chat store={store} />).dive();
+    const wrapper = shallow(<ViewStatus store={store} />).dive();
     // console.log(wrapper.debug());
     return wrapper;
 }
 
-describe('Chat Component', ()=>{
+describe('ViewStatus Component', ()=>{
     describe('Checking PropTypes', ()=>{
         it('Should not throw a warning', ()=>{
             const expectedProps = {
-                chat: {},
                 user: {},
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
-            const propsErr = checkPropTypes(Chat.propTypes, expectedProps, 'props', Chat.name);
+            const propsErr = checkPropTypes(ViewStatus.propTypes, expectedProps, 'props', ViewStatus.name);
             expect(propsErr).toBeUndefined();
         })
     });
@@ -40,25 +39,24 @@ describe('Chat Component', ()=>{
                 auth:{user: {
                     name: 'testuser',
                     email: 'testuser@test.com',
-                    profile_picture: 'testpicture'
-                }},
-                chat:{
-                    messages:[{}],
-                    socket: 'testsocket'
-                }
+                }}
             };
             wrapper = setUp(initialState);
         });
 
         it('Should render without errors', ()=>{
-            const container = wrapper.find(`[data-test='ChatComponent']`);
+            const container = wrapper.find(`[data-test='ViewStatusComponent']`);
             expect(container.length).toBe(1);
         });
+
+        // it('Should status', ()=>{
+        //     const container2 = wrapper.find(`[data-test='ViewStatusComponent2']`);
+        //     expect(container2.length).toBe(1);
+        // });
 
         it('Snapshot testing', ()=>{
             expect(wrapper).toMatchSnapshot();
         });
-
 
     });
 });
