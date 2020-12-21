@@ -118,6 +118,342 @@ describe('Auth Reducer', ()=>{
     //     });
     //     expect(newState).toEqual(chat);
     // });
+    it ('INITIATE_VIDEO_CALL', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: true,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: INITIATE_VIDEO_CALL,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('RECEIVE_VIDEO_CALL', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: true,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: RECEIVE_VIDEO_CALL,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('PICK_UP_VIDEO_CALL', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: true,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: PICK_UP_VIDEO_CALL,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });  
+
+    it ('HANG_UP_VIDEO_CALL', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: HANG_UP_VIDEO_CALL,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });  
+
+    it ('CONNECT_SOCKET', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: CONNECT_SOCKET,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });  
+
+    it ('DISCONNECT_SOCKET', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: DISCONNECT_SOCKET,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+    
+    it ('UNSET_SOCKET', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: UNSET_SOCKET,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('SET_CALLEE_ONLINE', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: SET_CALLEE_ONLINE,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('SET_CALLEE_OFFLINE', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: false,
+        };
+        const newState = chatReducer(undefined, {
+            type: SET_CALLEE_OFFLINE,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('STOP_WAITING_FOR_CALLEE_RESPONSE', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: STOP_WAITING_FOR_CALLEE_RESPONSE,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('VIDEO_CALL_REJECTED', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: true,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: VIDEO_CALL_REJECTED,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('RESET_VIDEO_CALL_REJECTED', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: RESET_VIDEO_CALL_REJECTED,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('CALLER_HANGED_CALL', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: CALLER_HANGED_CALL,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
+    it ('DELETE_CONVERSATION', () =>{
+        // pairId, sender, receiver, senderName, receiverName
+        const chat = {
+            socket: null,
+            pairId: null,
+            sender: null, //email
+            receiver: null, // email
+            senderName: null,
+            receiverName: null,
+            messages: [], 
+            itemStatusMap: {}, // {index: status}, e.g. { 1 : LOADING, 2 : LOADED... }
+            ringing: false,
+            calling: false,
+            waiting: false,
+            rejected: false,
+            calleeOnline: true,
+        };
+        const newState = chatReducer(undefined, {
+            type: DELETE_CONVERSATION,
+            payload: chat
+        });
+        expect(newState).toEqual(chat);
+    });
+
     it ('should return initial state', ()=>{
         expect(chatReducer(undefined, {})).toMatchSnapshot();
     });

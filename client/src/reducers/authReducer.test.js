@@ -19,6 +19,16 @@ describe('Auth Reducer', ()=>{
         });
         expect(newState).toEqual(user);
     });
+    it ('Should delete account', () =>{
+        const user = {isAuthenticated: false,
+            user: {},
+            loading: false};
+        const newState = authReducer(undefined, {
+            type: DELETE_ACCOUNT,
+            payload: user
+        });
+        expect(newState).toEqual(user);
+    });
     it ('should return initial state', ()=>{
         expect(authReducer(undefined, {})).toMatchSnapshot();
     });
