@@ -1,8 +1,17 @@
 import axios from "axios";
+import io from 'socket.io-client';
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, UPDATE_PICTURE, DELETE_ACCOUNT } from "./types";
+import {
+  SET_SOCKET,
+  UNSET_SOCKET,
+  GET_ERRORS,
+  SET_CURRENT_USER,
+  USER_LOADING,
+  UPDATE_PICTURE,
+  DELETE_ACCOUNT
+} from "./types";
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -36,6 +45,13 @@ export const loginUser = userData => dispatch => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
+      // create socket and store in reducer state
+      const socket = io();
+      socket.emit('email', { email: userData.email })
+      dispatch({
+        type: SET_SOCKET,
+        payload: socket,
+      });
     })
     .catch(err =>
       dispatch({
@@ -53,6 +69,15 @@ export const setCurrentUser = decoded => {
   };
 };
 
+export const setSocket = (email) => {
+  const socket = io();
+  socket.emit('email', { email });
+  return {
+    type: SET_SOCKET,
+    payload: socket,
+  }
+}
+
 // User loading
 export const setUserLoading = () => {
   return {
@@ -61,13 +86,17 @@ export const setUserLoading = () => {
 };
 
 // Log user out
-export const logoutUser = () => dispatch => {
+export const logoutUser = (socket) => dispatch => {
   // Remove token from local storage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
+  socket.disconnect();
+  dispatch({
+    type: UNSET_SOCKET
+  })
 };
 
 export const resetPassword = (userData, history) => dispatch => {

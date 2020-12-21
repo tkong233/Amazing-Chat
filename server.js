@@ -64,22 +64,6 @@ app.use(status);
 app.use(chat);
 app.use(videoChat);
 
-let roomToNumClients = {}; // pairId => numClientsInRoom
-
-const joinRoom = (pairId) => {
-  let num = roomToNumClients[pairId];
-  if (!num) {
-    num = 1;
-  } else {
-    num = num + 1;
-  }
-  roomToNumClients[pairId] = num;
-}
-
-const leaveRoom = (pairId) => {
-  let num = roomToNumClients[pairId];
-  roomToNumClients[pairId] = num - 1;
-}
 
 // socket.io
 const socketio = require('socket.io');
@@ -93,15 +77,28 @@ const io = socketio(server, {
     wsEngine: 'ws'
 });
 
+let onlineUsers = []; // array of emails of online users
+let socketsId = []; // socket id for online users
+let userToRoom = {};
+
 io.on('connect', (socket) => {
   console.log('we have a new connection!');
 
-  socket.on('join', ({name, email, pairId}) => {
+  socket.on('email', ({ email }) => {
+    console.log('socket received email: ', email);
+    socket.email = email;
+    onlineUsers.push(email);
+    socketsId.push(socket.id);
+    console.log('online users', onlineUsers);
+  });
+
+  socket.on('join', ({ name, email, pairId }) => {
     console.log('join: ' + name, pairId);
     socket.join(pairId);
-    socket.room = pairId;
-    joinRoom(pairId);
-    console.log('clients in room', roomToNumClients[pairId]);
+    userToRoom[email] = pairId;
+    // socket.room = pairId;
+    // joinRoom(pairId);
+    // console.log('clients in room', roomToNumClients[pairId]);
   });
 
   // pairId, from, to, message, datetime
@@ -112,12 +109,19 @@ io.on('connect', (socket) => {
 
   socket.on('initiateVideoCall', ({ pairId, from, to }) => {
     console.log('socket io: initiating video call');
-    if (roomToNumClients[pairId] < 2) {
+    const index = onlineUsers.indexOf(to);
+    if (index > -1) {
+      console.log('socket: callee is online');
+      if (userToRoom[to] != pairId) {
+        console.log('user is online but in a different room');
+        console.log('room: ' + pairId + ' callee is in: ' + userToRoom[to]);
+        io.to(pairId).emit('videoCallRequestResult', { online: false, accept: false });        
+      } else {
+        io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+      }
+    } else {
       console.log('socket: callee not online');
       io.to(pairId).emit('videoCallRequestResult', { online: false, accept: false });
-    } else {
-      console.log('socket: callee is online');
-      io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
     }
   });
 
@@ -127,9 +131,14 @@ io.on('connect', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('user had left!', socket.room);
-    leaveRoom(socket.room);
-    console.log('clients in room', roomToNumClients[socket.room], ' ', socket.room);
+    console.log('user had left!', socket.email);
+
+    const index = onlineUsers.indexOf(socket.email);
+    if (index > -1) {
+      onlineUsers.splice(index, 1);
+      socketsId.splice(index, 1);
+    }
+    console.log('online users', onlineUsers);
   });
 });
 

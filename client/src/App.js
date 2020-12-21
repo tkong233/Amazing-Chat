@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 
-import { setCurrentUser, logoutUser } from "./actions/authActions";
+import { setCurrentUser, logoutUser, setSocket } from "./actions/authActions";
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from "react-redux";
 import {store, persistor} from "./store";
@@ -33,11 +33,13 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
+  store.dispatch(setSocket(decoded.email));
+  console.log('socket set?', store.getState().chat);
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
   if (decoded.exp < currentTime) {
     // Logout user
-    store.dispatch(logoutUser());
+    store.dispatch(logoutUser(store.getState().chat.socket));
 
     // Redirect to login
     window.location.href = "./login";

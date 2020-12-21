@@ -37,7 +37,6 @@ const Chat = (props) => {
     e.preventDefault();
 
     if (socket && message && pairId && receiver) {
-      // console.log('sending message: ' + message);
       const data = {
         pairId,
         from: sender,
@@ -69,7 +68,6 @@ const Chat = (props) => {
   };
 
   const initiateVideoCall = () => {
-    // console.log("initiating video call");
     props.initiateVideoCall(pairId, sender, receiver, socket);
     props.waitForVideoCallDecision(socket);
   };
@@ -98,7 +96,7 @@ const Chat = (props) => {
     "calleeOnline",
     calleeOnline
   );
-  console.log(props.chat);
+
   if (socket && !calling) {
     return (
       // Video Call Dialog
