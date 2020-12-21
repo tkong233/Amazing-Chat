@@ -85,7 +85,7 @@ const Messages = (props) => {
   return (
     <div className="message-holder">
       <div className={className} data-test="MessagesComponent">
-        <div
+      {items &&<div
           id="scrollableDiv"
           style={{
             height: 500,
@@ -95,7 +95,7 @@ const Messages = (props) => {
           }}
         >
           {/*Put the scroll bar always on the bottom*/}
-          {items && <InfiniteScroll
+           <InfiniteScroll
             dataLength={items.length}
             next={fetchMoreData}
             style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
@@ -107,8 +107,8 @@ const Messages = (props) => {
             {items.map((_, index) => (
               items[index]
             ))}
-          </InfiniteScroll>}
-        </div>
+          </InfiniteScroll>
+        </div>}
       </div>
     </div>
   );
