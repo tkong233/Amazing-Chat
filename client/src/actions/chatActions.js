@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  CONNECT_SOCKET,
   JOIN_ROOM,
   LOAD_PAST_MESSAGES,
   RECEIVE_NEW_MESSAGES,
@@ -17,6 +16,7 @@ import {
   STOP_WAITING_FOR_CALLEE_RESPONSE,
   VIDEO_CALL_REJECTED,
   RESET_VIDEO_CALL_REJECTED,
+  CALLER_HANGED_CALL,
 } from './types';
 
 export const joinRoom = (
@@ -34,6 +34,7 @@ export const joinRoom = (
   };
 
   if (socket) {
+    console.log('action: join room');
     socket.emit("join", data);
     dispatch({
       type: JOIN_ROOM,
@@ -114,9 +115,9 @@ export const setItemStatus = (index, status) => dispatch => {
   })
 }
 
-export const initiateVideoCall = (pairId, from, to, socket) => dispatch => {
+export const initiateVideoCall = (pairId, from, to, hang, socket) => dispatch => {
   console.log("action: initiate video call");
-  socket.emit("initiateVideoCall", { pairId, from, to });
+  socket.emit("initiateVideoCall", { pairId, from, to, hang });
   dispatch({
     type: INITIATE_VIDEO_CALL,
   });
@@ -124,15 +125,22 @@ export const initiateVideoCall = (pairId, from, to, socket) => dispatch => {
 
 export const receiveVideoCall = (socket, email) => dispatch => {
   console.log("action: receive vedio call");
-  socket.on("receiveVideoCall", ({ pairId, from, to }) => {
+  socket.on("receiveVideoCall", ({ pairId, from, to, hang }) => {
     console.log("socket: receive video call", pairId, 'from', from, 'to', to, 'me', email);
-    if (email === to) {
-      console.log("I am video call receiver");
+    if (hang) {
+      console.log('action: caller hanged call');
       dispatch({
-        type: RECEIVE_VIDEO_CALL,
+        type: CALLER_HANGED_CALL
       });
     } else {
-      console.log("I am video call sender");
+      if (email === to) {
+        console.log("I am video call receiver");
+        dispatch({
+          type: RECEIVE_VIDEO_CALL,
+        });
+      } else {
+        console.log("I am video call sender");
+      }
     }
   });
 };
@@ -158,6 +166,7 @@ export const hangUpVideoCall = (socket, pairId, from, to) => (
 
 export const waitForVideoCallDecision = (socket) => dispatch => {
   socket.on('videoCallRequestResult', ({ online, accept }) => {
+    console.log('action: received call request result', online, accept);
     if (!online) {
       console.log('socket: callee not online');
       dispatch({
@@ -186,7 +195,14 @@ export const resetVideoCallRejected = () => dispatch => {
   })
 }
 
-export const stopWaiting = () => dispatch => {
+export const stopWaiting = (socket) => dispatch => {
+  if (socket) {
+    console.log('action: stop socket from listening to video call request result');
+    socket.off('videoCallRequestResult');
+    socket.removeAllListeners('videoCallRequestResult');
+    console.log(socket);
+  }
+
   dispatch({
     type: STOP_WAITING_FOR_CALLEE_RESPONSE
   })

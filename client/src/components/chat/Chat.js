@@ -33,12 +33,36 @@ const Chat = (props) => {
 
   const { name, email } = props.user;
 
+  const { ringing, calling, waiting, rejected, calleeOnline } = props.chat;
+  console.log(
+    "ringing",
+    ringing,
+    "calling",
+    calling,
+    "waiting",
+    waiting,
+    "calleeOnline",
+    calleeOnline
+  );
+
   const [message, setMessage] = useState("");
   const audio = new Audio('https://quz1yp-a.akamaihd.net/downloads/ringtones/files/mp3/huawei-tone-toneswall-com-52227.mp3');
+  
+  if (ringing) {
+    console.log('audio play');
+    audio.play();
+  } else {
+    console.log('audio pause');
+    audio.pause();
+  }
+
   audio.addEventListener('ended', function () {
-    this.currentTime = 0;
-    this.play();
-  }, false);
+    if (ringing) {
+      console.log('audio loop');
+      this.currentTime = 0;
+      this.play();
+    }
+  }, true);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -75,9 +99,15 @@ const Chat = (props) => {
   };
 
   const initiateVideoCall = () => {
-    props.initiateVideoCall(pairId, sender, receiver, socket);
+    props.initiateVideoCall(pairId, sender, receiver, false, socket);
     props.waitForVideoCallDecision(socket);
   };
+
+  const handleCallerHangCall = () => {
+    props.initiateVideoCall(pairId, sender, receiver, true, socket);
+    props.stopWaiting(socket);
+    props.resetVideoCallRejected();
+  }
 
   const handleAcceptVideoCall = () => {
     props.pickUpVideoCall(socket, pairId, sender, receiver);
@@ -88,6 +118,7 @@ const Chat = (props) => {
 
   const handleRejectVideoCall = () => {
     props.hangUpVideoCall(socket, pairId, sender, receiver);
+    props.stopWaiting(socket);
     if (audio) {
       audio.pause();
     }
@@ -95,32 +126,14 @@ const Chat = (props) => {
 
   const handleCalleeOffline = () => {
     props.setCalleeOnline();
-    props.stopWaiting();
+    props.stopWaiting(socket);
   };
 
   const handleResetRejected = () => {
     props.resetVideoCallRejected();
+    props.stopWaiting(socket);
   }
-
-  const { ringing, calling, waiting, rejected, calleeOnline } = props.chat;
-  console.log(
-    "ringing",
-    ringing,
-    "calling",
-    calling,
-    "waiting",
-    waiting,
-    "calleeOnline",
-    calleeOnline
-  );
-
   
-  if (ringing) {
-    audio.play();
-  } else {
-    audio.pause();
-  }
-
   if (socket && !calling) {
     return (
       // Video Call Dialog
@@ -150,7 +163,7 @@ const Chat = (props) => {
         >
           <DialogTitle id="alert-dialog-title">{`Waiting for ${receiverName} to respond...`}</DialogTitle>
           <DialogActions>
-            <Button onClick={handleRejectVideoCall} color="primary">
+            <Button onClick={handleCallerHangCall} color="primary">
               Hang Up
             </Button>
           </DialogActions>
