@@ -49,7 +49,7 @@ if (localStorage.jwtToken) {
 class App extends Component {
   render() {
     return (
-      <div>
+      <div data-test="AppComponent">
       <GlobalStyles />
       <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

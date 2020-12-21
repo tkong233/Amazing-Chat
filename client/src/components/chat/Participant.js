@@ -63,7 +63,7 @@ const Participant = ({ participant }) => {
   }, [audioTracks]);
 
   return (
-    <div className="participant">
+    <div className="participant" data-test="ParticipantComponent">
       <h4 className="grey-text text-darken-2">You are talking with: {participant.identity}</h4>
       <video ref={videoRef} autoPlay={true} />
       <audio ref={audioRef} autoPlay={true}  />

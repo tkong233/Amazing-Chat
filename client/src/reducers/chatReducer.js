@@ -56,6 +56,7 @@ export default function(state = initialState, action) {
     case LOAD_PAST_MESSAGES:
       let newMessages = state.messages;
       newMessages = action.payload;
+      // console.log(newMessages);
       return {
         ...state,
         messages: newMessages,

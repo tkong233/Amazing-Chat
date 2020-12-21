@@ -1,5 +1,5 @@
 import React from 'react';
-import Join from './Join';
+import Room from './Room';
 import {shallow} from 'enzyme';
 import Enzyme from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16'; 
@@ -10,17 +10,17 @@ Enzyme.configure({
 });
 
 
-describe('Join Component', ()=>{
+describe('Room Component', ()=>{
     describe('Checking PropTypes', ()=>{
         it('Should not throw a warning', ()=>{
             const expectedProps = {
-                onSubmit: ()=>{},
-                onChange: ()=>{},
-                username: '',
-                room: ''
+                room: '',
+                startTime: '',
+                endTime: '',
+                participants: []
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
-            const propsErr = checkPropTypes(Join.propTypes, expectedProps, 'props', Join.name);
+            const propsErr = checkPropTypes(Room.propTypes, expectedProps, 'props', Room.name);
             expect(propsErr).toBeUndefined();
         })
     });
@@ -28,18 +28,18 @@ describe('Join Component', ()=>{
         let wrapper;
         beforeEach(()=>{
             const props = {
-                onSubmit: ()=>{},
-                onChange: ()=>{},
-                username: '',
-                room: ''
+                room: '',
+                startTime: '',
+                endTime: '',
+                participants: []
             };
-            wrapper = shallow(<Join {...props} />);
+            wrapper = shallow(<Room {...props} />);
         });
         
-        it('Should render join', ()=>{
-            const join = wrapper.find(`[data-test='JoinComponent']`);
-            expect(join.length).toBe(1);
-        })
+        it('Should render Room', ()=>{
+            const room = wrapper.find(`[data-test='RoomComponent']`);
+            expect(room.length).toBe(1);
+        });
 
         it('Snapshot testing', ()=>{
             expect(wrapper).toMatchSnapshot();
