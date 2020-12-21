@@ -37,7 +37,7 @@ const ViewStatus = (props) => {
   };
 
   return (
-    <div className="ViewStatus">
+    <div className="ViewStatus" data-test="ViewStatusComponent">
       <div className="stories">
         {status && (
           <Stories

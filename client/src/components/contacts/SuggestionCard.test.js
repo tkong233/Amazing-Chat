@@ -1,5 +1,5 @@
 import React from 'react';
-import Chat from './Chat';
+import SuggestionCard from './SuggestionCard';
 import {shallow} from 'enzyme';
 import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
@@ -16,20 +16,18 @@ const setUp = (initialState={}) =>{
 
     const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    const wrapper = shallow(<Chat store={store} />).dive();
+    const wrapper = shallow(<SuggestionCard store={store} />).dive();
     // console.log(wrapper.debug());
     return wrapper;
 }
 
-describe('Chat Component', ()=>{
+describe('SuggestionCard Component', ()=>{
     describe('Checking PropTypes', ()=>{
         it('Should not throw a warning', ()=>{
             const expectedProps = {
-                chat: {},
-                user: {},
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
-            const propsErr = checkPropTypes(Chat.propTypes, expectedProps, 'props', Chat.name);
+            const propsErr = checkPropTypes(SuggestionCard.propTypes, expectedProps, 'props', SuggestionCard.name);
             expect(propsErr).toBeUndefined();
         })
     });
@@ -37,21 +35,13 @@ describe('Chat Component', ()=>{
         let wrapper;
         beforeEach(()=>{
             const initialState = {
-                auth:{user: {
-                    name: 'testuser',
-                    email: 'testuser@test.com',
-                    profile_picture: 'testpicture'
-                }},
-                chat:{
-                    messages:[{}],
-                    socket: 'testsocket'
-                }
+               
             };
             wrapper = setUp(initialState);
         });
 
         it('Should render without errors', ()=>{
-            const container = wrapper.find(`[data-test='ChatComponent']`);
+            const container = wrapper.find(`[data-test='SuggestionCardComponent']`);
             expect(container.length).toBe(1);
         });
 

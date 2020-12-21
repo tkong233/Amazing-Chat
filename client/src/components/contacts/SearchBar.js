@@ -50,7 +50,7 @@ const SearchBar = (props) => {
   }
 
   return (
-    <div>
+    <div data-test = "SearchBarComponent">
       {/* Search Input */}
     <div className="input-field">
       <input

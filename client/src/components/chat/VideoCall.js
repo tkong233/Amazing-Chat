@@ -55,7 +55,7 @@ const VideoCall = (props) => {
   // set
 
   return (
-    <div style={{ marginLeft: "3%", marginRight: "3%" }}>
+    <div style={{ marginLeft: "3%", marginRight: "3%" }} data-test='VideoCallComponent'>
       {/* <h3>This is video call view</h3> */}
       {/* <h3>{token}</h3> */}
       {/* <h3>{username}</h3> */}
