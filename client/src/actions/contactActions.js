@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { GET_CONTACTS, GET_SUGGESTION, ADD_CONTACT, DELETE_CONTACT, GET_ALL_USERS } from "./types";
+import { GET_CONTACTS, GET_SUGGESTION, ADD_CONTACT, DELETE_CONTACT, GET_ALL_USERS, DELETE_CONVERSATION } from "./types";
 
 // Get suggestion
 export const getSuggestion = (email) => dispatch => {
@@ -31,13 +31,16 @@ export const addContact = (email1, email2) => dispatch => {
     })
 }
   
-export const deleteContact = (email1, email2) => dispatch => {
+export const deleteContact = (email1, email2, pairId) => dispatch => {
   axios
-  .delete('/contact', { data: { email1, email2 } })
+  .delete('/contact', { data: { email1, email2, pairId } })
   .then(res => {
     dispatch({
       type: DELETE_CONTACT,
       payload: res.data
+    });
+    dispatch({
+      type: DELETE_CONVERSATION,
     })
   })
   .catch(err => {

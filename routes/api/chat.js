@@ -69,6 +69,9 @@ router.post('/message', (req, res) => {
   .catch(err => res.status(400).json(err));
 });
 
+// @route DELETE /message
+// @descript delete a specified message
+// @access public
 router.delete('/message', (req, res) => {
   console.log('req body: ', req.body);
   const { pairId, from, to, message, datetime } = req.body;
@@ -82,6 +85,16 @@ router.delete('/message', (req, res) => {
       console.log("delete failed");
       return res.status(400).json(err);
     });
+});
+
+router.delete('/conversation', (req, res) => {
+  console.log('delete conversation', req.body);
+  const { pairId } = req.body;
+  Message.remove({ pairId })
+    .then((messages) => {
+      return res.status(200).json(messages)
+    })
+    .catch(err => console.log(err));
 })
 
 // @route POST /message/uploadfiles

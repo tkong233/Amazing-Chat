@@ -2,7 +2,8 @@ import { SET_SOCKET, UNSET_SOCKET, CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES
    DISCONNECT_SOCKET, SEND_MESSAGE, DELETE_MESSAGE, RECEIVE_NEW_MESSAGES,
    RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
    INITIATE_VIDEO_CALL, SET_CALLEE_ONLINE, SET_CALLEE_OFFLINE,
-   STOP_WAITING_FOR_CALLEE_RESPONSE, SET_ITEM_STATUS, VIDEO_CALL_REJECTED, RESET_VIDEO_CALL_REJECTED, CALLER_HANGED_CALL
+   STOP_WAITING_FOR_CALLEE_RESPONSE, SET_ITEM_STATUS, VIDEO_CALL_REJECTED, RESET_VIDEO_CALL_REJECTED, 
+   CALLER_HANGED_CALL, DELETE_CONVERSATION
   } from '../actions/types';
 
 const initialState = {
@@ -160,6 +161,11 @@ export default function(state = initialState, action) {
         ringing: false,
         calling: false,
         calleeOnline: true,
+      }
+    case DELETE_CONVERSATION:
+      return {
+        ...state,
+        messages: []
       }
     default:
       return state;

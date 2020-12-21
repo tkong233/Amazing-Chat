@@ -11,8 +11,9 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import DeleteIcon from '@material-ui/icons/Delete';
+import BackspaceIcon from '@material-ui/icons/Backspace';
 import { deleteContact } from '../../actions/contactActions';
-import { joinRoom, loadPastMessages, receiveNewMessages, receiveVideoCall } from '../../actions/chatActions';
+import { joinRoom, loadPastMessages, receiveNewMessages, receiveVideoCall, deleteConversation } from '../../actions/chatActions';
 import { setSocket } from '../../actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +40,7 @@ const transformDateFormat = (date) => {
 
 const ContactCard = (props) => {
   const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
-  const socket = props.chat.socket;
+  const { socket, pairId } = props.chat;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const toggleCollapse = () => {
@@ -57,7 +58,6 @@ const ContactCard = (props) => {
 
     if (!socket) {
       setSocket(userEmail);
-      socket = props.chat.socket;
     }
 
     props.joinRoom(props.user.name, name, userEmail, contactEmail, props.pairId, socket);
@@ -80,17 +80,32 @@ const ContactCard = (props) => {
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          {/* Delete Contact */}
           <ListItem
             button
             className={classes.nested}
             onClick={() => {
-              props.deleteContact(userEmail, contactEmail);
+              props.deleteContact(userEmail, contactEmail, pairId);
               toggleCollapse();
             }} >
           <ListItemIcon>
-              <DeleteIcon />
+              <DeleteIcon/>
             </ListItemIcon>
-            <ListItemText primary="Delete" />
+            <ListItemText primary="Delete Contact" />
+          </ListItem>
+
+          {/* Clear Conversation */}
+          <ListItem
+            button
+            className={classes.nested}
+            onClick={() => {
+              props.deleteConversation(pairId);
+              toggleCollapse();
+            }}>
+          <ListItemIcon>
+              <BackspaceIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Clear Conversation" />
           </ListItem>
         </List>
       </Collapse>
@@ -112,5 +127,6 @@ export default connect(
     receiveNewMessages,
     receiveVideoCall,
     setSocket,
+    deleteConversation,
   }
 )(ContactCard);
