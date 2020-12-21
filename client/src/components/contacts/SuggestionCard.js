@@ -28,6 +28,7 @@ const SuggestionCard = (props) => {
           onClick={() =>
             addContactFromSuggestion(props, userEmail, suggestionEmail)
           }
+          style={{backgroundColor: "transparent"}}
         >
           Add
         </Button>

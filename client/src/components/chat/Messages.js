@@ -56,10 +56,12 @@ const Messages = (props) => {
 
 
   useEffect (() => {
-    setItems(renderMessages().slice(0, 15));
-    setIndex(intervals);
-    if (messages.length > 0) {
+    if (renderMessages().length > 0) {
+      setItems(renderMessages().slice(0, 15));
+      setIndex(intervals);
       setHasMore(true);
+    } else {
+      setItems("");
     }
   },[props])
 
@@ -85,7 +87,7 @@ const Messages = (props) => {
   return (
     <div className="message-holder">
       <div className={className} data-test="MessagesComponent">
-        <div
+      <div
           id="scrollableDiv"
           style={{
             height: 500,
@@ -95,7 +97,7 @@ const Messages = (props) => {
           }}
         >
           {/*Put the scroll bar always on the bottom*/}
-          {items && <InfiniteScroll
+          {items &&<InfiniteScroll
             dataLength={items.length}
             next={fetchMoreData}
             style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.

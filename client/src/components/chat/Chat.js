@@ -112,7 +112,7 @@ const Chat = (props) => {
             <Button onClick={handleRejectVideoCall} color="primary">
               Reject
             </Button>
-            <Button onClick={handleAcceptVideoCall} color="primary" autoFocus>
+            <Button onClick={handleAcceptVideoCall} style={{color: "white", backgroundColor: "CornflowerBlue"}} autoFocus>
               Accept
             </Button>
           </DialogActions>
@@ -174,7 +174,7 @@ const Chat = (props) => {
                       component="span"
                       size="small"
                     >
-                      Upload Files
+                      Send Files (Image, Audio, Video)
                     </Button>
                   </div>
                 </section>
