@@ -1,14 +1,27 @@
 import React from 'react';
 import Message from './Message';
 import {shallow} from 'enzyme';
+import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16'; 
-import checkPropTypes from 'check-prop-types';
+import { applyMiddleware, createStore } from 'redux';
+import {middleware} from '../../store';
+import rootReducer from '../../reducers/index'
 
 Enzyme.configure({
     adapter: new EnzymeAdapter(),
 });
 
+const setUp = (initialState={}) =>{
+    const props = {
+        text: 'hello hello'
+    }
+    const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
+    const store = createStoreWithMiddleware(rootReducer, initialState);
+    const wrapper = shallow(<Message store={store} {...props}/>).dive();
+    // console.log(wrapper.debug());
+    return wrapper;
+}
 
 describe('Message Component', ()=>{
     describe('Checking PropTypes', ()=>{
@@ -17,7 +30,12 @@ describe('Message Component', ()=>{
                 text: '',
                 sender: '',
                 user: '',
-                type: ''
+                type: '',
+                from: '',
+                to: '',
+                pairId: '',
+                datetime: '',
+                message: []
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
             const propsErr = checkPropTypes(Message.propTypes, expectedProps, 'props', Message.name);
@@ -27,20 +45,22 @@ describe('Message Component', ()=>{
     describe('Renders', ()=>{
         let wrapper;
         beforeEach(()=>{
-            const props = {
-                text: 'hey hey',
-                sender: 'userA',
-                user: 'userB',
-                type: 'text',
-                date:'2020-12-02T00:46:43.450Z'
+            const initialState = {
+                chat:{
+                    socket: 'testsocket'
+                }
             };
-            wrapper = shallow(<Message {...props} />);
+            wrapper = setUp(initialState);
+            wrapper.setProps({text: 'hello hello'})
         });
         
-        it('Should render a single message', ()=>{
-            const msg = wrapper.find(`[data-test='MessageComponent']`);
-            // shallow render 
-            expect(msg.length).toBe(0);
+        it('Should render without errors', ()=>{
+            const container = wrapper.find(`[data-test='MessageComponent']`);
+            expect(container.length).toBe(0);
+        });
+
+        it('Snapshot testing', ()=>{
+            expect(wrapper).toMatchSnapshot();
         });
         
 
