@@ -14,6 +14,7 @@ import {
   waitForVideoCallDecision,
   setCalleeOnline,
   stopWaiting,
+  resetVideoCallRejected,
 } from "../../actions/chatActions";
 import Dropzone from "react-dropzone";
 import Messages from "./Messages";
@@ -97,7 +98,11 @@ const Chat = (props) => {
     props.stopWaiting();
   };
 
-  const { ringing, calling, waiting, calleeOnline } = props.chat;
+  const handleResetRejected = () => {
+    props.resetVideoCallRejected();
+  }
+
+  const { ringing, calling, waiting, rejected, calleeOnline } = props.chat;
   console.log(
     "ringing",
     ringing,
@@ -161,6 +166,21 @@ const Chat = (props) => {
           <DialogTitle id="alert-dialog-title">{`${receiverName} is not online`}</DialogTitle>
           <DialogActions>
             <Button onClick={handleCalleeOffline} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* On Call Rejected */}
+        <Dialog
+          open={rejected}
+          onClose={handleResetRejected}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{`${receiverName} rejected your call`}</DialogTitle>
+          <DialogActions>
+            <Button onClick={handleResetRejected} color="primary">
               OK
             </Button>
           </DialogActions>
@@ -240,4 +260,5 @@ export default connect(mapStateToProps, {
   waitForVideoCallDecision,
   setCalleeOnline,
   stopWaiting,
+  resetVideoCallRejected
 })(Chat);
