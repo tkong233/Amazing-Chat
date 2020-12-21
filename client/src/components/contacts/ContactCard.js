@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
-import io from 'socket.io-client';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,11 +11,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import DeleteIcon from '@material-ui/icons/Delete';
-import NotesIcon from '@material-ui/icons/Notes';
 import { deleteContact } from '../../actions/contactActions';
-import { connectSocket, joinRoom, loadPastMessages, receiveNewMessages, receiveVideoCall } from '../../actions/chatActions';
-
-let socket;
+import { joinRoom, loadPastMessages, receiveNewMessages, receiveVideoCall } from '../../actions/chatActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +38,7 @@ const transformDateFormat = (date) => {
 
 const ContactCard = (props) => {
   const { name, profilePicture, lastInteractTime, userEmail, contactEmail } = props;
-
+  const socket = props.chat.socket;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const toggleCollapse = () => {
@@ -50,21 +46,13 @@ const ContactCard = (props) => {
   };
 
   const launchChat = () => {
-    if (!props.chat.socket) {
-      socket = io();
-      socket.room = props.pairId;
-    } else {
-      socket = props.chat.socket;
-      socket.room = props.pairId;
-    }
-    
+    console.log('launching chat, socket exist?', socket);
     if (props.chat.pairId === props.pairId) {
       socket.room = props.pairId;
       console.log('already joined room');
       return;
     }
 
-    props.connectSocket(socket);
     props.joinRoom(props.user.name, name, userEmail, contactEmail, props.pairId, socket);
     props.loadPastMessages(props.pairId);
     props.receiveNewMessages(socket);
@@ -112,7 +100,6 @@ export default connect(
   mapStateToProps, 
   {
     deleteContact,
-    connectSocket,
     joinRoom,
     loadPastMessages,
     receiveNewMessages,

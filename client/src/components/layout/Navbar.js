@@ -7,7 +7,7 @@ class Navbar extends Component {
   onLogoutClick = (e) => {
     e.preventDefault();
     console.log("here");
-    this.props.logoutUser();
+    this.props.logoutUser(this.props.chat.socket);
   };
   render() {
     return (
@@ -67,6 +67,7 @@ class Navbar extends Component {
 // export default Navbar;
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  chat: state.chat,
 });
 
 export default connect(mapStateToProps, { logoutUser })(Navbar);

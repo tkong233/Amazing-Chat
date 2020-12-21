@@ -6,7 +6,6 @@ import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 import { Alert } from '@material-ui/lab';
 
-
 class Login extends Component {
   constructor() {
     super();

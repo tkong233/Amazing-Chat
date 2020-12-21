@@ -1,4 +1,4 @@
-import { CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
+import { SET_SOCKET, UNSET_SOCKET, CONNECT_SOCKET, JOIN_ROOM, LOAD_PAST_MESSAGES,
    DISCONNECT_SOCKET, SEND_MESSAGE, DELETE_MESSAGE, RECEIVE_NEW_MESSAGES,
    RECEIVE_VIDEO_CALL, PICK_UP_VIDEO_CALL, HANG_UP_VIDEO_CALL,
    INITIATE_VIDEO_CALL, SET_CALLEE_ONLINE, SET_CALLEE_OFFLINE,
@@ -21,11 +21,25 @@ const initialState = {
 }
 
 export default function(state = initialState, action) {
+  console.log(state, action);
   switch (action.type) {
-    case CONNECT_SOCKET:
+
+    case SET_SOCKET:
+      console.log('set socket on login', action.payload);
       return {
         ...state,
         socket: action.payload
+      }
+    case UNSET_SOCKET:
+      console.log('unset socket in state');
+      return {
+        ...state,
+        socket: null
+      }
+    case CONNECT_SOCKET:
+      return {
+        ...state,
+        // socket: action.payload
       };
     case JOIN_ROOM:
       let { pairId, sender, receiver, senderName, receiverName } = action.payload;
