@@ -107,7 +107,7 @@ io.on('connect', (socket) => {
     io.to(pairId).emit('receiveMessage', { pairId, from, to, message, datetime, type });
   });
 
-  socket.on('initiateVideoCall', ({ pairId, from, to }) => {
+  socket.on('initiateVideoCall', ({ pairId, from, to, hang }) => {
     console.log('socket io: initiating video call');
     const index = onlineUsers.indexOf(to);
     if (index > -1) {
@@ -117,7 +117,7 @@ io.on('connect', (socket) => {
         console.log('room: ' + pairId + ' callee is in: ' + userToRoom[to]);
         io.to(pairId).emit('videoCallRequestResult', { online: false, accept: false });        
       } else {
-        io.to(pairId).emit('receiveVideoCall', { pairId, from, to });
+        io.to(pairId).emit('receiveVideoCall', { pairId, from, to, hang });
       }
     } else {
       console.log('socket: callee not online');
