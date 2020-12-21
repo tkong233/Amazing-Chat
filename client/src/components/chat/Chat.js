@@ -29,9 +29,15 @@ const Chat = (props) => {
     receiver,
     receiverName,
   } = props.chat;
+
   const { name, email } = props.user;
 
   const [message, setMessage] = useState("");
+  const audio = new Audio('https://quz1yp-a.akamaihd.net/downloads/ringtones/files/mp3/huawei-tone-toneswall-com-52227.mp3');
+  audio.addEventListener('ended', function () {
+    this.currentTime = 0;
+    this.play();
+  }, false);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -74,10 +80,16 @@ const Chat = (props) => {
 
   const handleAcceptVideoCall = () => {
     props.pickUpVideoCall(socket, pairId, sender, receiver);
+    if (audio) {
+      audio.pause();
+    }
   };
 
   const handleRejectVideoCall = () => {
     props.hangUpVideoCall(socket, pairId, sender, receiver);
+    if (audio) {
+      audio.pause();
+    }
   };
 
   const handleCalleeOffline = () => {
@@ -96,6 +108,13 @@ const Chat = (props) => {
     "calleeOnline",
     calleeOnline
   );
+
+  
+  if (ringing) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
 
   if (socket && !calling) {
     return (
