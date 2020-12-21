@@ -13,6 +13,7 @@ import Collapse from '@material-ui/core/Collapse';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { deleteContact } from '../../actions/contactActions';
 import { joinRoom, loadPastMessages, receiveNewMessages, receiveVideoCall } from '../../actions/chatActions';
+import { setSocket } from '../../actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +52,11 @@ const ContactCard = (props) => {
       socket.room = props.pairId;
       console.log('already joined room');
       return;
+    }
+
+    if (!socket) {
+      setSocket(userEmail);
+      socket = props.chat.socket;
     }
 
     props.joinRoom(props.user.name, name, userEmail, contactEmail, props.pairId, socket);
@@ -104,5 +110,6 @@ export default connect(
     loadPastMessages,
     receiveNewMessages,
     receiveVideoCall,
+    setSocket,
   }
 )(ContactCard);

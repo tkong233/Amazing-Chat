@@ -15,6 +15,8 @@ import {
   SET_CALLEE_OFFLINE,
   SET_CALLEE_ONLINE,
   STOP_WAITING_FOR_CALLEE_RESPONSE,
+  VIDEO_CALL_REJECTED,
+  RESET_VIDEO_CALL_REJECTED,
 } from './types';
 
 export const joinRoom = (
@@ -147,8 +149,6 @@ export const hangUpVideoCall = (socket, pairId, from, to) => (
   dispatch
 ) => {
   console.log("action: hang up video call");
-  
-
   socket.emit("videoCallRequestDecision", { pairId, from, to, accept: false });
 
   dispatch({
@@ -171,9 +171,18 @@ export const waitForVideoCallDecision = (socket) => dispatch => {
     } else {
       console.log("socket: video call request rejected");
       dispatch({
-        type: HANG_UP_VIDEO_CALL,
+        type: VIDEO_CALL_REJECTED
+      });
+      dispatch({
+        type: HANG_UP_VIDEO_CALL
       });
     }
+  })
+}
+
+export const resetVideoCallRejected = () => dispatch => {
+  dispatch({
+    type: RESET_VIDEO_CALL_REJECTED
   })
 }
 

@@ -14,6 +14,7 @@ import {
   waitForVideoCallDecision,
   setCalleeOnline,
   stopWaiting,
+  resetVideoCallRejected,
 } from "../../actions/chatActions";
 import Dropzone from "react-dropzone";
 import Messages from "./Messages";
@@ -29,9 +30,15 @@ const Chat = (props) => {
     receiver,
     receiverName,
   } = props.chat;
+
   const { name, email } = props.user;
 
   const [message, setMessage] = useState("");
+  const audio = new Audio('https://quz1yp-a.akamaihd.net/downloads/ringtones/files/mp3/huawei-tone-toneswall-com-52227.mp3');
+  audio.addEventListener('ended', function () {
+    this.currentTime = 0;
+    this.play();
+  }, false);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -74,10 +81,16 @@ const Chat = (props) => {
 
   const handleAcceptVideoCall = () => {
     props.pickUpVideoCall(socket, pairId, sender, receiver);
+    if (audio) {
+      audio.pause();
+    }
   };
 
   const handleRejectVideoCall = () => {
     props.hangUpVideoCall(socket, pairId, sender, receiver);
+    if (audio) {
+      audio.pause();
+    }
   };
 
   const handleCalleeOffline = () => {
@@ -85,7 +98,11 @@ const Chat = (props) => {
     props.stopWaiting();
   };
 
-  const { ringing, calling, waiting, calleeOnline } = props.chat;
+  const handleResetRejected = () => {
+    props.resetVideoCallRejected();
+  }
+
+  const { ringing, calling, waiting, rejected, calleeOnline } = props.chat;
   console.log(
     "ringing",
     ringing,
@@ -96,6 +113,13 @@ const Chat = (props) => {
     "calleeOnline",
     calleeOnline
   );
+
+  
+  if (ringing) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
 
   if (socket && !calling) {
     return (
@@ -142,6 +166,21 @@ const Chat = (props) => {
           <DialogTitle id="alert-dialog-title">{`${receiverName} is not online`}</DialogTitle>
           <DialogActions>
             <Button onClick={handleCalleeOffline} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* On Call Rejected */}
+        <Dialog
+          open={rejected}
+          onClose={handleResetRejected}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{`${receiverName} rejected your call`}</DialogTitle>
+          <DialogActions>
+            <Button onClick={handleResetRejected} color="primary">
               OK
             </Button>
           </DialogActions>
@@ -221,4 +260,5 @@ export default connect(mapStateToProps, {
   waitForVideoCallDecision,
   setCalleeOnline,
   stopWaiting,
+  resetVideoCallRejected
 })(Chat);
