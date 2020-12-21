@@ -93,41 +93,47 @@ router.post("/contact", (req, res) => {
 // @access Public
 
 router.delete("/contact", (req, res) => {
-  const { email1, email2 } = req.body;
-  
-  // delete user2 in user1's contacts
-  User.findOne({ email: email1 }).then((user1) => {
-    if (!user1) {
-      return res.status(404).json({ message: "user not found" });
-    }
-    const contacts1 = user1.contacts;
-    let updatedContacts1 = contacts1.filter(c => c.email != email2);
-    user1.contacts = updatedContacts1;
-    user1.save().then(_ => {
-      // delete user1 in user2's contacts
-      User.findOne({ email: email2 }).then((user2) => {
-        if (!user2) {
-          return res.status(404).json({ message: "user not found" });
-        }
-        const contacts2 = user2.contacts;
-        const updatedContacts2 = contacts2.filter(c => c.email != email1);
-        user2.contacts = updatedContacts2;
-        user2.save().then(_ => {
-          let emails = updatedContacts1.map(({ email }) => ( email ));
-          User.find({
-            email : { "$in": emails }
-          }).then(contacts =>  {
-            const contactsWithIdAndTime = contacts.map(({ name, profile_picture, email, contacts }) => 
-              ({ name, profile_picture, email, ...getPairIdAndTime(contacts, email1) })
-            )
-            return res.status(200).json(contactsWithIdAndTime);
-          }).catch(err => {
-            console.log(err);
+  const { email1, email2, pairId } = req.body;
+
+  // clear message history
+  Message.remove({ pairId })
+    .then(() => {
+
+    // delete user2 in user1's contacts
+    User.findOne({ email: email1 }).then((user1) => {
+      if (!user1) {
+        return res.status(404).json({ message: "user not found" });
+      }
+      const contacts1 = user1.contacts;
+      let updatedContacts1 = contacts1.filter(c => c.email != email2);
+      user1.contacts = updatedContacts1;
+      user1.save().then(_ => {
+        // delete user1 in user2's contacts
+        User.findOne({ email: email2 }).then((user2) => {
+          if (!user2) {
+            return res.status(404).json({ message: "user not found" });
+          }
+          const contacts2 = user2.contacts;
+          const updatedContacts2 = contacts2.filter(c => c.email != email1);
+          user2.contacts = updatedContacts2;
+          user2.save().then(_ => {
+            let emails = updatedContacts1.map(({ email }) => ( email ));
+            User.find({
+              email : { "$in": emails }
+            }).then(contacts =>  {
+              const contactsWithIdAndTime = contacts.map(({ name, profile_picture, email, contacts }) => 
+                ({ name, profile_picture, email, ...getPairIdAndTime(contacts, email1) })
+              )
+              return res.status(200).json(contactsWithIdAndTime);
+            }).catch(err => {
+              console.log(err);
+            })
           })
         })
-      })
-    });
-  }).catch(err => console.log(err));
+      });
+    })
+    })
+    .catch(err => console.log(err));
 });
 
 // @route GET /suggestion
