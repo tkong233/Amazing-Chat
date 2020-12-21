@@ -27,8 +27,9 @@ const Row = (props) => {
     // console.log(index, itemStatusMap[index]);
     label = "Loading...";
   }
+  
   return (
-    <div className="ListItem" style={style}>
+    <div className="ListItem" style={style} data-test="RowComponent">
       {label}
     </div>
   );
