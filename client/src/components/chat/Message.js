@@ -79,10 +79,19 @@ const Message = (props) => {
       return (
         <div style={style}>
           <video
-            style={{ maxWidth: "500px" }}
+            style={{
+              marginLeft: "20px",
+              marginRight: "20px",
+              marginTop: "5px",
+              marginBottom: "5px",
+              borderRadius: "8px",
+              boxShadow: "0 0 2px 0px gray",
+              maxWidth: "300px",
+            }}
             src={`${props.text}`}
             alt="video"
             type="video/mp4"
+
             controls
             onClick={handleMessageOnClick}
           />
@@ -113,6 +122,14 @@ const Message = (props) => {
             src={`${props.text}`}
             alt="audio"
             type="audio/ogg"
+            style={{
+              marginLeft: "20px",
+              marginRight: "20px",
+              marginTop: "5px",
+              marginBottom: "5px",
+              borderRadius: "8px",
+              boxShadow: "0 0 2px 0px gray",
+            }}
             controls
             onClick={handleMessageOnClick}
           />
@@ -149,6 +166,10 @@ const Message = (props) => {
             src={`${props.text}`}
             alt="Imgupload"
             style={{
+              marginLeft: "20px",
+              marginRight: "20px",
+              marginTop: "5px",
+              marginBottom: "5px",
               maxWidth: "250px",
               maxHeight: "250px",
               borderRadius: "8px",
