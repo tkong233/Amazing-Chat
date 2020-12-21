@@ -235,14 +235,39 @@ router.post("/upload_profile_image/:email", (req, res) => {
 // @access Private
 router.delete("/profile/:email", (req, res) => {
   const email = req.params.email;
-  try {
-    User.deleteOne({ email: email }).then(() => {
-      return res.json({ success: true });
+  User.findOne({ email }).then((user) => {
+    const contacts = user.contacts; // map to array of emails
+    const contactEmails = contacts.map(({ email }) => ( email ));
+    contactEmails.forEach((e) => {
+      User.findOne({ email: e }).then(c => {
+        const updatedContacts = removeContact(c.contacts, email);
+        c.contacts = updatedContacts;
+        c.save();
+      })
     });
-  } catch (err) {
-    console.log(err);
-  }
+    Message.remove({ from: email }).then(_ => {
+      Message.remove({ to: email}).then(_ => {
+        User.deleteOne({ email }).then(_ => {
+          return res.json({ message: 'success' });
+        })
+      })
+    })
+  });
 });
+
+// given a list of contacts [{email, pairId, ...}], remove the one whose email matched given email
+const removeContact = (contacts, email) => {
+  let index = -1;
+  for (var i = 0; i < contacts.length; i++) {
+    if (contacts[i].email === email) {
+      index = i;
+    }
+  }
+  if (index > -1) {
+    contacts.splice(index, 1);
+  }
+  return contacts;
+}
 
 // @route POST api/users/status
 // @desc Post status

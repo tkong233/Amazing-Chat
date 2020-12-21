@@ -275,7 +275,7 @@ const Message = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  socket: state.chat.socket,
+  
 });
 
 export default connect(mapStateToProps, { deleteMessage })(Message);

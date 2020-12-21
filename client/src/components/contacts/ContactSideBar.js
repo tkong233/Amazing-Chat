@@ -20,7 +20,7 @@ const ContactSideBar = (props) => {
   return (
     <div
       className='contact-side-bar'
-      data-test = "DashboardComponent">
+      data-test = "ContactSideBarComponent">
       <SearchBar/>
       <SuggestionList/>
       <ContactList/>

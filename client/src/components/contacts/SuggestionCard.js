@@ -17,7 +17,7 @@ const SuggestionCard = (props) => {
   const { name, profilePicture, userEmail, suggestionEmail } = props;
 
   return (
-    <ListItem>
+    <ListItem data-test="SuggestionCardComponent">
       <ListItemAvatar>
         <Avatar alt={name} src={profilePicture} />
       </ListItemAvatar>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Chat from './Chat';
+import Row from './Row';
 import {shallow} from 'enzyme';
 import checkPropTypes from 'check-prop-types';
 import Enzyme from 'enzyme';
@@ -13,23 +13,21 @@ Enzyme.configure({
 });
 
 const setUp = (initialState={}) =>{
-
     const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    const wrapper = shallow(<Chat store={store} />).dive();
+    const wrapper = shallow(<Row store={store} />).dive();
     // console.log(wrapper.debug());
     return wrapper;
 }
 
-describe('Chat Component', ()=>{
+describe('Row Component', ()=>{
     describe('Checking PropTypes', ()=>{
         it('Should not throw a warning', ()=>{
             const expectedProps = {
                 chat: {},
-                user: {},
             }
             // eslint-disable-next-line react/forbid-foreign-prop-types
-            const propsErr = checkPropTypes(Chat.propTypes, expectedProps, 'props', Chat.name);
+            const propsErr = checkPropTypes(Row.propTypes, expectedProps, 'props', Row.name);
             expect(propsErr).toBeUndefined();
         })
     });
@@ -37,21 +35,26 @@ describe('Chat Component', ()=>{
         let wrapper;
         beforeEach(()=>{
             const initialState = {
-                auth:{user: {
-                    name: 'testuser',
-                    email: 'testuser@test.com',
-                    profile_picture: 'testpicture'
-                }},
                 chat:{
-                    messages:[{}],
-                    socket: 'testsocket'
+                    itemStatusMap:
+                    { 1 : 'LOADED'},
+                    messages:[{
+                        pairId: '',
+                        from: 'userA', 
+                        to: 'userB',
+                        message: 'test message',
+                        datetime: '2020/09/01',
+                        type: 'text'
+                    }],
+                    sender: 'userA',
+                    receiver: 'userB'
                 }
             };
             wrapper = setUp(initialState);
         });
 
         it('Should render without errors', ()=>{
-            const container = wrapper.find(`[data-test='ChatComponent']`);
+            const container = wrapper.find(`[data-test='RowComponent']`);
             expect(container.length).toBe(1);
         });
 

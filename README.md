@@ -14,3 +14,6 @@ npm run dev
 
 ## Deployed to
 https://polar-beyond-38900.herokuapp.com
+
+## Swagger
+https://app.swaggerhub.com/apis-docs/cis557project/amazing-chat_api/1.0.0#/
