@@ -93,7 +93,9 @@ export const logoutUser = (socket) => dispatch => {
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
-  socket.disconnect();
+  if (socket) {
+    socket.disconnect();
+  }
   dispatch({
     type: UNSET_SOCKET
   })

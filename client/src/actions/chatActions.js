@@ -17,6 +17,7 @@ import {
   VIDEO_CALL_REJECTED,
   RESET_VIDEO_CALL_REJECTED,
   CALLER_HANGED_CALL,
+  DELETE_CONVERSATION,
 } from './types';
 
 export const joinRoom = (
@@ -108,6 +109,17 @@ export const deleteMessage = (data) => dispatch => {
   })
 }
 
+export const deleteConversation = (pairId) => dispatch => {
+  console.log('action: delete conversation');
+  axios.delete('/conversation', { data: { pairId } })
+    .then(res => {
+      dispatch({
+        type: DELETE_CONVERSATION
+      })
+    })
+    .catch(err => console.log(err))
+}
+
 export const setItemStatus = (index, status) => dispatch => {
   dispatch({
     type: SET_ITEM_STATUS,
@@ -147,6 +159,8 @@ export const receiveVideoCall = (socket, email) => dispatch => {
 
 export const pickUpVideoCall = (socket, pairId, from, to) => (dispatch) => {
   console.log("action: pick up video call");
+  socket.off('videoCallRequestResult');
+  socket.removeAllListeners('videoCallRequestResult');
   socket.emit("videoCallRequestDecision", { pairId, from, to, accept: true });
   dispatch({
     type: PICK_UP_VIDEO_CALL,
@@ -157,6 +171,8 @@ export const hangUpVideoCall = (socket, pairId, from, to) => (
   dispatch
 ) => {
   console.log("action: hang up video call");
+  socket.off('videoCallRequestResult');
+  socket.removeAllListeners('videoCallRequestResult');
   socket.emit("videoCallRequestDecision", { pairId, from, to, accept: false });
 
   dispatch({
