@@ -18,13 +18,13 @@ https://app.swaggerhub.com/apis-docs/cis557project/amazing-chat_api/1.0.0#/
 
 ## Screenshots
 ### Welcome Page
-![screenshot1](https://github.com/tkong233/Amazing-Chat/tree/main/wireframes/screenshot1.png)
+![screenshot1](https://github.com/tkong233/Amazing-Chat/blob/main/wireframes/screenshot1.png)
 ### Registration Page
-![screenshot2](https://github.com/tkong233/Amazing-Chat/tree/main/wireframes/screenshot2.png)
+![screenshot2](https://github.com/tkong233/Amazing-Chat/blob/main/wireframes/screenshot2.png)
 ### Login Page
-![screenshot3](https://github.com/tkong233/Amazing-Chat/tree/main/wireframes/screenshot3.png)
+![screenshot3](https://github.com/tkong233/Amazing-Chat/blob/main/wireframes/screenshot3.png)
 ### Chat Page
-![screenshot4](https://github.com/tkong233/Amazing-Chat/tree/main/wireframes/screenshot4.png)
+![screenshot4](https://github.com/tkong233/Amazing-Chat/blob/main/wireframes/screenshot4.png)
 
 ## API
 ![api1](https://github.com/tkong233/Amazing-Chat/blob/main/documentation/API-1.png)
